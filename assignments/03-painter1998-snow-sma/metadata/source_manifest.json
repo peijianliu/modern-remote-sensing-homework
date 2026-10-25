@@ -43,8 +43,8 @@
     },
     {
       "path": "DATA_SOURCES.md",
-      "sha256": "62b12d04e3d0cfaece235405cc5359c32798b1ab63e8f54662d28a722fc7fbd8",
-      "bytes": 4090
+      "sha256": "c51d5cc66dca4456ede71d2f350077c692751a578a50200ab33188cb8329520f",
+      "bytes": 4656
     },
     {
       "path": "FIGURE_INDEX.md",
@@ -83,8 +83,8 @@
     },
     {
       "path": "README.md",
-      "sha256": "5f5104827dfec0842c9b46e5d045d0d1ecc4424353e6cfc4b50c1331fa825278",
-      "bytes": 4662
+      "sha256": "efd7d0a569132fded79469a2a80e99b31218a05cdd644d1a1a6f7f584974c643",
+      "bytes": 4889
     },
     {
       "path": "reports/README.md",
@@ -158,8 +158,8 @@
     },
     {
       "path": "scripts/prepare_case_data.py",
-      "sha256": "aa82a66b04c5759a723042f62a5f66c0388db1d386b5db5c1e57991c00c2c2c2",
-      "bytes": 28122
+      "sha256": "2d1f6c072678edf8328355596f21e2c341246e36917ab82ff81e7215ec3da519",
+      "bytes": 28228
     },
     {
       "path": "scripts/prepare_optics.py",

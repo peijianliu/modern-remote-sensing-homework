@@ -51,6 +51,8 @@ macOS / Linux 将解释器替换为 `.venv/bin/python`。构建脚本在干净�
 
 完整处理保留在 `snowmix/image.py`、`scripts/acquire_*.py`、`matlab/` 和配置中。需要完整数据时，先阅读 [输入来源](DATA_SOURCES.md)，安装 `.[full]`，从官方来源准备原始影像和 MATLAB 正演缓存；不要将整景数据、登录信息或运行日志加入 Git。
 
+`prepare_case_data.py --source-root` 的全量打包还需要已归档的 v2 尺度与 WorldView 统计。仓库已提供冻结 CSV，默认 Notebook 直接使用；全量重建的额外输入与目录约定见数据说明。
+
 ## 测试
 
 默认核心与教学测试：

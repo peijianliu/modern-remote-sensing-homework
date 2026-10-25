@@ -1,6 +1,7 @@
 """从公开遥感输入准备教学数据和统一背景的受控补实验。
 
 完整重建需 --source-root 指向已准备的 AVIRIS、MOD09GA 与模型缓存。
+该工作区还需保留已归档的 v2 尺度及 WorldView CSV；默认教学使用仓库冻结文件。
 Notebook 默认使用 data/demo，运行时不下载原始影像。
 """
 
