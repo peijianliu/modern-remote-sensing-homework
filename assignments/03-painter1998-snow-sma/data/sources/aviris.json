@@ -1,0 +1,8 @@
+{
+  "name": "aviris",
+  "url": "https://popo.jpl.nasa.gov/avcl/y13_data/f130503t01p00r14_refl.tar.gz",
+  "relative_path": "data/raw/f130503t01p00r14_refl.tar.gz",
+  "bytes": 2745422132,
+  "sha256": "376e2d8d0d1fe6f605b1615e38f84af375e38ee434ef1b47f8c084c6a83f67f0",
+  "retrieved_utc": "2026-10-01T17:21:18Z"
+}

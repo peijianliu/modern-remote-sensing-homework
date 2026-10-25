@@ -1,0 +1,47 @@
+{
+  "project": "painter1998",
+  "version": "v1",
+  "run_date": "2026-10-01",
+  "seed": 1998,
+  "forward": {
+    "ice_ri": 1,
+    "snow_shape": 1,
+    "density_kg_m3": 200,
+    "depth_m": 100,
+    "substrate_albedo": 0,
+    "atmosphere": 1,
+    "angles_deg": [0, 60],
+    "radius_min_um": 30,
+    "radius_max_um": 1500,
+    "radius_step_um": 10
+  },
+  "synthetic": {
+    "sensor_grid_mode": "aviris2013",
+    "radius_min_um": 50,
+    "radius_max_um": 1500,
+    "radius_step_um": 10,
+    "fraction_step": 0.01,
+    "fixed_radius_um": 200,
+    "angle_deg_assumed": 0,
+    "noise_std": [0, 0.005, 0.01],
+    "repeats": 20
+  },
+  "image": {
+    "roi_label": "Mammoth西侧",
+    "roi_selection_reason": "shifted 3500m west based on source footprint coverage before fitting; original study point still within ROI",
+    "aviris_id": "f130503t01p00r14_sc01",
+    "modis_id": "MOD09GA.A2013123.h08v05.061.2021229143331",
+    "roi_center_lon_lat": [-119.07435988485, 37.62847947975],
+    "roi_width_m": 8000,
+    "target_resolution_m": 30,
+    "radius_min_um": 30,
+    "radius_max_um": 1100,
+    "radius_step_um": 10,
+    "minimum_denominator": 0.05,
+    "minimum_snow_fraction": 0.1,
+    "minimum_coarse_coverage": 0.95,
+    "minimum_matched_pixels": 50,
+    "block_size": 4096,
+    "condition_warning": 10000
+  }
+}

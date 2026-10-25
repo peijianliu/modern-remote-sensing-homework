@@ -1,0 +1,27 @@
+{
+  "project": "painter1998",
+  "version": "v2",
+  "run_date": "2026-10-01",
+  "seed": 1998,
+  "empirical": {
+    "lab_record": 3580078,
+    "field_record": 3580825,
+    "lab_zenith_deg": 55,
+    "field_assumed_zenith_deg": 60,
+    "radius_min_um": 30,
+    "radius_max_um": 1500,
+    "ice_option": 1,
+    "ice_density_kg_m3": 917,
+    "snow_presence_threshold": 0.5,
+    "usable_intervals_um": [[0.42,1.30],[1.50,1.75],[2.05,2.35]],
+    "nir_shape_interval_um": [0.80,1.30],
+    "empirical_group_is_independent_unit": true
+  },
+  "band_sensitivity": {
+    "pixel_sample_size": 1200,
+    "spatial_blocks_per_axis": 8,
+    "holdout_stride": 5,
+    "conservative_intervals_um": [[0.42,1.30],[1.50,1.75],[2.05,2.35]],
+    "bootstrap_repeats": 1000
+  }
+}

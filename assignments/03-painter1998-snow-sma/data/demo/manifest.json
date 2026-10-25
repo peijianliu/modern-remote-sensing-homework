@@ -1,0 +1,245 @@
+{
+  "created_utc": "2026-10-25T06:46:30.105223+00:00",
+  "sources": [
+    {
+      "id": "aviris",
+      "url": "https://popo.jpl.nasa.gov/avcl/y13_data/f130503t01p00r14_refl.tar.gz",
+      "product": "AVIRIS-Classic L2 2013-05-03 f130503t01p00r14",
+      "access": "public NASA/JPL data",
+      "sha256": "376e2d8d0d1fe6f605b1615e38f84af375e38ee434ef1b47f8c084c6a83f67f0"
+    },
+    {
+      "id": "modis",
+      "url": "https://cmr.earthdata.nasa.gov/search/concepts/G2261932874-LPCLOUD.html",
+      "product": "MOD09GA.A2013123.h08v05.061.2021229143331",
+      "access": "public NASA data",
+      "sha256": "bf6e33fcc259d85007f171c021c2a15f23fc24004d2ffe53a262fb8b550f1430"
+    },
+    {
+      "id": "snow_model",
+      "url": "https://github.com/mflanner/SNICARv3",
+      "license": "MIT code",
+      "optical_properties_version": "202105",
+      "contents": "calculated spectra; original optical database excluded"
+    },
+    {
+      "id": "usgs_quartz",
+      "url": "https://pubs.usgs.gov/of/2003/ofr-03-395/DESCRIPT/M/quartz_hs32.html",
+      "access": "public USGS spectral library"
+    },
+    {
+      "id": "worldview",
+      "url": "https://doi.org/10.5281/zenodo.4031446",
+      "license": "CC BY 4.0",
+      "creators": [
+        "Timbo Stillinger",
+        "Ned Bair"
+      ]
+    },
+    {
+      "id": "legacy_statistics",
+      "contents": "corrected scale and WorldView model statistics; legacy_library_output",
+      "note": "Historical derived outputs; not combined with the new AVIRIS image-background experiments. Original JHU spectra are not distributed."
+    }
+  ],
+  "experiment": {
+    "project": "painter1998",
+    "run_date": "2026-10-24",
+    "version": "v3/group_case_r001"
+  },
+  "base_configuration": {
+    "project": "painter1998",
+    "version": "v1",
+    "run_date": "2026-10-01",
+    "seed": 1998,
+    "forward": {
+      "ice_ri": 1,
+      "snow_shape": 1,
+      "density_kg_m3": 200,
+      "depth_m": 100,
+      "substrate_albedo": 0,
+      "atmosphere": 1,
+      "angles_deg": [
+        0,
+        60
+      ],
+      "radius_min_um": 30,
+      "radius_max_um": 1500,
+      "radius_step_um": 10
+    },
+    "synthetic": {
+      "sensor_grid_mode": "aviris2013",
+      "radius_min_um": 50,
+      "radius_max_um": 1500,
+      "radius_step_um": 10,
+      "fraction_step": 0.01,
+      "fixed_radius_um": 200,
+      "angle_deg_assumed": 0,
+      "noise_std": [
+        0,
+        0.005,
+        0.01
+      ],
+      "repeats": 20
+    },
+    "image": {
+      "roi_label": "Mammoth西侧",
+      "roi_selection_reason": "shifted 3500m west based on source footprint coverage before fitting; original study point still within ROI",
+      "aviris_id": "f130503t01p00r14_sc01",
+      "modis_id": "MOD09GA.A2013123.h08v05.061.2021229143331",
+      "roi_center_lon_lat": [
+        -119.07435988485,
+        37.62847947975
+      ],
+      "roi_width_m": 8000,
+      "target_resolution_m": 30,
+      "radius_min_um": 30,
+      "radius_max_um": 1100,
+      "radius_step_um": 10,
+      "minimum_denominator": 0.05,
+      "minimum_snow_fraction": 0.1,
+      "minimum_coarse_coverage": 0.95,
+      "minimum_matched_pixels": 50,
+      "block_size": 4096,
+      "condition_warning": 10000
+    }
+  },
+  "code_sha256": {
+    "scripts/prepare_case_data.py": "aa82a66b04c5759a723042f62a5f66c0388db1d386b5db5c1e57991c00c2c2c2",
+    "snowmix/case_analysis.py": "6ec6ddef4542f072fa19a8843d47cbfaefeec682dae91aef118b09cbf736f060",
+    "snowmix/linear.py": "796f116507d3d57d545d61bbcef0ec5e2da5ea4c5ae3ddcfe9570593711c1627",
+    "snowmix/image.py": "1d87e9fb92e2c95dc943fc339c3835dee54bbd4d84707fb0e638ec7a0564c0be",
+    "snowmix/geo.py": "bc3ce526927edb9514ee751142077a0cffd42879827c597c6f3f618c62b00d78",
+    "snowmix/spectra.py": "50dd1919cbfe5db2f21081b95883afab56e79b18f99a4709acbd5d98377a6936",
+    "snowmix/modis.py": "ba534dbed721446649679851140bd24b64b037e36c0b4b711012a271d401de65",
+    "snowmix/cache_contract.py": "d1aaf589765b2a4faf8433f4e1544bb30d1703cacb6881fcb29698af2cfeeae1"
+  },
+  "files": [
+    {
+      "path": "05_07_image_r001_corrected_coverage.csv",
+      "bytes": 84072,
+      "sha256": "2e74111443556d511d1f446c3dbacfe65afe8137e3d3600b7cd8ad1b13103967",
+      "source_id": "legacy_scale",
+      "source_path": "experiments/painter1998/2026-10-01/v2/15_review_reanalysis_r002/tables/05_07_image_r001_corrected_coverage.csv",
+      "source_sha256": "2e74111443556d511d1f446c3dbacfe65afe8137e3d3600b7cd8ad1b13103967"
+    },
+    {
+      "path": "05_07_image_r002_corrected_coverage.csv",
+      "bytes": 86032,
+      "sha256": "8bce038603c47e73356065bf275c3deb43c68151b3c3c3cf99621fd5660474fb",
+      "source_id": "legacy_scale",
+      "source_path": "experiments/painter1998/2026-10-01/v2/15_review_reanalysis_r002/tables/05_07_image_r002_corrected_coverage.csv",
+      "source_sha256": "8bce038603c47e73356065bf275c3deb43c68151b3c3c3cf99621fd5660474fb"
+    },
+    {
+      "path": "aviris_case.npz",
+      "bytes": 5308550,
+      "sha256": "d4cb7a7704a4b8ff997dc4b95f2be69da283c5ae22cf83a67abc4a0b51689dce",
+      "source_id": "this_experiment"
+    },
+    {
+      "path": "aviris_metadata.json",
+      "bytes": 23250,
+      "sha256": "bb96fd81002bd57763a7bbf6f38b1df92fa791993f453afc3d6c77e0aabfdd6e",
+      "source_id": "aviris"
+    },
+    {
+      "path": "case_summary.json",
+      "bytes": 14544,
+      "sha256": "eeda4e34de15e3fa957b1599a31e73ae89dc470baaedca1813fa91a8cd092dcc",
+      "source_id": "this_experiment"
+    },
+    {
+      "path": "fixed_radius_summary.csv",
+      "bytes": 1429,
+      "sha256": "4c0e863d7c87cde742034ec3dc19ac10ef460af4ac1d9df5841a5fd5e27639a3",
+      "source_id": "this_experiment"
+    },
+    {
+      "path": "forward_models.mat",
+      "bytes": 5926326,
+      "sha256": "9054918f3361788c9d53b29ab5e88773be6a93fa9b9c2e834325d263250ac017",
+      "source_id": "snow_model"
+    },
+    {
+      "path": "image_endmember_summary.csv",
+      "bytes": 676,
+      "sha256": "5c84e33646f8f5fd902dadeb6b5f45c08ada6459d36f9d047ba2bd7b9c47967c",
+      "source_id": "this_experiment"
+    },
+    {
+      "path": "image_endmembers.csv",
+      "bytes": 234,
+      "sha256": "19e960f7c8e43c8caa7ac2ce35c421ca5fb65b41e196588c6d24705da503378c",
+      "source_id": "this_experiment"
+    },
+    {
+      "path": "LC08_L2SP_043032_20170522_02_T1_sample_pixels.csv",
+      "bytes": 3538060,
+      "sha256": "e63985aa24812803d0d5d4bca5b809695cd25e5b8623e12fe4233f40ecc6c81f",
+      "source_id": "legacy_worldview",
+      "source_path": "experiments/painter1998/2026-10-01/v2/13_worldview_validation_r004/tables/LC08_L2SP_043032_20170522_02_T1_sample_pixels.csv",
+      "source_sha256": "e63985aa24812803d0d5d4bca5b809695cd25e5b8623e12fe4233f40ecc6c81f"
+    },
+    {
+      "path": "LC08_L2SP_043033_20160213_02_T1_sample_pixels.csv",
+      "bytes": 3805941,
+      "sha256": "b515246c04859a04c36a4dee1f74b710ee6070d8de26d5611ef238a0053940f6",
+      "source_id": "legacy_worldview",
+      "source_path": "experiments/painter1998/2026-10-01/v2/13_worldview_validation_r004/tables/LC08_L2SP_043033_20160213_02_T1_sample_pixels.csv",
+      "source_sha256": "b515246c04859a04c36a4dee1f74b710ee6070d8de26d5611ef238a0053940f6"
+    },
+    {
+      "path": "modis_1km_units.csv",
+      "bytes": 27965,
+      "sha256": "31e9be5158d065d623337051e39cbd03c0a7c9fc4a9677f5f7cf2ab1fc5a9742",
+      "source_id": "this_experiment"
+    },
+    {
+      "path": "product_consistency.csv",
+      "bytes": 1317,
+      "sha256": "f1a195a23e7a73a0dd095398e4ac5e50d95af0616e378629a0f05f07d5f645a0",
+      "source_id": "this_experiment"
+    },
+    {
+      "path": "quartz_hs32.5854.asc",
+      "bytes": 22652,
+      "sha256": "d48f1680a4caabdfccd7a9635f22f5bcf51e75f714fbaa27f00377fdff4c8529",
+      "source_id": "usgs_quartz"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4914,
+      "sha256": "00a8db0b085d03f320249a8242506118508e17af66ef194072410801a58d10a9",
+      "source_id": "this_experiment"
+    },
+    {
+      "path": "representative_scan.npz",
+      "bytes": 28408,
+      "sha256": "d717430e7800d920d8f6ed65fade3ca92f108534776eb8f966e66af4a0805a1f",
+      "source_id": "this_experiment"
+    },
+    {
+      "path": "same_dictionary_control_corrected.csv",
+      "bytes": 40627,
+      "sha256": "660de4071c9211690c22d75427aed74b0ef59190646aa7727eafa019608e16a3",
+      "source_id": "legacy_scale",
+      "source_path": "experiments/painter1998/2026-10-01/v2/15_review_reanalysis_r002/tables/same_dictionary_control_corrected.csv",
+      "source_sha256": "660de4071c9211690c22d75427aed74b0ef59190646aa7727eafa019608e16a3"
+    },
+    {
+      "path": "spatial_metadata.json",
+      "bytes": 3470,
+      "sha256": "1c78a2b2a6c6bba3e020d628527d42ab55d7a596639f954d38f7cc2dce7a8f04",
+      "source_id": "this_experiment"
+    },
+    {
+      "path": "stratified_metrics.csv",
+      "bytes": 9450,
+      "sha256": "5c008f20eef8dab32f3e34dacbaf80cb9fbc6b4e1c0894da57401f41b17b75f4",
+      "source_id": "legacy_worldview",
+      "source_path": "experiments/painter1998/2026-10-01/v2/13_worldview_validation_r004/tables/stratified_metrics.csv",
+      "source_sha256": "5c008f20eef8dab32f3e34dacbaf80cb9fbc6b4e1c0894da57401f41b17b75f4"
+    }
+  ]
+}

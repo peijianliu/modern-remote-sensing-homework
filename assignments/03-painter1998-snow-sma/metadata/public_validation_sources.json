@@ -1,0 +1,702 @@
+[
+  {
+    "source": "USGS Spectral Characteristics Viewer",
+    "source_page": "https://landsat.usgs.gov/spectral-characteristics-viewer",
+    "acquired_utc": "2026-10-02T03:43:30.304482+00:00",
+    "license": "USGS public-domain data; acknowledge USGS/NASA OLI sensor characterization",
+    "json_wavelength_unit": "um",
+    "response_dimensionless": true,
+    "files": [
+      {
+        "path": "data/raw/public_validation/USGS_L8_OLI/L8_OLI_RSR.xlsx",
+        "url": "https://landsat.usgs.gov/landsat/spectral_viewer/bands/L8_OLI_RSR.xlsx",
+        "size_bytes": 145567,
+        "sha256": "6b8bb8bf0c6f1a3cef56eb497096283f6cd66f1af163989eb03c59aa6588cfe0"
+      },
+      {
+        "path": "data/raw/public_validation/USGS_L8_OLI/Landsat8OLI1.json",
+        "url": "https://landsat.usgs.gov/landsat/spectral_viewer/c3-master/htdocs/data/bands/Landsat8OLI1.json",
+        "size_bytes": 2135,
+        "sha256": "8f6b42c970b66b96fc8f4270e7ff10f6c614b2e314cd4a621f1da9ab5a059218"
+      },
+      {
+        "path": "data/raw/public_validation/USGS_L8_OLI/Landsat8OLI2.json",
+        "url": "https://landsat.usgs.gov/landsat/spectral_viewer/c3-master/htdocs/data/bands/Landsat8OLI2.json",
+        "size_bytes": 6019,
+        "sha256": "e5991937c1fee929113f4816ed00fc1bfe1f389f32c776db6406eed2f1030151"
+      },
+      {
+        "path": "data/raw/public_validation/USGS_L8_OLI/Landsat8OLI3.json",
+        "url": "https://landsat.usgs.gov/landsat/spectral_viewer/c3-master/htdocs/data/bands/Landsat8OLI3.json",
+        "size_bytes": 6426,
+        "sha256": "b028f38ae11ea53e6bf99484451d63e83ed844ae1757c44eea0ef5f1d20ded8c"
+      },
+      {
+        "path": "data/raw/public_validation/USGS_L8_OLI/Landsat8OLI4.json",
+        "url": "https://landsat.usgs.gov/landsat/spectral_viewer/c3-master/htdocs/data/bands/Landsat8OLI4.json",
+        "size_bytes": 4347,
+        "sha256": "7242f4735a7d0aff063035e83d8f9ac87efbf2d3b6bb3603611c6e73ff1ea9e3"
+      },
+      {
+        "path": "data/raw/public_validation/USGS_L8_OLI/Landsat8OLI5.json",
+        "url": "https://landsat.usgs.gov/landsat/spectral_viewer/c3-master/htdocs/data/bands/Landsat8OLI5.json",
+        "size_bytes": 4943,
+        "sha256": "d2e436ff0342da1470f47f8531bbad0d3fafb842a5488d1ae0e65e660eebf3f2"
+      },
+      {
+        "path": "data/raw/public_validation/USGS_L8_OLI/Landsat8OLI6.json",
+        "url": "https://landsat.usgs.gov/landsat/spectral_viewer/c3-master/htdocs/data/bands/Landsat8OLI6.json",
+        "size_bytes": 12580,
+        "sha256": "ec7d97124799e5d3e45a44f6b95641acf9725c08009cb0990d54ad55e7ee666c"
+      },
+      {
+        "path": "data/raw/public_validation/USGS_L8_OLI/Landsat8OLI7.json",
+        "url": "https://landsat.usgs.gov/landsat/spectral_viewer/c3-master/htdocs/data/bands/Landsat8OLI7.json",
+        "size_bytes": 21935,
+        "sha256": "0a9ff72025671e938dd65564a1cf4b4678dff0b3a4afa5fe6c1b63c14b5e1400"
+      }
+    ]
+  },
+  {
+    "record_id": "3580078",
+    "doi": "10.5281/zenodo.3580078",
+    "title": "Laboratory spectral reflectance measurements of pine/spruce twigs and snow",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "acquired_utc": "2026-10-02T03:32:30.987359+00:00",
+    "files": [
+      {
+        "path": "data/raw/public_validation/zenodo_3580078/Darklab_snow_reflectance_avg.csv",
+        "url": "https://zenodo.org/api/records/3580078/files/Darklab_snow_reflectance_avg.csv/content",
+        "size_bytes": 322316,
+        "sha256": "a790769554cbc25d17f4610595e364d7faeb796316c19ca71b0cf54403be1445",
+        "source_md5": "md5:e1c0e74830f4bf88ba6ea7b56e3d1653"
+      },
+      {
+        "path": "data/raw/public_validation/zenodo_3580078/Darklab_pine_and_spruce_reflectance_all_std.csv",
+        "url": "https://zenodo.org/api/records/3580078/files/Darklab_pine_and_spruce_reflectance_all_std.csv/content",
+        "size_bytes": 677316,
+        "sha256": "d37a9259bbefb4effd567a6e407d8943f62cf34e216aa8908d22eaf243871c7a",
+        "source_md5": "md5:b153dafea25328a0dd1073591b1fca02"
+      },
+      {
+        "path": "data/raw/public_validation/zenodo_3580078/Darklab_snow_pit_measurements.csv",
+        "url": "https://zenodo.org/api/records/3580078/files/Darklab_snow_pit_measurements.csv/content",
+        "size_bytes": 12697,
+        "sha256": "c8a23f1f5439e59b4506223ee69a720cc39fe4afe988940473271ae3ecc2b538",
+        "source_md5": "md5:78fa5131c64c0dfbdb58a6728ec3e615"
+      },
+      {
+        "path": "data/raw/public_validation/zenodo_3580078/Darklab_snow_samplewise_reflectance_std.csv",
+        "url": "https://zenodo.org/api/records/3580078/files/Darklab_snow_samplewise_reflectance_std.csv/content",
+        "size_bytes": 4119845,
+        "sha256": "618c4b5f0319c0e821a79d096d7b1f8d069c991f8e5352c68641d10a22e0efc2",
+        "source_md5": "md5:5233391c88a0c35a47f829641fef6a95"
+      },
+      {
+        "path": "data/raw/public_validation/zenodo_3580078/Darklab_snow_reflectance_std.csv",
+        "url": "https://zenodo.org/api/records/3580078/files/Darklab_snow_reflectance_std.csv/content",
+        "size_bytes": 322129,
+        "sha256": "973a80c2a95a2bb72751815961a136d8cfa7bd1d350628460d1f4c17c7b27b45",
+        "source_md5": "md5:3330f14c4383b8aa89152583e20b6ad4"
+      },
+      {
+        "path": "data/raw/public_validation/zenodo_3580078/Darklab_pine_and_spruce_reflectance_all.csv",
+        "url": "https://zenodo.org/api/records/3580078/files/Darklab_pine_and_spruce_reflectance_all.csv/content",
+        "size_bytes": 554801,
+        "sha256": "225425535bdb40d50f0bf506913e00d28c95357e81b04f1e587304c05c829bf9",
+        "source_md5": "md5:74b235c30c6b5888ada0ca628d26e4a8"
+      },
+      {
+        "path": "data/raw/public_validation/zenodo_3580078/Darklab_snow_samplewise_reflectance_avg.csv",
+        "url": "https://zenodo.org/api/records/3580078/files/Darklab_snow_samplewise_reflectance_avg.csv/content",
+        "size_bytes": 4127492,
+        "sha256": "3c5e103eedfd0a211111228f0706097a898d96f60afc36245134a6aae43f3583",
+        "source_md5": "md5:160c77577d3f7d783783914801168f6d"
+      },
+      {
+        "path": "data/raw/public_validation/zenodo_3580078/Darklab_snow_SSA.zip",
+        "url": "https://zenodo.org/api/records/3580078/files/Darklab_snow_SSA.zip/content",
+        "size_bytes": 8924,
+        "sha256": "1774080ab914fa215df80c635b0e2d48746371afb103a1d3f766f2524ea26a4c",
+        "source_md5": "md5:1da9f9659e685f83ea22c641c65eab03"
+      }
+    ]
+  },
+  {
+    "record_id": "3580825",
+    "doi": "10.5281/zenodo.3580825",
+    "title": "Spectrometer measurements of snow and bare ground targets and simultaneous measurements of snow conditions",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "acquired_utc": "2026-10-02T03:32:01.780320+00:00",
+    "files": [
+      {
+        "path": "data/raw/public_validation/zenodo_3580825/reflectance_spectra_field_2010_2011.zip",
+        "url": "https://zenodo.org/api/records/3580825/files/reflectance_spectra_field_2010_2011.zip/content",
+        "size_bytes": 1095908,
+        "sha256": "4c986b871ec8e51f25d5bdb6f9677b03dbbdfcf8a93699453f09f551267db79a",
+        "source_md5": "md5:58e187e9dd8995000228bf60e7571650"
+      }
+    ]
+  },
+  {
+    "record_id": "4031446",
+    "doi": "10.5281/zenodo.4031446",
+    "title": "Viewable Snow Covered Area Validation Masks over Rugged and Forested Terrain",
+    "license": {
+      "id": "cc-by-4.0"
+    },
+    "acquired_utc": "2026-10-02T03:36:08.169372+00:00",
+    "files": [
+      {
+        "path": "data/raw/public_validation/zenodo_4031446/17APR03193802_landsat_30m_fsca.tif",
+        "url": "https://zenodo.org/api/records/4031446/files/17APR03193802_landsat_30m_fsca.tif/content",
+        "size_bytes": 778591,
+        "sha256": "e06e17204d6fc71b7783c5db89b592d8efb4b8ee8aa8f28a0456e661b7ee4d19",
+        "source_md5": "md5:c2d28c5f2dc3ed26731af70246b7c052"
+      },
+      {
+        "path": "data/raw/public_validation/zenodo_4031446/15JAN07193448_landsat_30m_fsca.tif",
+        "url": "https://zenodo.org/api/records/4031446/files/15JAN07193448_landsat_30m_fsca.tif/content",
+        "size_bytes": 428555,
+        "sha256": "dba68359773157d4cda1f007f25544d4ef7f01aef3dbc620b9b9b6b62563c722",
+        "source_md5": "md5:8d6b2f3865ff9349ba5f79483cbd8494"
+      },
+      {
+        "path": "data/raw/public_validation/zenodo_4031446/16FEB13190431_modis_463.3127m_fsca.tif",
+        "url": "https://zenodo.org/api/records/4031446/files/16FEB13190431_modis_463.3127m_fsca.tif/content",
+        "size_bytes": 8678490,
+        "sha256": "4e72c7e055f8d27d9d67e417b0f4bf8e477520805e6d1da4ba5ffa24e784f1c9",
+        "source_md5": "md5:c29b2d85b5a12fd37bcf0c1b6b1a5a8c"
+      },
+      {
+        "path": "data/raw/public_validation/zenodo_4031446/17DEC11190506_landsat_30m_fsca.tif",
+        "url": "https://zenodo.org/api/records/4031446/files/17DEC11190506_landsat_30m_fsca.tif/content",
+        "size_bytes": 2697485,
+        "sha256": "9efb25b792a4909c9927ac05453594a0f4f4ffd3b56090306a381d351dd41f77",
+        "source_md5": "md5:47e6173159c5fec6ff5b71cebeb457c4"
+      },
+      {
+        "path": "data/raw/public_validation/zenodo_4031446/16FEB13190431_landsat_30m_fsca.tif",
+        "url": "https://zenodo.org/api/records/4031446/files/16FEB13190431_landsat_30m_fsca.tif/content",
+        "size_bytes": 2795531,
+        "sha256": "878ce7855433d5aa5486e914f42fdc92fae9c4270e0b395fdecdcdbd3df15c81",
+        "source_md5": "md5:868e026e82fe11ae8095d0127c5f985f"
+      },
+      {
+        "path": "data/raw/public_validation/zenodo_4031446/15DEC27191740_landsat_30m_fsca.tif",
+        "url": "https://zenodo.org/api/records/4031446/files/15DEC27191740_landsat_30m_fsca.tif/content",
+        "size_bytes": 2079475,
+        "sha256": "b8ae894d8ceeee9724718b5736f8142d4ce8daa15633ac4cf78d9f0834d75cb0",
+        "source_md5": "md5:667c1d486b28fae15aadde9f09c35c1d"
+      },
+      {
+        "path": "data/raw/public_validation/zenodo_4031446/valKey.csv",
+        "url": "https://zenodo.org/api/records/4031446/files/valKey.csv/content",
+        "size_bytes": 680,
+        "sha256": "08192057db485693c64af4b2e47a81c5359ef93f33b2ebb2f648226f0510c49d",
+        "source_md5": "md5:5a15cc97e4e7b90dc276c01d74c7b3d4"
+      },
+      {
+        "path": "data/raw/public_validation/zenodo_4031446/17JUN27190804_landsat_30m_fsca.tif",
+        "url": "https://zenodo.org/api/records/4031446/files/17JUN27190804_landsat_30m_fsca.tif/content",
+        "size_bytes": 639163,
+        "sha256": "8f49ab7d1cb86585384052f27e41ed34e4f37214acd9cca965055490b90470d4",
+        "source_md5": "md5:d66dba81a0c9291f2d63d44859de0580"
+      },
+      {
+        "path": "data/raw/public_validation/zenodo_4031446/15MAR05191121_landsat_30m_fsca.tif",
+        "url": "https://zenodo.org/api/records/4031446/files/15MAR05191121_landsat_30m_fsca.tif/content",
+        "size_bytes": 1019471,
+        "sha256": "e1d0ed8ec219cf1882fe241a00d9da5c757e5330d2c2b3e838d91d8786516aa6",
+        "source_md5": "md5:d1768eb76f12958efda2b63436b563f6"
+      },
+      {
+        "path": "data/raw/public_validation/zenodo_4031446/19MAR18191853_landsat_30m_fsca.tif",
+        "url": "https://zenodo.org/api/records/4031446/files/19MAR18191853_landsat_30m_fsca.tif/content",
+        "size_bytes": 3670201,
+        "sha256": "c90e3147640d44010dafd55f81844a460de5f546de17270fbd594d9ad203d9da",
+        "source_md5": "md5:4c02547c064f10f0d30b7960d2a3a0a3"
+      },
+      {
+        "path": "data/raw/public_validation/zenodo_4031446/17MAY21191849_landsat_30m_fsca.tif",
+        "url": "https://zenodo.org/api/records/4031446/files/17MAY21191849_landsat_30m_fsca.tif/content",
+        "size_bytes": 581551,
+        "sha256": "129159133684d19684351a2adbcaa8693eb90f3c0dacb2dd3e8f7fe7ecd87486",
+        "source_md5": "md5:e47aea6bcb76af59fbcc404fb36fcf2b"
+      },
+      {
+        "path": "data/raw/public_validation/zenodo_4031446/17MAY21191849_modis_463.3127m_fsca.tif",
+        "url": "https://zenodo.org/api/records/4031446/files/17MAY21191849_modis_463.3127m_fsca.tif/content",
+        "size_bytes": 8679534,
+        "sha256": "0f571c0cc0c08ced150f63767c7ce8d45926be8e4bba568694de4791f3cbbd69",
+        "source_md5": "md5:9498fff061b025c802d0f62028374e1f"
+      }
+    ]
+  },
+  {
+    "scene_id": "LC08_L2SP_043032_20170522_02_T1",
+    "collection": "landsat-c2-l2",
+    "product_level": "C2_L2SP",
+    "reference": "data/raw/public_validation/zenodo_4031446/17MAY21191849_landsat_30m_fsca.tif",
+    "reference_sha256": "129159133684d19684351a2adbcaa8693eb90f3c0dacb2dd3e8f7fe7ecd87486",
+    "reference_definition": "WorldView viewable fractional snow, independent of Landsat SMA",
+    "acquired_utc": "2026-10-02T03:40:38.227594+00:00",
+    "acquisition_utc": "2017-05-22T18:38:37.069858Z",
+    "license": "USGS Landsat public domain / unrestricted use",
+    "files": [
+      {
+        "path": "data/cache/public_validation/LC08_L2SP_043032_20170522_02_T1/SR_B2.tif",
+        "band": "SR_B2",
+        "source_url_unsigned": "https://landsateuwest.blob.core.windows.net/landsat-c2/level-2/standard/oli-tirs/2017/043/032/LC08_L2SP_043032_20170522_20200903_02_T1/LC08_L2SP_043032_20170522_20200903_02_T1_SR_B2.TIF",
+        "sha256": "cf20f99942c2328af8d13a11b9729ea1b5d719d822e20c59f8ceb14da6ab3702",
+        "size_bytes": 1044662,
+        "dtype": "uint16",
+        "shape": [
+          1414,
+          600
+        ],
+        "crs": "EPSG:32611",
+        "transform": [
+          30.0,
+          0.0,
+          154485.0,
+          0.0,
+          -30.0,
+          4432065.0
+        ],
+        "scale": 2.75e-05,
+        "offset": -0.2,
+        "nodata": 0.0
+      },
+      {
+        "path": "data/cache/public_validation/LC08_L2SP_043032_20170522_02_T1/SR_B3.tif",
+        "band": "SR_B3",
+        "source_url_unsigned": "https://landsateuwest.blob.core.windows.net/landsat-c2/level-2/standard/oli-tirs/2017/043/032/LC08_L2SP_043032_20170522_20200903_02_T1/LC08_L2SP_043032_20170522_20200903_02_T1_SR_B3.TIF",
+        "sha256": "4eaae3a4a975392116a51cd4867c6ab7e06ba00cb0442e771d180a3e7d61383b",
+        "size_bytes": 1060461,
+        "dtype": "uint16",
+        "shape": [
+          1414,
+          600
+        ],
+        "crs": "EPSG:32611",
+        "transform": [
+          30.0,
+          0.0,
+          154485.0,
+          0.0,
+          -30.0,
+          4432065.0
+        ],
+        "scale": 2.75e-05,
+        "offset": -0.2,
+        "nodata": 0.0
+      },
+      {
+        "path": "data/cache/public_validation/LC08_L2SP_043032_20170522_02_T1/SR_B4.tif",
+        "band": "SR_B4",
+        "source_url_unsigned": "https://landsateuwest.blob.core.windows.net/landsat-c2/level-2/standard/oli-tirs/2017/043/032/LC08_L2SP_043032_20170522_20200903_02_T1/LC08_L2SP_043032_20170522_20200903_02_T1_SR_B4.TIF",
+        "sha256": "6a7f2fdaa349ee3381c908d9c508522c5b65071800abd7fd76aeb41fcc42308c",
+        "size_bytes": 1075880,
+        "dtype": "uint16",
+        "shape": [
+          1414,
+          600
+        ],
+        "crs": "EPSG:32611",
+        "transform": [
+          30.0,
+          0.0,
+          154485.0,
+          0.0,
+          -30.0,
+          4432065.0
+        ],
+        "scale": 2.75e-05,
+        "offset": -0.2,
+        "nodata": 0.0
+      },
+      {
+        "path": "data/cache/public_validation/LC08_L2SP_043032_20170522_02_T1/SR_B5.tif",
+        "band": "SR_B5",
+        "source_url_unsigned": "https://landsateuwest.blob.core.windows.net/landsat-c2/level-2/standard/oli-tirs/2017/043/032/LC08_L2SP_043032_20170522_20200903_02_T1/LC08_L2SP_043032_20170522_20200903_02_T1_SR_B5.TIF",
+        "sha256": "f63d79062ee03e21dc4e0cb402df3244dd657fec2be107c40d3d5e1db59f4995",
+        "size_bytes": 1106203,
+        "dtype": "uint16",
+        "shape": [
+          1414,
+          600
+        ],
+        "crs": "EPSG:32611",
+        "transform": [
+          30.0,
+          0.0,
+          154485.0,
+          0.0,
+          -30.0,
+          4432065.0
+        ],
+        "scale": 2.75e-05,
+        "offset": -0.2,
+        "nodata": 0.0
+      },
+      {
+        "path": "data/cache/public_validation/LC08_L2SP_043032_20170522_02_T1/SR_B6.tif",
+        "band": "SR_B6",
+        "source_url_unsigned": "https://landsateuwest.blob.core.windows.net/landsat-c2/level-2/standard/oli-tirs/2017/043/032/LC08_L2SP_043032_20170522_20200903_02_T1/LC08_L2SP_043032_20170522_20200903_02_T1_SR_B6.TIF",
+        "sha256": "989951a2bea968bb597336c7a469fc5d28f92348cc7a9752714c568588cd0ddd",
+        "size_bytes": 1106098,
+        "dtype": "uint16",
+        "shape": [
+          1414,
+          600
+        ],
+        "crs": "EPSG:32611",
+        "transform": [
+          30.0,
+          0.0,
+          154485.0,
+          0.0,
+          -30.0,
+          4432065.0
+        ],
+        "scale": 2.75e-05,
+        "offset": -0.2,
+        "nodata": 0.0
+      },
+      {
+        "path": "data/cache/public_validation/LC08_L2SP_043032_20170522_02_T1/SR_B7.tif",
+        "band": "SR_B7",
+        "source_url_unsigned": "https://landsateuwest.blob.core.windows.net/landsat-c2/level-2/standard/oli-tirs/2017/043/032/LC08_L2SP_043032_20170522_20200903_02_T1/LC08_L2SP_043032_20170522_20200903_02_T1_SR_B7.TIF",
+        "sha256": "0c479395b6a6e459cc40237b986cc5b9332c7cde02be514d7e582facd335b466",
+        "size_bytes": 1072140,
+        "dtype": "uint16",
+        "shape": [
+          1414,
+          600
+        ],
+        "crs": "EPSG:32611",
+        "transform": [
+          30.0,
+          0.0,
+          154485.0,
+          0.0,
+          -30.0,
+          4432065.0
+        ],
+        "scale": 2.75e-05,
+        "offset": -0.2,
+        "nodata": 0.0
+      },
+      {
+        "path": "data/cache/public_validation/LC08_L2SP_043032_20170522_02_T1/QA_PIXEL.tif",
+        "band": "QA_PIXEL",
+        "source_url_unsigned": "https://landsateuwest.blob.core.windows.net/landsat-c2/level-2/standard/oli-tirs/2017/043/032/LC08_L2SP_043032_20170522_20200903_02_T1/LC08_L2SP_043032_20170522_20200903_02_T1_QA_PIXEL.TIF",
+        "sha256": "d967388b0b41e47d1555fec0a2063ba3294100c15949ff5a524d0555b18a6080",
+        "size_bytes": 182526,
+        "dtype": "uint16",
+        "shape": [
+          1414,
+          600
+        ],
+        "crs": "EPSG:32611",
+        "transform": [
+          30.0,
+          0.0,
+          154485.0,
+          0.0,
+          -30.0,
+          4432065.0
+        ],
+        "scale": 1.0,
+        "offset": 0.0,
+        "nodata": null
+      },
+      {
+        "path": "data/cache/public_validation/LC08_L2SP_043032_20170522_02_T1/QA_RADSAT.tif",
+        "band": "QA_RADSAT",
+        "source_url_unsigned": "https://landsateuwest.blob.core.windows.net/landsat-c2/level-2/standard/oli-tirs/2017/043/032/LC08_L2SP_043032_20170522_20200903_02_T1/LC08_L2SP_043032_20170522_20200903_02_T1_QA_RADSAT.TIF",
+        "sha256": "7c11beef4f02afc2482e870f23b9ef86ff71b79fac259e1375349f2639a72c07",
+        "size_bytes": 5821,
+        "dtype": "uint16",
+        "shape": [
+          1414,
+          600
+        ],
+        "crs": "EPSG:32611",
+        "transform": [
+          30.0,
+          0.0,
+          154485.0,
+          0.0,
+          -30.0,
+          4432065.0
+        ],
+        "scale": 1.0,
+        "offset": 0.0,
+        "nodata": null
+      },
+      {
+        "path": "data/cache/public_validation/LC08_L2SP_043032_20170522_02_T1/SR_QA_AEROSOL.tif",
+        "band": "SR_QA_AEROSOL",
+        "source_url_unsigned": "https://landsateuwest.blob.core.windows.net/landsat-c2/level-2/standard/oli-tirs/2017/043/032/LC08_L2SP_043032_20170522_20200903_02_T1/LC08_L2SP_043032_20170522_20200903_02_T1_SR_QA_AEROSOL.TIF",
+        "sha256": "4cd366f0eafb9c7800094c7bd3e8546bfa06468402a53766ccb424a414a10995",
+        "size_bytes": 118285,
+        "dtype": "uint8",
+        "shape": [
+          1414,
+          600
+        ],
+        "crs": "EPSG:32611",
+        "transform": [
+          30.0,
+          0.0,
+          154485.0,
+          0.0,
+          -30.0,
+          4432065.0
+        ],
+        "scale": 1.0,
+        "offset": 0.0,
+        "nodata": null
+      }
+    ],
+    "window_definition": "Native Landsat pixels covering full projected WorldView reference extent",
+    "qa_not_scaled": true
+  },
+  {
+    "scene_id": "LC08_L2SP_043033_20160213_02_T1",
+    "collection": "landsat-c2-l2",
+    "product_level": "C2_L2SP",
+    "reference": "data/raw/public_validation/zenodo_4031446/16FEB13190431_landsat_30m_fsca.tif",
+    "reference_sha256": "878ce7855433d5aa5486e914f42fdc92fae9c4270e0b395fdecdcdbd3df15c81",
+    "reference_definition": "WorldView viewable fractional snow, independent of Landsat SMA",
+    "acquired_utc": "2026-10-02T03:39:30.930258+00:00",
+    "acquisition_utc": "2016-02-13T18:39:27.099374Z",
+    "license": "USGS Landsat public domain / unrestricted use",
+    "files": [
+      {
+        "path": "data/cache/public_validation/LC08_L2SP_043033_20160213_02_T1/SR_B2.tif",
+        "band": "SR_B2",
+        "source_url_unsigned": "https://landsateuwest.blob.core.windows.net/landsat-c2/level-2/standard/oli-tirs/2016/043/033/LC08_L2SP_043033_20160213_20200907_02_T1/LC08_L2SP_043033_20160213_20200907_02_T1_SR_B2.TIF",
+        "sha256": "6e9255fcd610cbfcc2c74072a2462550d3e67ecc47f4a8ac8fd44072ac50c3a9",
+        "size_bytes": 4938600,
+        "dtype": "uint16",
+        "shape": [
+          2852,
+          737
+        ],
+        "crs": "EPSG:32610",
+        "transform": [
+          30.0,
+          0.0,
+          757815.0,
+          0.0,
+          -30.0,
+          4392795.0
+        ],
+        "scale": 2.75e-05,
+        "offset": -0.2,
+        "nodata": 0.0
+      },
+      {
+        "path": "data/cache/public_validation/LC08_L2SP_043033_20160213_02_T1/SR_B3.tif",
+        "band": "SR_B3",
+        "source_url_unsigned": "https://landsateuwest.blob.core.windows.net/landsat-c2/level-2/standard/oli-tirs/2016/043/033/LC08_L2SP_043033_20160213_20200907_02_T1/LC08_L2SP_043033_20160213_20200907_02_T1_SR_B3.TIF",
+        "sha256": "6307964cefc2f3e696217cecb912eed7b0979a5d567b45f46f8e8d4587000c75",
+        "size_bytes": 4973040,
+        "dtype": "uint16",
+        "shape": [
+          2852,
+          737
+        ],
+        "crs": "EPSG:32610",
+        "transform": [
+          30.0,
+          0.0,
+          757815.0,
+          0.0,
+          -30.0,
+          4392795.0
+        ],
+        "scale": 2.75e-05,
+        "offset": -0.2,
+        "nodata": 0.0
+      },
+      {
+        "path": "data/cache/public_validation/LC08_L2SP_043033_20160213_02_T1/SR_B4.tif",
+        "band": "SR_B4",
+        "source_url_unsigned": "https://landsateuwest.blob.core.windows.net/landsat-c2/level-2/standard/oli-tirs/2016/043/033/LC08_L2SP_043033_20160213_20200907_02_T1/LC08_L2SP_043033_20160213_20200907_02_T1_SR_B4.TIF",
+        "sha256": "24f0f1b27d5768e9f1b108b80f986f3563d05b51fbfc849326a8c95063831179",
+        "size_bytes": 5007036,
+        "dtype": "uint16",
+        "shape": [
+          2852,
+          737
+        ],
+        "crs": "EPSG:32610",
+        "transform": [
+          30.0,
+          0.0,
+          757815.0,
+          0.0,
+          -30.0,
+          4392795.0
+        ],
+        "scale": 2.75e-05,
+        "offset": -0.2,
+        "nodata": 0.0
+      },
+      {
+        "path": "data/cache/public_validation/LC08_L2SP_043033_20160213_02_T1/SR_B5.tif",
+        "band": "SR_B5",
+        "source_url_unsigned": "https://landsateuwest.blob.core.windows.net/landsat-c2/level-2/standard/oli-tirs/2016/043/033/LC08_L2SP_043033_20160213_20200907_02_T1/LC08_L2SP_043033_20160213_20200907_02_T1_SR_B5.TIF",
+        "sha256": "132ceb01c11687ca5e5aeadf0e3c5481700bcfc1d2378226f68ddc6b45b1d162",
+        "size_bytes": 5050277,
+        "dtype": "uint16",
+        "shape": [
+          2852,
+          737
+        ],
+        "crs": "EPSG:32610",
+        "transform": [
+          30.0,
+          0.0,
+          757815.0,
+          0.0,
+          -30.0,
+          4392795.0
+        ],
+        "scale": 2.75e-05,
+        "offset": -0.2,
+        "nodata": 0.0
+      },
+      {
+        "path": "data/cache/public_validation/LC08_L2SP_043033_20160213_02_T1/SR_B6.tif",
+        "band": "SR_B6",
+        "source_url_unsigned": "https://landsateuwest.blob.core.windows.net/landsat-c2/level-2/standard/oli-tirs/2016/043/033/LC08_L2SP_043033_20160213_20200907_02_T1/LC08_L2SP_043033_20160213_20200907_02_T1_SR_B6.TIF",
+        "sha256": "293f534fa140b578882d995d12210e624217d8f697cd0194a0fd24a5e581746d",
+        "size_bytes": 4763739,
+        "dtype": "uint16",
+        "shape": [
+          2852,
+          737
+        ],
+        "crs": "EPSG:32610",
+        "transform": [
+          30.0,
+          0.0,
+          757815.0,
+          0.0,
+          -30.0,
+          4392795.0
+        ],
+        "scale": 2.75e-05,
+        "offset": -0.2,
+        "nodata": 0.0
+      },
+      {
+        "path": "data/cache/public_validation/LC08_L2SP_043033_20160213_02_T1/SR_B7.tif",
+        "band": "SR_B7",
+        "source_url_unsigned": "https://landsateuwest.blob.core.windows.net/landsat-c2/level-2/standard/oli-tirs/2016/043/033/LC08_L2SP_043033_20160213_20200907_02_T1/LC08_L2SP_043033_20160213_20200907_02_T1_SR_B7.TIF",
+        "sha256": "70db768721763ec934eda9cd49803e578c59ee93ca81360550c210af61bb2ff0",
+        "size_bytes": 4604607,
+        "dtype": "uint16",
+        "shape": [
+          2852,
+          737
+        ],
+        "crs": "EPSG:32610",
+        "transform": [
+          30.0,
+          0.0,
+          757815.0,
+          0.0,
+          -30.0,
+          4392795.0
+        ],
+        "scale": 2.75e-05,
+        "offset": -0.2,
+        "nodata": 0.0
+      },
+      {
+        "path": "data/cache/public_validation/LC08_L2SP_043033_20160213_02_T1/QA_PIXEL.tif",
+        "band": "QA_PIXEL",
+        "source_url_unsigned": "https://landsateuwest.blob.core.windows.net/landsat-c2/level-2/standard/oli-tirs/2016/043/033/LC08_L2SP_043033_20160213_20200907_02_T1/LC08_L2SP_043033_20160213_20200907_02_T1_QA_PIXEL.TIF",
+        "sha256": "a217ea9aba72ff9958f5efb7fdd8479cbe9782951335e6702934f72fd1e777dd",
+        "size_bytes": 752323,
+        "dtype": "uint16",
+        "shape": [
+          2852,
+          737
+        ],
+        "crs": "EPSG:32610",
+        "transform": [
+          30.0,
+          0.0,
+          757815.0,
+          0.0,
+          -30.0,
+          4392795.0
+        ],
+        "scale": 1.0,
+        "offset": 0.0,
+        "nodata": null
+      },
+      {
+        "path": "data/cache/public_validation/LC08_L2SP_043033_20160213_02_T1/QA_RADSAT.tif",
+        "band": "QA_RADSAT",
+        "source_url_unsigned": "https://landsateuwest.blob.core.windows.net/landsat-c2/level-2/standard/oli-tirs/2016/043/033/LC08_L2SP_043033_20160213_20200907_02_T1/LC08_L2SP_043033_20160213_20200907_02_T1_QA_RADSAT.TIF",
+        "sha256": "524b959742dd9d47a75e9eee291b82a4adc735f8a318b665cfcad32dce63858e",
+        "size_bytes": 10509,
+        "dtype": "uint16",
+        "shape": [
+          2852,
+          737
+        ],
+        "crs": "EPSG:32610",
+        "transform": [
+          30.0,
+          0.0,
+          757815.0,
+          0.0,
+          -30.0,
+          4392795.0
+        ],
+        "scale": 1.0,
+        "offset": 0.0,
+        "nodata": null
+      },
+      {
+        "path": "data/cache/public_validation/LC08_L2SP_043033_20160213_02_T1/SR_QA_AEROSOL.tif",
+        "band": "SR_QA_AEROSOL",
+        "source_url_unsigned": "https://landsateuwest.blob.core.windows.net/landsat-c2/level-2/standard/oli-tirs/2016/043/033/LC08_L2SP_043033_20160213_20200907_02_T1/LC08_L2SP_043033_20160213_20200907_02_T1_SR_QA_AEROSOL.TIF",
+        "sha256": "501de933bc127762611f8cb5319f37c1ab0628470a8f150be9f456dd992c8574",
+        "size_bytes": 774912,
+        "dtype": "uint8",
+        "shape": [
+          2852,
+          737
+        ],
+        "crs": "EPSG:32610",
+        "transform": [
+          30.0,
+          0.0,
+          757815.0,
+          0.0,
+          -30.0,
+          4392795.0
+        ],
+        "scale": 1.0,
+        "offset": 0.0,
+        "nodata": null
+      }
+    ],
+    "window_definition": "Native Landsat pixels covering full projected WorldView reference extent",
+    "qa_not_scaled": true
+  }
+]

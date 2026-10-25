@@ -1,0 +1,29 @@
+{
+  "project": "painter1998",
+  "version": "v2",
+  "run_date": "2026-10-01",
+  "seed": 1998,
+  "worldview": {
+    "sample_pixels_per_scene": 12000,
+    "spatial_block_size_pixels": 50,
+    "bootstrap_repeats": 1000,
+    "minimum_reference_coverage": 0.95,
+    "snow_strata": {"no_snow_upper": 0.1, "full_snow_lower": 0.9},
+    "radius_min_um": 30,
+    "radius_max_um": 1100,
+    "radius_step_um": 10,
+    "fixed_radius_um": 200,
+    "ice_option": 1,
+    "forward_cache": "data/cache/forward_models_worldview_exact_angles.mat",
+    "band_sets": {"six_bands": [2, 3, 4, 5, 6, 7], "four_bands": [3, 5, 6, 7]},
+    "qa_pixel_reject_bits": [0, 1, 2, 3, 4],
+    "qa_radsat_policy": "all_bits_zero_for_common_six_and_four_band_sample",
+    "surface_reflectance_scale": 0.0000275,
+    "surface_reflectance_offset": -0.2,
+    "scenes": [
+      {"id": "LC08_L2SP_043033_20160213_02_T1", "reference": "data/raw/public_validation/zenodo_4031446/16FEB13190431_landsat_30m_fsca.tif", "reference_date": "2016-02-13", "landsat_date": "2016-02-13", "day_offset": 0, "roi_label": "Sierra Nevada WorldView 2016-02-13", "solar_zenith_deg": 56.7999415},
+      {"id": "LC08_L2SP_043032_20170522_02_T1", "reference": "data/raw/public_validation/zenodo_4031446/17MAY21191849_landsat_30m_fsca.tif", "reference_date": "2017-05-21", "landsat_date": "2017-05-22", "day_offset": 1, "roi_label": "Sierra Nevada WorldView 2017-05-21", "solar_zenith_deg": 25.68627059}
+    ]
+  },
+  "image": {"block_size": 4096, "minimum_denominator": 0.05, "minimum_snow_fraction": 0.1, "condition_warning": 10000}
+}

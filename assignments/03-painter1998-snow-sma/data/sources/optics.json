@@ -1,0 +1,8 @@
+{
+  "name": "optics",
+  "url": "http://snow.engin.umich.edu/opticalprops/snicar_v3_optics_202105/snicar_v3_optics.tar.gz",
+  "relative_path": "data/raw/snicar_v3_optics.tar.gz",
+  "bytes": 502638762,
+  "sha256": "7464158716a77a5933049b6c24865f61183b18fa38078a0033a23f7cbdfd49bd",
+  "retrieved_utc": "2026-10-01T16:45:10Z"
+}

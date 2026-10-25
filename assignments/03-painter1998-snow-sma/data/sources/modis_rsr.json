@@ -1,0 +1,8 @@
+{
+  "name": "modis_rsr",
+  "url": "https://mcst.gsfc.nasa.gov/sites/default/files/file_attachments/Terra_RSR_in-band.xlsx",
+  "relative_path": "data/raw/Terra_RSR_in-band.xlsx",
+  "bytes": 427103,
+  "sha256": "f14498183f9258ed691999313a13fc425edb2eb2d89ca676f79abbb6f48ad637",
+  "retrieved_utc": "2026-10-01T17:07:30Z"
+}

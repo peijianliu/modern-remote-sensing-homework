@@ -1,0 +1,8 @@
+{
+  "name": "aviris_readme",
+  "url": "https://aviris.jpl.nasa.gov/dataportal/20170911_AV_Download.readme",
+  "relative_path": "data/raw/AVIRIS_download.readme",
+  "bytes": 18214,
+  "sha256": "3a2fc43c1659aec71f04dc07aec7c1d5ca29e3816b57865b3ccec56fcf5c424e",
+  "retrieved_utc": "2026-10-01T16:41:31Z"
+}

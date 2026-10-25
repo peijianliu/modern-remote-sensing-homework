@@ -1,0 +1,5 @@
+# Preserve checksummed data and source bytes on every platform.
+* -text
+assignments/03-painter1998-snow-sma/vendor/** -whitespace
+assignments/03-painter1998-snow-sma/data/** -whitespace
+docs/**/assets/** -whitespace

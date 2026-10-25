@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painter 1998 雪粒径与光谱混合分析案例</title>
+<style>body{max-width:900px;margin:0 auto;padding:36px 22px 65px;font:17px/1.8 system-ui,"Microsoft YaHei",sans-serif;color:#26343d}h1{font-size:1.95rem;line-height:1.4}h2{font-size:1.35rem;margin-top:2em}a{color:#155b78;text-underline-offset:3px}table{width:100%;border-collapse:collapse}th,td{text-align:left;vertical-align:top;padding:12px 8px;border-bottom:1px solid #dce3e8}th{border-top:1px solid #8a9aa6}code{font-family:Consolas,monospace;font-size:.9em}pre{padding:14px 18px;background:#f2f5f7;overflow-x:auto}.meta{color:#596c78;font-size:.9em}</style></head>
+<body>
+<nav><a href="../../index.html">课程案例首页</a> · <a href="https://github.com/peijianliu/modern-remote-sensing-homework/tree/main/assignments/03-painter1998-snow-sma">代码与数据</a></nav>
+<p class="meta">作业 03 · Painter 1998 流程复现与补充对照</p>
+<h1>雪粒径与光谱混合分析</h1>
+<p>先观察雪谱的变化，再通过已知比例的混合谱检查算法，最后把同样的方法用于真实影像。每本 Notebook 包含问题、输入、计算、断言和结果解释。</p>
+<table><thead><tr><th>内容</th><th>HTML</th><th>Notebook</th></tr></thead><tbody>
+<tr><td>冻结正演与雪光学</td><td><a href="01_snow_optics.html">阅读全文</a></td><td><a href="notebooks/01_snow_optics.ipynb" download>下载 ipynb</a></td></tr>
+<tr><td>Fig. 3 与光谱混合解混</td><td><a href="02_fig3_sma.html">阅读全文</a></td><td><a href="notebooks/02_fig3_sma.ipynb" download>下载 ipynb</a></td></tr>
+<tr><td>AVIRIS / MODIS 与外部验证</td><td><a href="03_aviris_modis.html">阅读全文</a></td><td><a href="notebooks/03_aviris_modis.ipynb" download>下载 ipynb</a></td></tr>
+</tbody></table>
+<h2>综合报告</h2><p><a href="report.pdf">下载综合实验报告 PDF</a>。报告讨论完整实验与五人方法整合；Notebook 展示可逐步重算的教学部分。</p>
+<h2>本地运行</h2>
+<p>在 Python 3.11 环境克隆仓库，进入本次作业目录。以下命令使用 PowerShell：</p>
+<pre><code>python -m venv .venv
+&amp; .\.venv\Scripts\python.exe -m pip install -e ".[notebook,dev]"
+&amp; .\.venv\Scripts\python.exe scripts/build_notebooks.py</code></pre>
+<p>macOS / Linux 使用 <code>.venv/bin/python</code>。也可启动 JupyterLab，按 01、02、03 的顺序阅读和执行。</p>
+<h2>如何理解结果</h2>
+<ul><li>01 读取已有 SNICAR / WW80 计算缓存；60°为课程模拟设定。</li><li>02 从缓存雪谱重新合成并解混，真值来自明确的混合比例。</li><li>03 从公开影像派生教学数据重算统计与代表像元；历史库谱结果与新增影像背景结果分别标注。</li><li>MODIS 雪标志用于产品一致性，WorldView 公开派生覆盖参考用于独立覆盖对照。</li></ul>
+<p class="meta">离线阅读时请保留本目录的 HTML、assets、notebooks 与 report.pdf，使用 index.html 打开。</p>
+</body></html>

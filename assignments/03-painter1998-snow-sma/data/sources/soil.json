@@ -1,0 +1,8 @@
+{
+  "name": "soil",
+  "url": "https://speclib.jpl.nasa.gov/ecospeclibdata/soil.inceptisol.cryumbrept.none.all.87p3855.jhu.becknic.spectrum.txt",
+  "relative_path": "data/raw/spectra/cryumbrept_87p3855.txt",
+  "bytes": 49115,
+  "sha256": "5782d2a17cbf8f3530a6ab28804d0b5b85714a90117c4057a354c1b8d47d966e",
+  "retrieved_utc": "2026-10-01T17:07:30Z"
+}

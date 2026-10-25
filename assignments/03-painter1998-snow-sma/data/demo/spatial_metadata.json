@@ -1,0 +1,91 @@
+{
+  "aviris_crs": "PROJCS[\"unnamed\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]],PROJECTION[\"Transverse_Mercator\"],PARAMETER[\"latitude_of_origin\",0],PARAMETER[\"central_meridian\",-117],PARAMETER[\"scale_factor\",0.9996],PARAMETER[\"false_easting\",500000],PARAMETER[\"false_northing\",0],UNIT[\"Meter\",1],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH]]",
+  "aviris_transform": [
+    30.0,
+    0.0,
+    312930.0,
+    0.0,
+    -30.0,
+    4170630.0
+  ],
+  "aviris_shape": [
+    267,
+    267
+  ],
+  "aviris_solar_zenith_setting_deg": 22,
+  "modis_solar_zenith_setting_deg": 25,
+  "background_classes": [
+    "vegetation_example",
+    "bright_bare_example",
+    "dark_bare_example"
+  ],
+  "representative_classes": [
+    "snow_example",
+    "vegetation_example",
+    "bright_bare_example",
+    "dark_bare_example"
+  ],
+  "background_selection": {
+    "vegetation": "NDVI>0.5 and NDSI<0; largest NDVI, row-major tie",
+    "bare": "|NDVI|<0.1 and NDSI<0; green 90th/10th quantile nearest distinct pixel"
+  },
+  "background_row_col": [
+    [
+      178,
+      41
+    ],
+    [
+      179,
+      166
+    ],
+    [
+      28,
+      5
+    ]
+  ],
+  "modis_crs": "BOUNDCRS[SOURCECRS[PROJCRS[\"unknown\",BASEGEOGCRS[\"unknown\",DATUM[\"unknown using nadgrids=@null\",ELLIPSOID[\"unknown\",6371007.181,0,LENGTHUNIT[\"metre\",1,ID[\"EPSG\",9001]]]],PRIMEM[\"Greenwich\",0,ANGLEUNIT[\"degree\",0.0174532925199433],ID[\"EPSG\",8901]]],CONVERSION[\"unknown\",METHOD[\"Sinusoidal\"],PARAMETER[\"Longitude of natural origin\",0,ANGLEUNIT[\"degree\",0.0174532925199433],ID[\"EPSG\",8802]],PARAMETER[\"False easting\",0,LENGTHUNIT[\"metre\",1],ID[\"EPSG\",8806]],PARAMETER[\"False northing\",0,LENGTHUNIT[\"metre\",1],ID[\"EPSG\",8807]]],CS[Cartesian,2],AXIS[\"(E)\",east,ORDER[1],LENGTHUNIT[\"metre\",1,ID[\"EPSG\",9001]]],AXIS[\"(N)\",north,ORDER[2],LENGTHUNIT[\"metre\",1,ID[\"EPSG\",9001]]]]],TARGETCRS[GEOGCRS[\"WGS 84\",DATUM[\"World Geodetic System 1984\",ELLIPSOID[\"WGS 84\",6378137,298.257223563,LENGTHUNIT[\"metre\",1]]],PRIMEM[\"Greenwich\",0,ANGLEUNIT[\"degree\",0.0174532925199433]],CS[ellipsoidal,2],AXIS[\"latitude\",north,ORDER[1],ANGLEUNIT[\"degree\",0.0174532925199433]],AXIS[\"longitude\",east,ORDER[2],ANGLEUNIT[\"degree\",0.0174532925199433]],ID[\"EPSG\",4326]]],ABRIDGEDTRANSFORMATION[\"unknown to WGS84\",METHOD[\"NTv2\",ID[\"EPSG\",9615]],PARAMETERFILE[\"Latitude and longitude difference file\",\"@null\",ID[\"EPSG\",8656]]]]",
+  "one_km_windows": [
+    {
+      "roi": "Mammoth",
+      "transform": [
+        926.6254330555555,
+        0.0,
+        -10495886.280220276,
+        0.0,
+        -926.6254330555555,
+        4188346.957411111
+      ],
+      "shape": [
+        10,
+        21
+      ],
+      "tile_window": [
+        280,
+        290,
+        673,
+        694
+      ]
+    },
+    {
+      "roi": "south_low_snow",
+      "transform": [
+        926.6254330555555,
+        0.0,
+        -10508859.036283053,
+        0.0,
+        -926.6254330555555,
+        4180933.953946667
+      ],
+      "shape": [
+        10,
+        21
+      ],
+      "tile_window": [
+        288,
+        298,
+        659,
+        680
+      ]
+    }
+  ]
+}
