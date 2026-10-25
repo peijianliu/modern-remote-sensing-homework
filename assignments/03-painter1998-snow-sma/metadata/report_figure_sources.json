@@ -1,0 +1,48 @@
+{
+  "report": "reports/painter1998-integrated-report.pdf",
+  "examples": [
+    {
+      "topic": "雪谱、粒径与反照率",
+      "notebook": "notebooks/01_snow_optics.ipynb",
+      "inputs": [
+        "data/demo/forward_models.mat"
+      ]
+    },
+    {
+      "topic": "Fig. 3、覆盖误差与残差",
+      "notebook": "notebooks/02_fig3_sma.ipynb",
+      "inputs": [
+        "data/demo/forward_models.mat",
+        "data/demo/quartz_hs32.5854.asc",
+        "data/demo/aviris_metadata.json"
+      ]
+    },
+    {
+      "topic": "固定半径与五种影像雪谱",
+      "notebook": "notebooks/03_aviris_modis.ipynb",
+      "inputs": [
+        "data/demo/aviris_case.npz",
+        "data/demo/representative_scan.npz",
+        "data/demo/fixed_radius_summary.csv",
+        "data/demo/image_endmember_summary.csv"
+      ]
+    },
+    {
+      "topic": "MODIS产品一致性",
+      "notebook": "notebooks/03_aviris_modis.ipynb",
+      "inputs": [
+        "data/demo/modis_1km_units.csv",
+        "data/demo/product_consistency.csv"
+      ]
+    },
+    {
+      "topic": "外部覆盖与尺度统计",
+      "notebook": "notebooks/03_aviris_modis.ipynb",
+      "inputs": [
+        "data/demo/stratified_metrics.csv",
+        "data/demo/same_dictionary_control_corrected.csv"
+      ]
+    }
+  ],
+  "note": "报告保留已归档的历史库谱实验图。此索引列出本教学仓库可直接重绘的对应主题；每个文件的哈希与来源见data/demo/manifest.json。"
+}

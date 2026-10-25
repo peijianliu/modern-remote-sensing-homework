@@ -1,0 +1,8 @@
+{
+  "name": "pine",
+  "url": "https://pubs.usgs.gov/of/2003/ofr-03-395/ASCII/V/lodgepole-pine_lp-needles-1.11574.asc",
+  "relative_path": "data/raw/spectra/lodgepole_pine.asc",
+  "bytes": 99518,
+  "sha256": "7bd56cf2ffee8f66cc046fa298a9a521c6a244390e8307a2c4abee73afe43c87",
+  "retrieved_utc": "2026-10-01T17:07:30Z"
+}

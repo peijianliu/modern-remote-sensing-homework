@@ -1,0 +1,8 @@
+{
+  "name": "granite",
+  "url": "https://speclib.jpl.nasa.gov/ecospeclibdata/rock.igneous.felsic.solid.all.granite_h2.jhu.becknic.spectrum.txt",
+  "relative_path": "data/raw/spectra/granite_h2.txt",
+  "bytes": 49225,
+  "sha256": "138d48db2027e818cff1e982492c5803043b8c556777e11a7cf6f3f0a09c3abb",
+  "retrieved_utc": "2026-10-01T17:07:32Z"
+}

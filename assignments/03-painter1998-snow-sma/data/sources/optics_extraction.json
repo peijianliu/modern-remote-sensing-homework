@@ -1,0 +1,7 @@
+{
+  "extracted_new_files": 6727,
+  "optics_root": "data/cache/optics/snicar_480band/",
+  "source_sha256": "f1affb2ef5a8755ebaef7f91296607ce9a887bc66df0e0880d55d9667d723adb",
+  "working_copy_sha256": "83f98329762945a2ed2f7db3db546b66833e303fa2dd2c3b58831c30c0023341",
+  "only_patch": "dir_op_root; original frozen source preserved"
+}

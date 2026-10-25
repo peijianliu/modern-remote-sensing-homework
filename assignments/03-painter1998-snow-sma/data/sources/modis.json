@@ -1,0 +1,9 @@
+{
+  "name": "MOD09GA",
+  "provenance": "Earthdata authenticated download",
+  "bytes": 75069542,
+  "sha256": "bf6e33fcc259d85007f171c021c2a15f23fc24004d2ffe53a262fb8b550f1430",
+  "granule": "MOD09GA.A2013123.h08v05.061.2021229143331",
+  "source_url": "https://cmr.earthdata.nasa.gov/search/concepts/G2261932874-LPCLOUD.html",
+  "relative_path": "data/raw/MOD09GA.A2013123.h08v05.061.2021229143331.hdf"
+}

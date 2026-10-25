@@ -1,0 +1,8 @@
+{
+  "name": "snicar_driver",
+  "url": "https://raw.githubusercontent.com/mflanner/SNICARv3/227e9de9b100ed0671662f94d2040fd8231aab91/snicarAD_v3_drv.m",
+  "relative_path": "vendor/SNICARv3/snicarAD_v3_drv.m",
+  "bytes": 4706,
+  "sha256": "728b92a65e3da789669ac2f9662c186ef29e82e7370652081ac44acba7abc00e",
+  "retrieved_utc": "2026-10-01T16:41:08Z"
+}

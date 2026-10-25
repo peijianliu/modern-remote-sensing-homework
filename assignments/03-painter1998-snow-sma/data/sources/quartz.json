@@ -1,0 +1,8 @@
+{
+  "name": "quartz",
+  "url": "https://pubs.usgs.gov/of/2003/ofr-03-395/ASCII/M/quartz_hs32.5854.asc",
+  "relative_path": "data/raw/spectra/quartz_hs32.5854.asc",
+  "bytes": 22652,
+  "sha256": "d48f1680a4caabdfccd7a9635f22f5bcf51e75f714fbaa27f00377fdff4c8529",
+  "retrieved_utc": "2026-10-01T16:43:33Z"
+}
