@@ -1,80 +1,88 @@
 # Painter 1998 雪粒径与光谱混合分析
 
-这个案例研究雪粒半径如何改变反射率，以及这种变化如何影响混合像元的积雪比例估计。提供三份可执行 Notebook、完整运行输出、HTML 和综合实验报告。
+同样的雪面积可以因为粒径变化呈现不同光谱。这个案例从一个波长的手算出发，检查固定雪端元怎样影响覆盖估计，再把解混、空间聚合和验证设计连接起来。面向已有 Python、线性代数基础的同学。
 
-## 先阅读，再运行
+## 两条学习路线
 
-- [在线 HTML](https://peijianliu.github.io/modern-remote-sensing-homework/assignments/03-painter1998/)
-- [综合报告 PDF](reports/painter1998-integrated-report.pdf)
-- [Notebook 源文件](notebooks/)
-- [数据字段与来源](data/demo/README.md)
-- [代码与图表索引](CODE_MAP.md)
-- [公开数据与使用条件](PUBLIC_DATA_POLICY.md)
+- **30 分钟阅读**：打开 [HTML 01](https://peijianliu.github.io/modern-remote-sensing-homework/assignments/03-painter1998/01_snow_optics.html)，看手算与粒径光谱图；再读 [综合报告](reports/painter1998-integrated-report.pdf) 的 Fig. 3 控制实验，比较雪系数与光谱 RMS。
+- **3 小时实践**：克隆仓库，在干净 Python 3.11 环境构建三份 Notebook；随后创建工作副本，逐页预测、手算并改参数。保留一份你自己的“输入改了什么、输出为何变化”的记录。
 
-Notebook 01 解释冻结正演结果；02 重新合成和解混 14,746 组光谱；03 重算真实像元、产品一致性和分层统计。教学数据随仓库提供，默认流程无需 MATLAB、Earthdata 登录或完整遥感影像。
+[在线目录](https://peijianliu.github.io/modern-remote-sensing-homework/assignments/03-painter1998/) · [源码 Notebook](notebooks/) · [数据字段](data/demo/README.md) · [图表和代码索引](CODE_MAP.md) · [数据使用条件](PUBLIC_DATA_POLICY.md)
 
 ## 快速开始
 
-使用 Python 3.11，在本作业目录运行以下 PowerShell 命令：
+在仓库本作业目录运行以下 PowerShell 命令。环境隔离不继承 Anaconda 的包：
 
 ```powershell
 python -m venv .venv
-& .\.venv\Scripts\python.exe -m pip install -e ".[notebook,dev]"
+& .\.venv\Scripts\python.exe -m pip install -c requirements-lock.txt -e ".[notebook,dev]"
 & .\.venv\Scripts\python.exe scripts/build_notebooks.py
+& .\.venv\Scripts\python.exe scripts/verify_site.py
 ```
 
-macOS / Linux 将解释器替换为 `.venv/bin/python`。构建脚本在干净内核中执行全部 Notebook，再生成 HTML；输出到仓库 `docs/assignments/03-painter1998/`，构建记录位于忽略提交的 `build/`。
+macOS / Linux 使用 `.venv/bin/python` 替换解释器路径。安装依赖需要联网；安装完成后，默认教学计算和 HTML 导出使用本地数据、模板及版本化 MathJax，无需 MATLAB、Earthdata 登录或大型影像。
 
-交互阅读可运行：
+默认完整站点在仓库根 `build/site/`，从 `index.html` 打开。HTML 中的下载链接提供**已执行 Notebook**；Git 中的 `notebooks/` 仅保留无输出源码。运行时间与哈希保存在生成站点的 `build_manifest.json`，源文件不会因构建改变。
+
+交互学习先创建可修改副本，再打开 JupyterLab：
 
 ```powershell
-& .\.venv\Scripts\python.exe -m jupyterlab notebooks
+& .\.venv\Scripts\python.exe scripts/build_notebooks.py --prepare-workspace
+& .\.venv\Scripts\python.exe -m jupyterlab build/workspace
 ```
 
-无需在 Notebook 中安装依赖。MathJax 公式资源已随 HTML 保留。完整克隆后，HTML 构建与教学计算均使用本地文件。
+工作副本位于忽略提交的 `build/workspace/`，重复准备会保留已有练习。下载的单本 Notebook 仍需完整仓库中的共享模块和教学数据。
 
-## 三份 Notebook
+`--output` 指定**完整站点根目录**，例如 `--output ../../build/my-site`；不能指向源码、数据或静态网页源目录。`--prepare-assets` 只用于维护固定 MathJax 组件，普通使用不需要运行。
 
-| Notebook | 主要计算 | 数值检查 |
-|---|---|---|
-| `01_snow_optics.ipynb` | 0°/60°雪谱、粒径—反照率、两套冰光学选项、SNICAR/WW80 对照 | 波长、半径、角度与输出范围 |
-| `02_fig3_sma.ipynb` | 146 半径×101 比例×224 波段；固定 200 μm、多粒径 MGS、FCLS 示例和 E_c | 已知比例恢复、匹配 RMS、残差定义 |
-| `03_aviris_modis.ipynb` | 五个固定半径、五种影像雪谱、唯一 1 km 标志交叉表、WorldView 分层与尺度结果 | 共同掩膜、样本数、统计与冻结结果一致 |
+## 运行后应该看到什么
 
-雪库给出的是光学等效半径，单位 μm。MGS 保留无约束系数，阴影为 `1−sum(F)`；FCLS 约束非阴影系数非负且总和不超过 1。原始系数用于光谱重建与 `E_c=observed−modeled`；阴影归一化比例用于覆盖对比。
+| Notebook | 预期首行与关键结果 | 图件 | Windows 实测执行时间¹ |
+|---|---|---|---|
+| 01 雪光学 | `光谱数组：148 半径 × 480 波长 × 3 角度 × 2 光学选项`；426,240 值与 WW80 缓存最大差 <1e-6 | 单谱校核、0°/60°、粒径—加权反照率 | 3.26 s |
+| 02 混合分析 | `三波段示例：观测 [0.62, 0.44, 0.20]`；14,746 条光谱，匹配 RMS <1e-8 | Fig. 3、重建和残差、FCLS 对照 | 7.43 s |
+| 03 验证设计 | `教学数据：62,908 个有效 30 m 像元；420 个候选唯一 1 km 单元`；筛选 420→100→17 | 地图、粒径扫描、筛选账本、分层误差 | 3.48 s |
 
-## 教学数据与完整处理
+¹ Python 3.11.7，单次本地实测，包括内核启动；HTML 导出另有开销。以自己构建清单中的耗时为准。固定基线断言和改参数练习分开，方便比较输入输出。
 
-`data/demo/` 约 19 MB，包括完整小型正演缓存、公开 AVIRIS 代表谱与图层、石英谱、配对表及公开覆盖参考的派生结果。每个数据文件的来源和 SHA-256 见 `data/demo/manifest.json`。
+**字体 FAQ**：检测顺序为 Noto Sans CJK SC、Source Han Sans SC、Microsoft YaHei、SimHei。缺少这些字体时，图内标签回退英文并打印提示，中文教学正文保留。公式 SVG 使用本地 MathJax，不依赖微软字体。GitHub Markdown 的字号由 GitHub 控制；导出 HTML 的正文为 17 px。
 
-本轮新增实景实验采用公开 AVIRIS 中预先选定的植被优势、亮裸地和暗裸地背景谱。历史库谱实验与新增影像背景实验分别保存和解释。JHU 原谱、EcoSIS 砾石候选、原始商业 WorldView 影像和组员原始作业不进入教学数据。
+## 数据与数学约定
 
-完整处理保留在 `snowmix/image.py`、`scripts/acquire_*.py`、`matlab/` 和配置中。需要完整数据时，先阅读 [输入来源](DATA_SOURCES.md)，安装 `.[full]`，从官方来源准备原始影像和 MATLAB 正演缓存；不要将整景数据、登录信息或运行日志加入 Git。
+`data/demo/` 包括完整半径网格的正演缓存、约 1.36 MB 官方散射参数子集、公开 AVIRIS 派生图层、石英谱、配对表和无损压缩的独立覆盖参考表。每项来源、精度转换及 SHA-256 见 [数据说明](data/demo/README.md) 和 `manifest.json`。完整商业 WorldView 影像、未确认条件的 ECOSTRESS/EcoSIS 原谱与五份原始作业不随仓库分发。
 
-`prepare_case_data.py --source-root` 的全量打包还需要已归档的 v2 尺度与 WorldView 统计。仓库已提供冻结 CSV，默认 Notebook 直接使用；全量重建的额外输入与目录约定见数据说明。
+WW80 使用半无限雪层、直接入射的 delta-Eddington 闭式解。NumPy 重新计算全部 426,240 个 `ww_albedo` 值和太阳谱加权结果；SNICAR-AD 保留为另一参考分支。散射属性从官方库提取，未在本项目重新计算 Mie 属性。
 
-## 测试
+MGS 使用无约束原始系数，阴影为 `1-sum(F)`；FCLS 对非阴影系数施加非负、总和不超过 1 的约束。原始系数重建光谱，`E_c=observed-modeled`；阴影归一化比例用于覆盖对照。真实模型的比较先固定共同有效域。
 
-默认核心与教学测试：
+## 完整处理与参数包重建
+
+[输入来源](DATA_SOURCES.md) 说明完整 AVIRIS/MODIS 流程。安装 `.[full]` 后，独立入口可处理原始影像、投影和整景解混；`prepare_case_data.py --source-root` 还需已归档的尺度/WorldView 统计，默认教学不调用它。
+
+如果要从上游输入重建小型散射参数包，从 [官方光学库说明](https://github.com/mflanner/SNICARv3/blob/master/Links%20to%20optics%20libraries.md) 获取 202105 库，按 `data/sources/optics.json` 核对约 500 MB 归档的 SHA-256。解压后运行：
+
+```powershell
+& .\.venv\Scripts\python.exe -m pip install -c requirements-lock.txt -e ".[full]"
+& .\.venv\Scripts\python.exe scripts/prepare_teaching_optics.py --prepare-optics --optics-root data/cache/optics/snicar_480band --output build/scattering_inputs.npz
+```
+
+输出以 `ss_alb` float64、`asm_prm` float32 存储，附逐个 NetCDF 文件哈希和单位说明；已有不同内容不会覆盖。MATLAB 参考入口用显式 34 字段构造器 `pure_snow_inputs`，`verify_forward` 对照四种半径、两个角度、两个冰选项共 16 个结果。第三方源码保持冻结。
+
+## 检查
 
 ```powershell
 & .\.venv\Scripts\python.exe -m pytest -q -m "not requires_gis and not full_data"
+& .\.venv\Scripts\python.exe scripts/check_reproducibility.py
 ```
 
-包括原有 GIS 与缓存参数回归的完整单元测试：
+后者连续构建两次，逐次核对整个仓库的跟踪文件哈希与 Git 状态；第二次禁止 Python 外网连接，保留本地内核通信。执行结果保存在忽略的 `build/`，不会回写源码。CI 在 Windows/Linux 运行相同检查；Pages 部署已通过检查的 Ubuntu artifact。
 
-```powershell
-& .\.venv\Scripts\python.exe -m pip install -e ".[full]"
-& .\.venv\Scripts\python.exe scripts/prepare_test_inputs.py
-& .\.venv\Scripts\python.exe -m pytest -q
-```
-
-`prepare_test_inputs.py` 只把仓库内教学文件复制到历史测试路径，不下载数据、不覆盖不同内容的缓存。病态端元测试同时检查系数误差和反射率 RMS，容纳不同 BLAS 实现的浮点累加差异。CI 在 Windows/Linux 执行 Notebook 与 HTML 构建，并运行数值/GIS 测试。
-
-`pyproject.toml` 固定主要依赖；`requirements-lock.txt` 记录本次完整测试环境和平台条件。
+完整 GIS/缓存回归需安装 `.[full]`，运行 `scripts/prepare_test_inputs.py` 后执行 `python -m pytest -q`。主要依赖由 `pyproject.toml` 固定，完整环境约束见 `requirements-lock.txt`。
 
 ## 引用与贡献
 
-核心文献：Painter et al. (1998), *The effect of grain size on spectral mixture analysis of snow-covered area from AVIRIS data*, Remote Sensing of Environment, DOI: [10.1016/S0034-4257(98)00041-8](https://doi.org/10.1016/S0034-4257(98)00041-8)。
+核心论文：Painter et al. (1998), *The effect of grain size on spectral mixture analysis of snow-covered area from AVIRIS data*, Remote Sensing of Environment, DOI [10.1016/S0034-4257(98)00041-8](https://doi.org/10.1016/S0034-4257(98)00041-8)。案例引用信息见根目录 `CITATION.cff`。
 
-案例以刘培剑的计算为主线，结合钟超凡、高韵淇、徐郅杰、黄磊的作业设计，详见仓库根目录 `CONTRIBUTORS.md`。源码 MIT；原创教学文字和报告 CC BY 4.0；外部模型与数据分别遵循 [第三方许可](THIRD_PARTY.md)。
+刘培剑整理与维护，结合钟超凡、高韵淇、徐郅杰、黄磊的方法设计，详见 `CONTRIBUTORS.md`。原创代码 MIT，原创报告和教学说明 CC BY 4.0；外部代码、数据保留各自使用条件和署名，见 [第三方来源](THIRD_PARTY.md)。
+
+教学组织参考 [NEON 单像元光谱](https://www.neonscience.org/resources/learning-hub/tutorials/plot-refl-spectra-py)、[Software Carpentry NumPy](https://swcarpentry.github.io/python-novice-inflammation/02-numpy.html)、[Earth Lab 掩膜课程](https://earthdatascience.org/courses/use-data-open-source-python/multispectral-remote-sensing/landsat-in-Python/remove-clouds-from-landsat-data/) 和 [Project Pythia 重网格工作流](https://projectpythia.org/cmip6-cookbook/notebooks/example-workflows/xesmf-ohu/)；采用问题导入、手算预期、筛选账本和科学步骤衔接的组织方式。

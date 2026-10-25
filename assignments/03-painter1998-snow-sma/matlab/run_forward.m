@@ -6,15 +6,7 @@ assert(~isfile(output_path), 'Output exists; select a new version to preserve it
 addpath('data/cache/matlab');
 addpath('vendor/SPIRES');
 config = jsondecode(fileread('configs/baseline.json'));
-driver = fileread('vendor/SNICARv3/snicarAD_v3_drv.m');
-driver = extractBefore(driver, '% CALL SNICAR WITH INPUT ARGUMENTS');
-driver = regexprep(driver, '(?m)^clear;\s*', '');
-eval(driver);
-input_args.sno_shp = 1;
-input_args.R_sfc_all_wvl = 0;
-input_args.dz = config.forward.depth_m;
-input_args.rho_snw = config.forward.density_kg_m3;
-input_args.atm = config.forward.atmosphere;
+input_args = pure_snow_inputs(config);
 radii_um = 30:10:1500;
 wavelength_um = 0.205:0.01:4.995;
 ice_options = [1 2];

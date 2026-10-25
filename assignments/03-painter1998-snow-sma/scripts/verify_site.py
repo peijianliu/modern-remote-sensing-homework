@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 from html.parser import HTMLParser
 import json
 from pathlib import Path
@@ -44,11 +45,41 @@ def local_target(page: Path, value: str) -> Path | None:
 
 def verify(output: Path) -> dict:
     """检查三份完整导出，不以 HTML 文件存在代替执行与资源检查。"""
+    site_root = output.resolve()
+    manifest = json.loads((site_root / "site_manifest.json").read_text(encoding="utf-8"))
+    actual = {
+        p.relative_to(site_root).as_posix()
+        for p in site_root.rglob("*")
+        if p.is_file() and p.name != "site_manifest.json"
+    }
+    if set(manifest) != actual:
+        raise ValueError("Site manifest and artifact file set differ")
+    for relative, checksum in manifest.items():
+        target = (site_root / relative).resolve()
+        if (
+            not target.is_relative_to(site_root)
+            or hashlib.sha256(target.read_bytes()).hexdigest() != checksum
+        ):
+            raise ValueError(f"Site artifact checksum mismatch: {relative}")
+    output = site_root / "assignments/03-painter1998"
+    if (output / "report.pdf").read_bytes() != (
+        CASE / "reports/painter1998-integrated-report.pdf"
+    ).read_bytes():
+        raise ValueError("Generated report differs from its canonical source")
     privacy = re.compile(r"(?<![A-Za-z])[A-Za-z]:[\\/]|/Users/|/home/|2026E\d{8,}")
     records = []
     for name in NAMES:
         source = CASE / "notebooks" / (name + ".ipynb")
-        notebook = nbformat.read(source, as_version=4)
+        canonical = nbformat.read(source, as_version=4)
+        if any(
+            c.get("outputs") or c.get("execution_count") is not None
+            for c in canonical.cells
+            if c.cell_type == "code"
+        ):
+            raise ValueError(f"Notebook source contains execution artifacts: {source.name}")
+        notebook = nbformat.read(output / "notebooks" / source.name, as_version=4)
+        if [c.source for c in canonical.cells] != [c.source for c in notebook.cells]:
+            raise ValueError(f"Executed notebook source differs: {source.name}")
         counts = []
         for cell in notebook.cells:
             if privacy.search(cell.source):
@@ -97,14 +128,21 @@ def verify(output: Path) -> dict:
                 ),
             }
         )
-    return {"status": "passed", "pages": records}
+    for page in (site_root / "index.html", output / "index.html"):
+        parser = PageLinks()
+        parser.feed(page.read_text(encoding="utf-8"))
+        for value in parser.resources + parser.anchors:
+            target = local_target(page, value)
+            if target is not None and (
+                not target.is_relative_to(site_root) or not target.is_file()
+            ):
+                raise FileNotFoundError(f"Broken static page link: {value}")
+    return {"status": "passed", "pages": records, "artifact_files": len(manifest)}
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "--output", type=Path, default=REPOSITORY / "docs/assignments/03-painter1998"
-    )
+    parser.add_argument("--output", type=Path, default=REPOSITORY / "build/site")
     args = parser.parse_args()
     print(json.dumps(verify(args.output.resolve()), ensure_ascii=False, indent=2))
 

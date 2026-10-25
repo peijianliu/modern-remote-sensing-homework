@@ -1,0 +1,13 @@
+cff-version: 1.2.0
+message: "引用本教学案例时请使用以下条目，外部数据另按数据说明署名。"
+title: "现代遥感技术与应用作业 Painter 1998 雪粒径与光谱混合分析"
+type: software
+authors:
+  - family-names: Liu
+    given-names: Peijian
+version: 2.0.0
+date-released: 2026-10-25
+url: "https://github.com/peijianliu/modern-remote-sensing-homework"
+license:
+  - MIT
+  - CC-BY-4.0

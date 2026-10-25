@@ -40,6 +40,14 @@
       "id": "legacy_statistics",
       "contents": "corrected scale and WorldView model statistics; legacy_library_output",
       "note": "Historical derived outputs; not combined with the new AVIRIS image-background experiments. Original JHU spectra are not distributed."
+    },
+    {
+      "id": "snicar_optical_inputs",
+      "url": "https://gmd.copernicus.org/articles/14/7673/2021/",
+      "authors": "Mark G. Flanner and SNICAR contributors",
+      "version": "202105",
+      "modifications": "Selected radii and two ice options; ss_alb float64, asm_prm float32; no Mie recomputation",
+      "access": "public accompanying research and education input library; external attribution retained"
     }
   ],
   "experiment": {
@@ -174,20 +182,26 @@
       "source_id": "this_experiment"
     },
     {
-      "path": "LC08_L2SP_043032_20170522_02_T1_sample_pixels.csv",
-      "bytes": 3538060,
-      "sha256": "e63985aa24812803d0d5d4bca5b809695cd25e5b8623e12fe4233f40ecc6c81f",
+      "path": "LC08_L2SP_043032_20170522_02_T1_sample_pixels.csv.gz",
+      "bytes": 798414,
+      "sha256": "9a8dc1870ec8b6a647d151dd425f21088a4b9cc764285400d5d625c0fae0d240",
       "source_id": "legacy_worldview",
       "source_path": "experiments/painter1998/2026-10-01/v2/13_worldview_validation_r004/tables/LC08_L2SP_043032_20170522_02_T1_sample_pixels.csv",
-      "source_sha256": "e63985aa24812803d0d5d4bca5b809695cd25e5b8623e12fe4233f40ecc6c81f"
+      "source_sha256": "e63985aa24812803d0d5d4bca5b809695cd25e5b8623e12fe4233f40ecc6c81f",
+      "uncompressed_bytes": 3538060,
+      "uncompressed_sha256": "e63985aa24812803d0d5d4bca5b809695cd25e5b8623e12fe4233f40ecc6c81f",
+      "gzip_mtime": 0
     },
     {
-      "path": "LC08_L2SP_043033_20160213_02_T1_sample_pixels.csv",
-      "bytes": 3805941,
-      "sha256": "b515246c04859a04c36a4dee1f74b710ee6070d8de26d5611ef238a0053940f6",
+      "path": "LC08_L2SP_043033_20160213_02_T1_sample_pixels.csv.gz",
+      "bytes": 1082769,
+      "sha256": "ca053cc2bcc9a27ee5abe5d432b25101150ef7ade4712008f583d61ce14e7d8e",
       "source_id": "legacy_worldview",
       "source_path": "experiments/painter1998/2026-10-01/v2/13_worldview_validation_r004/tables/LC08_L2SP_043033_20160213_02_T1_sample_pixels.csv",
-      "source_sha256": "b515246c04859a04c36a4dee1f74b710ee6070d8de26d5611ef238a0053940f6"
+      "source_sha256": "b515246c04859a04c36a4dee1f74b710ee6070d8de26d5611ef238a0053940f6",
+      "uncompressed_bytes": 3805941,
+      "uncompressed_sha256": "b515246c04859a04c36a4dee1f74b710ee6070d8de26d5611ef238a0053940f6",
+      "gzip_mtime": 0
     },
     {
       "path": "modis_1km_units.csv",
@@ -209,8 +223,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 4914,
-      "sha256": "00a8db0b085d03f320249a8242506118508e17af66ef194072410801a58d10a9",
+      "bytes": 6089,
+      "sha256": "58749145ba0ccdec4804e374151c57894a858580b149956e5ca4b0286f583240",
       "source_id": "this_experiment"
     },
     {
@@ -240,6 +254,23 @@
       "source_id": "legacy_worldview",
       "source_path": "experiments/painter1998/2026-10-01/v2/13_worldview_validation_r004/tables/stratified_metrics.csv",
       "source_sha256": "5c008f20eef8dab32f3e34dacbaf80cb9fbc6b4e1c0894da57401f41b17b75f4"
+    },
+    {
+      "path": "scattering_inputs.npz",
+      "bytes": 1360118,
+      "sha256": "76604a41c620ec1bba38761a26684a7f9729fa5040f5117df3239e3d910014f6",
+      "source_id": "snicar_optical_inputs"
+    },
+    {
+      "path": "scattering_inputs.source.json",
+      "bytes": 44057,
+      "sha256": "1dbd08a5c7bb5566371f921cf60b322fbe0544a487806623dcbde475f2effae5",
+      "source_id": "snicar_optical_inputs"
     }
+  ],
+  "packaging_version": "2.0.0",
+  "packaging_changes": [
+    "lossless deterministic gzip of complete sample tables",
+    "extracted official scattering inputs for Python WW80 recomputation"
   ]
 }

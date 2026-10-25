@@ -28,6 +28,8 @@ from jupyter_client.kernelspec import KernelSpecManager
 
 CASE = Path(__file__).resolve().parents[1]
 REPOSITORY = CASE.parents[1]
+SITE_SOURCE = REPOSITORY / "site"
+CASE_URL = Path("assignments/03-painter1998")
 NOTEBOOK_NAMES = ("01_snow_optics", "02_fig3_sma", "03_aviris_modis")
 MATHJAX_VERSION = "3.2.2"
 
@@ -88,6 +90,8 @@ window.MathJax = {
 <script defer src="assets/mathjax/tex-svg-full.js"></script>
 <style>
 body {max-width: 1180px; margin: 0 auto; padding: 20px; background: #fff; color: #20242a;}
+.jp-RenderedHTMLCommon {font-size: 17px; line-height: 1.85;}
+.jp-CodeCell .cm-editor, .jp-CodeCell pre {font-size: 14px; line-height: 1.55;}
 .case-navigation {font: 14px system-ui,sans-serif; padding: 10px 0 18px; border-bottom: 1px solid #ddd; margin-bottom: 20px;}
 .case-navigation a {color: #15577b; margin-right: 20px;}
 img {max-width: 100%; height: auto;}
@@ -160,16 +164,43 @@ def execute_notebook(path: Path, build_directory: Path, timeout: int) -> tuple:
     return notebook, elapsed
 
 
-def build(
-    output: Path, selected: list[str], timeout: int = 300, download_assets: bool = False
-) -> dict:
-    """执行指定 Notebook，将实际结果写回 ipynb 并导出可离线阅读的 HTML。"""
-    output.mkdir(parents=True, exist_ok=True)
-    assets = output / "assets/mathjax"
-    if download_assets:
-        prepare_mathjax(assets)
+def validate_output(output: Path) -> Path:
+    """限制站点输出位置，避免覆盖源码、数据和静态网页源。"""
+    output = output.resolve()
+    if REPOSITORY.is_relative_to(output):
+        raise ValueError("Site output cannot contain the repository")
+    if output.is_relative_to(REPOSITORY) and not any(
+        output.is_relative_to(root) for root in (REPOSITORY / "build", CASE / "build")
+    ):
+        raise ValueError("Use an ignored build directory for site output inside the repository")
+    return output
+
+
+def prepare_workspace() -> Path:
+    """创建供交互学习的源码副本；已存在的练习文件保留。"""
+    workspace = CASE / "build/workspace"
+    workspace.mkdir(parents=True, exist_ok=True)
+    for name in NOTEBOOK_NAMES:
+        target = workspace / (name + ".ipynb")
+        if not target.exists():
+            shutil.copy2(CASE / "notebooks" / target.name, target)
+    return workspace
+
+
+def build(output: Path, selected: list[str], timeout: int = 300) -> dict:
+    """从固定静态源构建完整站点；执行结果仅写入输出目录。"""
+    output = validate_output(output)
+    assets = SITE_SOURCE / CASE_URL / "assets/mathjax"
     if not all((assets / name).is_file() for name in ("tex-svg-full.js", "LICENSE", "SOURCE.json")):
-        raise FileNotFoundError("Missing local MathJax assets; run once with --prepare-assets")
+        raise FileNotFoundError("Missing versioned MathJax assets; use a complete checkout")
+    metadata = json.loads((assets / "SOURCE.json").read_text(encoding="utf-8"))
+    for name, expected in metadata["files"].items():
+        if hashlib.sha256((assets / name).read_bytes()).hexdigest() != expected:
+            raise ValueError(f"MathJax asset checksum mismatch: {name}")
+    shutil.copytree(SITE_SOURCE, output, dirs_exist_ok=True)
+    case_output = output / CASE_URL
+    # 报告的唯一源在作业目录，站点只保留本次构建的副本。
+    shutil.copy2(CASE / "reports/painter1998-integrated-report.pdf", case_output / "report.pdf")
     build_directory = CASE / "build/notebooks"
     build_directory.mkdir(parents=True, exist_ok=True)
     exporter = HTMLExporter(template_name="lab", embed_images=True)
@@ -180,16 +211,19 @@ def build(
     for name in selected:
         path = CASE / "notebooks" / (name + ".ipynb")
         notebook, elapsed = execute_notebook(path, build_directory, timeout)
-        nbformat.write(notebook, path)
-        download_directory = output / "notebooks"
+        download_directory = case_output / "notebooks"
         download_directory.mkdir(exist_ok=True)
-        shutil.copy2(path, download_directory / path.name)
+        nbformat.write(notebook, download_directory / path.name)
         body, _ = exporter.from_notebook_node(notebook)
         html = offline_html(body, name)
-        html_path = output / (name + ".html")
+        html_path = case_output / (name + ".html")
         html_path.write_text(html, encoding="utf-8", newline="\n")
         record = {
             "notebook": path.name,
+            "source_sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+            "executed_sha256": hashlib.sha256(
+                (download_directory / path.name).read_bytes()
+            ).hexdigest(),
             "execution_seconds": round(elapsed, 3),
             "code_cells": sum(cell.cell_type == "code" for cell in notebook.cells),
             "output_cells": sum(bool(cell.get("outputs")) for cell in notebook.cells),
@@ -203,8 +237,16 @@ def build(
         "all_outputs_executed": True,
         "rendering_resources": "local MathJax SVG",
     }
-    (build_directory / "build_manifest.json").write_text(
+    (case_output / "build_manifest.json").write_text(
         json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    manifest = {
+        path.relative_to(output).as_posix(): hashlib.sha256(path.read_bytes()).hexdigest()
+        for path in sorted(output.rglob("*"))
+        if path.is_file() and path.name != "site_manifest.json"
+    }
+    (output / "site_manifest.json").write_text(
+        json.dumps(manifest, indent=2) + "\n", encoding="utf-8"
     )
     return result
 
@@ -212,7 +254,10 @@ def build(
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument(
-        "--output", type=Path, default=REPOSITORY / "docs/assignments/03-painter1998"
+        "--output",
+        type=Path,
+        default=REPOSITORY / "build/site",
+        help="Complete generated site root (default: repository/build/site)",
     )
     parser.add_argument(
         "--notebook", nargs="+", choices=NOTEBOOK_NAMES, default=list(NOTEBOOK_NAMES)
@@ -223,10 +268,21 @@ def main() -> None:
         action="store_true",
         help="Download the fixed public MathJax package and verify npm integrity",
     )
+    parser.add_argument(
+        "--prepare-workspace",
+        action="store_true",
+        help="Create non-overwriting interactive copies in build/workspace",
+    )
     args = parser.parse_args()
     if args.timeout <= 0:
         parser.error("--timeout must be positive")
-    build(args.output.resolve(), args.notebook, args.timeout, args.prepare_assets)
+    if args.prepare_assets:
+        prepare_mathjax(SITE_SOURCE / CASE_URL / "assets/mathjax")
+    elif args.prepare_workspace:
+        print("Interactive notebooks: build/workspace (existing files preserved)")
+        prepare_workspace()
+    else:
+        build(args.output, args.notebook, args.timeout)
 
 
 if __name__ == "__main__":

@@ -23,6 +23,7 @@ from threadpoolctl import threadpool_limits
 
 from .case_analysis import binary_agreement, fixed_radius_scan
 from .linear import select_snow
+from .optics import ww80_semi_infinite
 from .spectra import gaussian_band_matrix, read_usgs_ascii
 
 _CJK_READY = False
@@ -92,6 +93,33 @@ def load_forward(root: Path | None = None) -> dict:
     if not np.array_equal(data["radii_um"], np.arange(30, 1501, 10)):
         raise ValueError("The teaching cache requires the complete 30-1500 um radius grid")
     return data
+
+
+def load_optical_inputs(root: Path | None = None) -> dict:
+    """读取官方散射参数的教学子集；轴为半径、波长、冰光学选项。
+
+    ss_alb 保留 float64，asm_prm 保存为 float32；计算前统一提升至 float64。
+    这些参数从官方 NetCDF 提取，Mie 散射计算由上游数据库提供。
+    """
+    with np.load(demo_directory(root) / "scattering_inputs.npz", allow_pickle=False) as archive:
+        data = {key: archive[key] for key in archive.files}
+    for key, dtype in (("ss_alb", np.float64), ("asm_prm", np.float32)):
+        if data[key].shape != (148, 480, 2) or data[key].dtype != dtype:
+            raise ValueError(f"Invalid scattering input: {key}")
+    return data
+
+
+def recompute_ww80(optics: dict, angles_deg: np.ndarray) -> np.ndarray:
+    """广播计算完整网格，输出轴为半径、波长、角度、冰光学选项。
+
+    angles_deg 先转为 float64，避免 uint8 角度进入 deg2rad 的低精度路径。
+    """
+    mu = np.cos(np.deg2rad(np.asarray(angles_deg, dtype=np.float64)))
+    return ww80_semi_infinite(
+        optics["ss_alb"][:, :, None, :],
+        optics["asm_prm"][:, :, None, :],
+        mu[None, None, :, None],
+    )
 
 
 def optics_table(forward: dict) -> pd.DataFrame:
@@ -412,13 +440,94 @@ def product_consistency(table: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
+def validation_ledger(table: pd.DataFrame, minimum_coverage: float = 0.95) -> pd.DataFrame:
+    """追踪同一唯一 1 km 集合的逐级筛选与雪标志阳性数。
+
+    Args:
+        table: modis_1km_units.csv 的列；行键为 roi、tile_row_1km、tile_column_1km。
+        minimum_coverage: 两种模型的有效面积占比阈值，范围 [0, 1]。
+
+    Returns:
+        四行账本：候选、有效状态、AVIRIS 面积支持、共同面积支持。
+        n 为保留单元数，flag12_positive / flag15_positive 为其阳性数。
+
+    Raises:
+        ValueError: 重复空间单元或阈值无效。
+
+    modis_valid_area_fraction 同时含影像 QA、AVIRIS 输入支持和模型归一化
+    筛选的影响，账本只分解实际面积支持，不能单独分离每种影响。
+    """
+    if not np.isfinite(minimum_coverage) or not 0 <= minimum_coverage <= 1:
+        raise ValueError("minimum_coverage must lie in [0, 1]")
+    if table.duplicated(["roi", "tile_row_1km", "tile_column_1km"]).any():
+        raise ValueError("Duplicated 1 km cells in validation ledger")
+    candidates = np.ones(len(table), dtype=bool)
+    state = table.state_1km.notna().to_numpy() & (table.state_1km.to_numpy() != 65535)
+    aviris = state & (table.aviris_valid_area_fraction.to_numpy() >= minimum_coverage)
+    common = aviris & (table.modis_valid_area_fraction.to_numpy() >= minimum_coverage)
+    rows = []
+    for stage, mask in zip(
+        ("candidates", "valid_state", "aviris_area", "common_area"),
+        (candidates, state, aviris, common),
+    ):
+        subset = table.loc[mask]
+        rows.append(
+            {
+                "stage": stage,
+                "n": int(mask.sum()),
+                "flag12_positive": int(subset.flag12.eq(1).sum()),
+                "flag15_positive": int(subset.flag15.eq(1).sum()),
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+def plot_validation_design(ledger: pd.DataFrame) -> Figure:
+    """分别显示空间样本保留和参照阳性减少，避免把阴性单元画成无样本。"""
+    selected = ledger.set_index("stage").loc[["candidates", "aviris_area", "common_area"]]
+    names = [
+        label("候选", "Candidates"),
+        label("AVIRIS ≥95%", "AVIRIS ≥95%"),
+        label("共同 ≥95%", "Both ≥95%"),
+    ]
+    fig, axes = plt.subplots(1, 2, figsize=(11, 4.2))
+    bars = axes[0].bar(names, selected.n, color=COLORS[:3])
+    axes[0].bar_label(bars, padding=4)
+    axes[0].set_ylim(0, selected.n.max() * 1.15)
+    axes[0].set_ylabel(label("唯一 1 km 单元数", "Unique 1 km units"))
+    axes[0].set_title(label("同一集合的筛选账本", "Filtering the same spatial units"))
+    for column, color, title in (
+        ("flag12_positive", COLORS[0], "bit 12"),
+        ("flag15_positive", COLORS[1], "bit 15"),
+    ):
+        axes[1].plot(names, selected[column], "o-", color=color, label=title)
+        for x, count in enumerate(selected[column]):
+            axes[1].annotate(
+                str(count),
+                (x, count),
+                xytext=(4, 5 if column.endswith("15_positive") else -14),
+                textcoords="offset points",
+                fontsize=9,
+            )
+    axes[1].set_ylim(-10, selected.flag15_positive.max() * 1.2)
+    axes[1].set_ylabel(label("雪标志阳性数", "Positive snow flags"))
+    axes[1].set_title(label("阳性类别的保留情况", "Retention of the positive class"))
+    axes[1].legend()
+    fig.tight_layout()
+    return fig
+
+
 def worldview_metrics(directory: Path | None = None) -> pd.DataFrame:
     """由保留的独立参考样本逐行重算共同有效掩膜下的分层覆盖误差。"""
     directory = directory or demo_directory()
     methods = ("fixed200_six_bands", "multi_six_bands", "fixed200_four_bands", "multi_four_bands")
     rows = []
-    for path in sorted(directory.rglob("*_sample_pixels.csv")):
-        scene = path.name.removesuffix("_sample_pixels.csv")
+    paths = sorted(directory.rglob("*_sample_pixels.csv"))
+    paths += sorted(directory.rglob("*_sample_pixels.csv.gz"))
+    scenes = [path.name.removesuffix(".gz").removesuffix("_sample_pixels.csv") for path in paths]
+    if len(scenes) != len(set(scenes)):
+        raise ValueError("Duplicate scene CSV/GZ files would count samples twice")
+    for path, scene in zip(paths, scenes):
         samples = pd.read_csv(path)
         common = (
             samples["common_four_methods_normalization_valid"]
