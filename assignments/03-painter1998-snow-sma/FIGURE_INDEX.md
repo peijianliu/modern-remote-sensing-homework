@@ -1,6 +1,6 @@
 # 综合报告图表与代码索引
 
-对应33页综合报告的14幅编号图。Notebook 直接使用随仓库提供的教学数据；历史完整流程的绘图脚本需先按数据说明准备输入及归档结果。
+对应33页综合报告的15幅编号图。Notebook 直接使用随仓库提供的教学数据；历史完整流程的绘图脚本需先按数据说明准备输入及归档结果。
 
 | 图号 | 内容 | 重绘或计算入口 | 输入范围 |
 |---|---|---|---|
@@ -16,9 +16,10 @@
 | 10 | 留出波段检验 | `scripts/aviris_band_sensitivity.py` | 完整 AVIRIS 输入及预定样本 |
 | 11 | 固定字典尺度对照 | `scripts/resolution_control.py`；Notebook 03 重算表格 | 保存的修正面积支持统计 |
 | 12 | 严格 QA 双源散点 | `scripts/publication_figures.py`；Notebook 03 重算配对统计 | 两区 corrected_coverage 表 |
-| 13 | 实测雪谱与 SSA 代理 | `scripts/empirical_validation.py` | Zenodo 公开实测输入与特定角度缓存 |
-| 14 | WorldView 分层结果 | `scripts/worldview_validation.py`；Notebook 03 重算分层表 | 两场公开参考的派生样本表 |
+| 13 | 面积支持与验证设计 | Notebook 03、`scripts/report_validation_figure.py` | 同一420个唯一1 km单元；筛选420→100→17与独立阳性计数 |
+| 14 | 实测雪谱与 SSA 代理 | `scripts/empirical_validation.py` | Zenodo 公开实测输入与特定角度缓存 |
+| 15 | WorldView 分层结果 | `scripts/worldview_validation.py`；Notebook 03 重算分层表 | 两场公开参考的派生样本表 |
 
-新版报告的表4区分全网格平均偏差与两个纯雪端点偏差；固定半径表图统一使用共同归一化域。MODIS雪标志交叉表采用唯一1 km单元，完整数据见 `data/demo/product_consistency.csv`。历史库谱与新增影像背景结果按分支分别解释。
+新版报告的表4区分全网格平均偏差与两个纯雪端点偏差；固定半径表图统一使用共同归一化域。表11改为唯一1 km单元的筛选账本；MODIS雪标志交叉表采用唯一1 km单元，完整数据见 `data/demo/product_consistency.csv`。历史库谱与新增影像背景结果按分支分别解释。
 
 Notebook 与脚本的完整对应见 `CODE_MAP.md`；字段、单位、CRS和数据来源见 `data/demo/README.md` 与 `manifest.json`。

@@ -474,6 +474,7 @@ def validation_ledger(table: pd.DataFrame, minimum_coverage: float = 0.95) -> pd
         rows.append(
             {
                 "stage": stage,
+                "minimum_coverage": float(minimum_coverage),
                 "n": int(mask.sum()),
                 "flag12_positive": int(subset.flag12.eq(1).sum()),
                 "flag15_positive": int(subset.flag15.eq(1).sum()),
@@ -485,10 +486,14 @@ def validation_ledger(table: pd.DataFrame, minimum_coverage: float = 0.95) -> pd
 def plot_validation_design(ledger: pd.DataFrame) -> Figure:
     """分别显示空间样本保留和参照阳性减少，避免把阴性单元画成无样本。"""
     selected = ledger.set_index("stage").loc[["candidates", "aviris_area", "common_area"]]
+    thresholds = selected.minimum_coverage.unique()
+    if len(thresholds) != 1:
+        raise ValueError("Ledger stages must use one coverage threshold")
+    percent = f"{thresholds[0] * 100:g}%"
     names = [
         label("候选", "Candidates"),
-        label("AVIRIS ≥95%", "AVIRIS ≥95%"),
-        label("共同 ≥95%", "Both ≥95%"),
+        f"AVIRIS ≥{percent}",
+        label(f"共同 ≥{percent}", f"Both ≥{percent}"),
     ]
     fig, axes = plt.subplots(1, 2, figsize=(11, 4.2))
     bars = axes[0].bar(names, selected.n, color=COLORS[:3])

@@ -53,8 +53,8 @@
     },
     {
       "path": "FIGURE_INDEX.md",
-      "bytes": 2299,
-      "sha256": "0758d62697629a71ddee7e516b9829dc6af173bd1f3be36e39805718e0571a6b"
+      "bytes": 2510,
+      "sha256": "8e3845299ec328159a44f2b705cb2e36e08cfbcc376455150f08ed76d841efa8"
     },
     {
       "path": "matlab/export_modis.m",
@@ -75,6 +75,16 @@
       "path": "matlab/verify_forward.m",
       "bytes": 2418,
       "sha256": "57b54581ebf0a977d8419841d7e9f0d2a95e7af6e13c0e223290a27b57e600cf"
+    },
+    {
+      "path": "metadata/public_validation_sources.json",
+      "bytes": 27978,
+      "sha256": "fef0bf6b63f1aa377c01ae979d346fd268ab679beb2b72bf005b701d1d792bbb"
+    },
+    {
+      "path": "metadata/report_figure_sources.json",
+      "bytes": 1854,
+      "sha256": "562021f93d7047dcc4dde75d9d934e2ded32e4d849bc8d7982e29fbf2916c03f"
     },
     {
       "path": "notebooks/01_snow_optics.ipynb",
@@ -107,9 +117,19 @@
       "sha256": "8ce753de9971d43b969384bc75c35e1ebeba77af3f71c6ab184780a9db44c980"
     },
     {
+      "path": "reports/figures/validation_support.png",
+      "bytes": 159270,
+      "sha256": "6068779786dc4517c8894016bcb619d020c3da6e42dd68218aa868177ff86b95"
+    },
+    {
+      "path": "reports/figures/validation_support.svg",
+      "bytes": 22057,
+      "sha256": "b0265e815d9377904e335fa8236b6ab6d8911a2026ef8161926db293e6706cf6"
+    },
+    {
       "path": "reports/painter1998-integrated-report.pdf",
-      "bytes": 3534388,
-      "sha256": "9fda192313c3a135c29cb620081e0213131f72531228614a7fbabadeb4f27bdd"
+      "bytes": 3626095,
+      "sha256": "929519e06a5aa8b25f2fc772be363dae2479f1e8121b22d1081e459c19810095"
     },
     {
       "path": "reports/README.md",
@@ -143,8 +163,8 @@
     },
     {
       "path": "scripts/build_notebooks.py",
-      "bytes": 12157,
-      "sha256": "0d55919955753ea436edf40302433bda19feb6441a947b123a4adcb9a81868e7"
+      "bytes": 12864,
+      "sha256": "9c27039ea1c4d76aff0432301f3c72b42eebca960403aa6d30f86ae790703382"
     },
     {
       "path": "scripts/build_review_report.py",
@@ -210,6 +230,11 @@
       "path": "scripts/qa_sensitivity.py",
       "bytes": 5757,
       "sha256": "db3bbdd252651b12a13f6d10c037418acb3be20491ed21184483f52405fa6f79"
+    },
+    {
+      "path": "scripts/report_validation_figure.py",
+      "bytes": 1450,
+      "sha256": "f88074db6ac85b2452186ee75f772f0509c8c3ad9a379e52cf22c608abcc47c5"
     },
     {
       "path": "scripts/resolution_control.py",
@@ -313,8 +338,8 @@
     },
     {
       "path": "snowmix/teaching.py",
-      "bytes": 28280,
-      "sha256": "4a2562fb248450d8c7f2a1d7c45c71817bd7d787191bc3a1f2dd8c7ff541706a"
+      "bytes": 28535,
+      "sha256": "aedf030de40ea9a41a186cde470df19b0c5317909be6e19c70da2dea8f976dd4"
     },
     {
       "path": "snowmix/validation.py",
@@ -323,8 +348,8 @@
     },
     {
       "path": "tests/test_build_pipeline.py",
-      "bytes": 3665,
-      "sha256": "4229a88959709207408225fb5f76c45f72d0838ddaed3aa72bddc6c5d7af6af4"
+      "bytes": 4484,
+      "sha256": "5ab965f53ce99c0f8097b157322d48ceaa49d8853538ba4c1da84a4c40977143"
     },
     {
       "path": "tests/test_case_analysis.py",

@@ -169,6 +169,13 @@ def validate_output(output: Path) -> Path:
     output = output.resolve()
     if REPOSITORY.is_relative_to(output):
         raise ValueError("Site output cannot contain the repository")
+    for internal in (
+        CASE / "build/notebooks",
+        CASE / "build/workspace",
+        CASE / "build/offline_guard",
+    ):
+        if output.is_relative_to(internal) or internal.is_relative_to(output):
+            raise ValueError("Site output must not overlap kernels or interactive workspace")
     if output.is_relative_to(REPOSITORY) and not any(
         output.is_relative_to(root) for root in (REPOSITORY / "build", CASE / "build")
     ):
@@ -187,9 +194,17 @@ def prepare_workspace() -> Path:
     return workspace
 
 
-def build(output: Path, selected: list[str], timeout: int = 300) -> dict:
+def build(output: Path, timeout: int = 300) -> dict:
     """从固定静态源构建完整站点；执行结果仅写入输出目录。"""
     output = validate_output(output)
+    if output.exists() and any(output.iterdir()):
+        existing = output / "site_manifest.json"
+        if not existing.is_file():
+            raise ValueError("Nonempty output has no site manifest; choose an empty directory")
+        known = set(json.loads(existing.read_text(encoding="utf-8"))) | {"site_manifest.json"}
+        actual = {p.relative_to(output).as_posix() for p in output.rglob("*") if p.is_file()}
+        if actual - known:
+            raise ValueError("Output contains files outside the previous site manifest; preserved")
     assets = SITE_SOURCE / CASE_URL / "assets/mathjax"
     if not all((assets / name).is_file() for name in ("tex-svg-full.js", "LICENSE", "SOURCE.json")):
         raise FileNotFoundError("Missing versioned MathJax assets; use a complete checkout")
@@ -208,7 +223,7 @@ def build(output: Path, selected: list[str], timeout: int = 300) -> dict:
     exporter.exclude_output_prompt = False
     exporter.mathjax_url = "assets/mathjax/tex-svg-full.js"
     records = []
-    for name in selected:
+    for name in NOTEBOOK_NAMES:
         path = CASE / "notebooks" / (name + ".ipynb")
         notebook, elapsed = execute_notebook(path, build_directory, timeout)
         download_directory = case_output / "notebooks"
@@ -259,9 +274,6 @@ def main() -> None:
         default=REPOSITORY / "build/site",
         help="Complete generated site root (default: repository/build/site)",
     )
-    parser.add_argument(
-        "--notebook", nargs="+", choices=NOTEBOOK_NAMES, default=list(NOTEBOOK_NAMES)
-    )
     parser.add_argument("--timeout", type=int, default=300)
     parser.add_argument(
         "--prepare-assets",
@@ -282,7 +294,7 @@ def main() -> None:
         print("Interactive notebooks: build/workspace (existing files preserved)")
         prepare_workspace()
     else:
-        build(args.output, args.notebook, args.timeout)
+        build(args.output, args.timeout)
 
 
 if __name__ == "__main__":

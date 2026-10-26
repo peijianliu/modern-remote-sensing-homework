@@ -24,11 +24,21 @@ def test_output_root_rejects_source_ancestors_and_source_directories(tmp_path):
         CASE / "data",
         CASE / "snowmix",
         builder.REPOSITORY.parent,
+        CASE / "build",
+        CASE / "build/notebooks",
+        CASE / "build/workspace/site",
     ):
         with pytest.raises(ValueError):
             builder.validate_output(path)
     assert builder.validate_output(builder.REPOSITORY / "build/site").name == "site"
     assert builder.validate_output(tmp_path / "site").name == "site"
+
+
+def test_nonempty_output_with_unknown_files_is_preserved(tmp_path):
+    (tmp_path / "my_notes.txt").write_text("private exercise", encoding="utf-8")
+    with pytest.raises(ValueError, match="Nonempty"):
+        builder.build(tmp_path)
+    assert (tmp_path / "my_notes.txt").read_text(encoding="utf-8") == "private exercise"
 
 
 def test_interactive_workspace_never_overwrites_edits(tmp_path, monkeypatch):
@@ -92,3 +102,12 @@ def test_synthetic_confusion_matrix_example():
     )
     assert (result["tp"], result["fn"], result["fp"], result["tn"]) == (2, 2, 1, 3)
     assert result["recall"] == 0.5 and result["specificity"] == 0.75
+
+
+def test_filter_plot_labels_follow_exercise_threshold():
+    units = pd.read_csv(CASE / "data/demo/modis_1km_units.csv")
+    fig = t.plot_validation_design(t.validation_ledger(units, 0.8))
+    labels = [text.get_text() for text in fig.axes[0].get_xticklabels()]
+    assert all("95%" not in value for value in labels)
+    assert sum("80%" in value for value in labels) == 2
+    t.plt.close(fig)
