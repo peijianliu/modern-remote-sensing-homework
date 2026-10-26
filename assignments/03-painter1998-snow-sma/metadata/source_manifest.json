@@ -83,8 +83,8 @@
     },
     {
       "path": "metadata/report_figure_sources.json",
-      "bytes": 1854,
-      "sha256": "562021f93d7047dcc4dde75d9d934e2ded32e4d849bc8d7982e29fbf2916c03f"
+      "bytes": 1799,
+      "sha256": "2d981932dc2f6c76f2fcf8f40fd745efb6ae1a02e69e6f2d8b818f494b38a50d"
     },
     {
       "path": "notebooks/01_snow_optics.ipynb",

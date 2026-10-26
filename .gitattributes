@@ -13,3 +13,4 @@ site/**/assets/** -text -whitespace
 *.npz -text
 *.mat -text
 *.gz -text
+assignments/03-painter1998-snow-sma/reports/figures/** -text -whitespace
