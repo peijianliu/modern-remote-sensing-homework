@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import gzip
 import hashlib
 import json
 from pathlib import Path
@@ -494,7 +495,13 @@ def finish_inputs(source_root: Path, output: Path) -> None:
         "stratified_metrics.csv"
     )
     for source, destination in copies.items():
-        shutil.copy2(source_root / source, output / destination)
+        if destination.endswith("_sample_pixels.csv"):
+            payload = (source_root / source).read_bytes()
+            (output / (destination + ".gz")).write_bytes(
+                gzip.compress(payload, compresslevel=6, mtime=0)
+            )
+        else:
+            shutil.copy2(source_root / source, output / destination)
 
 
 def finish_manifest(source_root: Path, output: Path, config: dict) -> None:
@@ -550,11 +557,20 @@ def finish_manifest(source_root: Path, output: Path, config: dict) -> None:
             "sha256": digest(path),
             "source_id": "this_experiment",
         }
-        if path.name.endswith("_sample_pixels.csv") or path.name == "stratified_metrics.csv":
-            source = (
-                Path("experiments/painter1998/2026-10-01/v2/13_worldview_validation_r004/tables")
-                / path.name
-            )
+        if (
+            path.name.endswith(("_sample_pixels.csv", "_sample_pixels.csv.gz"))
+            or path.name == "stratified_metrics.csv"
+        ):
+            source = Path(
+                "experiments/painter1998/2026-10-01/v2/13_worldview_validation_r004/tables"
+            ) / path.name.removesuffix(".gz")
+            if path.suffix == ".gz":
+                payload = gzip.decompress(path.read_bytes())
+                record.update(
+                    uncompressed_bytes=len(payload),
+                    uncompressed_sha256=hashlib.sha256(payload).hexdigest(),
+                    gzip_mtime=0,
+                )
             record.update(
                 source_id="legacy_worldview",
                 source_path=source.as_posix(),

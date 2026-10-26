@@ -36,7 +36,14 @@ if len(optics_roots) != 1:
     raise ValueError(f"Could not identify optics root: {optics_roots}")
 optics_root = optics_roots[0].parent.parent
 source = ROOT / "vendor/SNICARv3/snicarAD_v3.m"
+if (
+    hashlib.sha256(source.read_bytes()).hexdigest()
+    != "f1affb2ef5a8755ebaef7f91296607ce9a887bc66df0e0880d55d9667d723adb"
+):
+    raise ValueError("Frozen SNICAR source checksum mismatch")
 original = source.read_text(encoding="utf-8")
+if len(re.findall(r"(?m)^dir_op_root\s*=\s*[^\n]+", original)) != 1:
+    raise ValueError("Expected exactly one optical directory assignment")
 relative_root = optics_root.relative_to(ROOT).as_posix() + "/"
 patched, replacements = re.subn(
     r"(?m)^dir_op_root\s*=\s*[^\n]+", f"dir_op_root = '{relative_root}';", original, count=1

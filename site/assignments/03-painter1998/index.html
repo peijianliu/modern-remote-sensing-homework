@@ -9,7 +9,7 @@
 <h1>雪粒径与光谱混合分析</h1>
 <p>先观察雪谱的变化，再通过已知比例的混合谱检查算法，最后把同样的方法用于真实影像。每本 Notebook 包含问题、输入、计算、断言和结果解释。</p>
 <table><thead><tr><th>内容</th><th>HTML</th><th>Notebook</th></tr></thead><tbody>
-<tr><td>冻结正演与雪光学</td><td><a href="01_snow_optics.html">阅读全文</a></td><td><a href="notebooks/01_snow_optics.ipynb" download>下载 ipynb</a></td></tr>
+<tr><td>手算、可重算正演与雪光学</td><td><a href="01_snow_optics.html">阅读全文</a></td><td><a href="notebooks/01_snow_optics.ipynb" download>下载 ipynb</a></td></tr>
 <tr><td>Fig. 3 与光谱混合解混</td><td><a href="02_fig3_sma.html">阅读全文</a></td><td><a href="notebooks/02_fig3_sma.ipynb" download>下载 ipynb</a></td></tr>
 <tr><td>AVIRIS / MODIS 与外部验证</td><td><a href="03_aviris_modis.html">阅读全文</a></td><td><a href="notebooks/03_aviris_modis.ipynb" download>下载 ipynb</a></td></tr>
 </tbody></table>
@@ -17,10 +17,10 @@
 <h2>本地运行</h2>
 <p>在 Python 3.11 环境克隆仓库，进入本次作业目录。以下命令使用 PowerShell：</p>
 <pre><code>python -m venv .venv
-&amp; .\.venv\Scripts\python.exe -m pip install -e ".[notebook,dev]"
+&amp; .\.venv\Scripts\python.exe -m pip install -c requirements-lock.txt -e ".[notebook,dev]"
 &amp; .\.venv\Scripts\python.exe scripts/build_notebooks.py</code></pre>
-<p>macOS / Linux 使用 <code>.venv/bin/python</code>。也可启动 JupyterLab，按 01、02、03 的顺序阅读和执行。</p>
+<p>macOS / Linux 使用 <code>.venv/bin/python</code>。构建结果在仓库根 build/site/。先运行 build_notebooks.py --prepare-workspace 创建不覆盖的练习副本，再用 JupyterLab 打开 build/workspace，按 01、02、03 阅读和执行。</p>
 <h2>如何理解结果</h2>
-<ul><li>01 读取已有 SNICAR / WW80 计算缓存；60°为课程模拟设定。</li><li>02 从缓存雪谱重新合成并解混，真值来自明确的混合比例。</li><li>03 从公开影像派生教学数据重算统计与代表像元；历史库谱结果与新增影像背景结果分别标注。</li><li>MODIS 雪标志用于产品一致性，WorldView 公开派生覆盖参考用于独立覆盖对照。</li></ul>
+<ul><li>01 从官方散射参数逐项手算并重算完整 WW80 网格；SNICAR-AD 缓存单独参考。</li><li>02 从缓存雪谱重新合成并解混，真值来自明确的混合比例。</li><li>03 先明确比较单位，重算 420→100→17 筛选账本，再解读真实结果与独立覆盖分层。</li><li>MODIS 雪标志用于产品一致性，WorldView 公开派生覆盖参考用于独立覆盖对照。</li></ul>
 <p class="meta">离线阅读时请保留本目录的 HTML、assets、notebooks 与 report.pdf，使用 index.html 打开。</p>
 </body></html>

@@ -1,10 +1,11 @@
 # 教学数据与字段
 
-数据来自公开 AVIRIS、MOD09GA、USGS 光谱库以及开放许可的雪覆盖参考资料。`manifest.json` 保存来源、版本、处理配置、文件字节数和 SHA-256。本目录不包含原始整景影像、JHU/ECOSTRESS 原谱或 SNICAR 光学属性数据库。
+数据来自公开 AVIRIS、MOD09GA、USGS 光谱库以及开放许可的雪覆盖参考资料。`manifest.json` 保存来源、版本、处理配置、文件字节数和 SHA-256。本目录不包含原始整景影像、JHU/ECOSTRESS 原谱或完整 SNICAR 光学属性数据库。
 
 ## 正演与光谱
 
-- `forward_models.mat`：`matlab/run_forward.m` 计算的 SNICAR 与 WW80 缓存。半径为 30–1500 μm、步长 10 μm，波长为 0.205–4.995 μm、步长 0.01 μm；太阳天顶角为 0°、60°、22°；两种冰光学选项为 Warren 1984 和 Warren–Brandt 2008。读取缓存用于重建图件，完整正演仍由 MATLAB 入口运行。
+- `forward_models.mat`：`matlab/run_forward.m` 计算的 SNICAR 与 WW80 缓存。半径为 30–1500 μm、步长 10 μm，波长为 0.205–4.995 μm、步长 0.01 μm；太阳天顶角为 0°、60°、22°；两种冰光学选项为 Warren 1984 和 Warren–Brandt 2008。WW80 在默认 Notebook 中由散射参数完整重算，SNICAR-AD 保留参考缓存；完整 adding-doubling 重算使用 MATLAB。
+- `scattering_inputs.npz`：从官方 202105 库提取的 `(148 radius, 480 wavelength, 2 ice_options)` 散射属性，`ss_alb` float64、`asm_prm` float32，无量纲；波长 m→μm。`scattering_inputs.source.json` 保留作者、版本、官方来源、每个 NetCDF 哈希与修改说明。用于 NumPy WW80 重算，不表示重新计算了 Mie 属性。
 - `quartz_hs32.5854.asc`：公开 USGS Quartz HS32 光谱。文件头注明波长与反射率单位，读取后转换为 μm 和无量纲反射率。
 - `aviris_metadata.json`：2013 年 AVIRIS 的波长中心、半高全宽、投影和原始头信息。涉及原始影像的相对路径供完整流程使用。
 
@@ -43,6 +44,10 @@
 
 ## 已归档的独立验证与尺度统计
 
-`*_corrected_coverage.csv` 与 `same_dictionary_control_corrected.csv` 为已有面积支持规则修正后的尺度结果。两份 `*_sample_pixels.csv` 与 `stratified_metrics.csv` 为 Landsat/WorldView 两场独立覆盖参考对照，参考来源为 Stillinger 和 Bair 的 CC BY 4.0 数据集（DOI: 10.5281/zenodo.4031446）。这些文件属于 `legacy_library_output`：沿用原报告的历史模型结果，与本轮采用影像背景的新实验分别展示。
+`*_corrected_coverage.csv` 与 `same_dictionary_control_corrected.csv` 为已有面积支持规则修正后的尺度结果。两份 `*_sample_pixels.csv.gz` 与 `stratified_metrics.csv` 为 Landsat/WorldView 两场独立覆盖参考对照，参考来源为 Stillinger 和 Bair 的 CC BY 4.0 数据集（DOI: 10.5281/zenodo.4031446）。这些文件属于 `legacy_library_output`：沿用原报告的历史模型结果，与本轮采用影像背景的新实验分别展示。
 
 WorldView 表的 `reference_fsca` 为参考雪覆盖比例，`stratum` 划分无雪、混合雪和近纯雪；方法列为模型雪比例。`common_four_methods_normalization_valid` 指四种方法共同具有有效归一化比例，统计时必须应用同一掩膜。2016 配对为同日，2017 配对相差一天。
+
+两份样本表采用 `gzip.compress(..., compresslevel=6, mtime=0)` 无损压缩，全部 12,000 行、44 列分别保留。共 7,344,001 B 压缩为 1,881,183 B；压缩文件与解压原文 SHA-256 同时保存在 manifest 中。`pandas.read_csv` 自动识别 gzip，读取接口拒绝同一场景 CSV/GZ 并存，避免重复计数。原始计算的 `code_sha256` 保留生成时来源，第二版仅新增输入提取与无损打包记录。
+
+同一唯一 1 km 集合的筛选账本为 420 候选→420 有效状态→100 AVIRIS 有效面积≥95%→17 共同有效面积≥95%。bit 12 阳性为 32→32→0→0，bit 15 为 119→119→20→0。17 个阴性单元仍保留；85 个历史 500 m 配对独立统计，不接入该漏斗。

@@ -8,6 +8,7 @@
 | MOD09GA C6.1 | NASA 开放产品；保留产品编号与 NASA 引用 | 研究区质量位、唯一 1 km 单元表和解混派生统计 |
 | USGS 光谱 | USGS 公开数字光谱库及 public-domain 使用政策 | Quartz HS32 原谱、波段卷积与引用信息 |
 | SNICAR / WW80 正演 | SNICAR、SPIRES 的 MIT 源码 | 本项目计算的冻结正演结果；不打包完整光学属性数据库 |
+| SNICAR 散射参数子集 | 官方 202105 配套公开库；Flanner 等（2021）研究与教育用途说明 | 仅提取 `ss_alb` / `asm_prm`，标明精度转换、作者、来源与哈希，不更改上游数据使用条件 |
 | 实验室与野外雪谱 | Zenodo 3580078、3580825，Open、CC BY 4.0 | 原有实测验证的统计和引用信息 |
 | WorldView 可见雪覆盖参考 | Zenodo 4031446，Open、CC BY 4.0 | 作者公开发布的派生雪覆盖参考及本项目分层统计 |
 | Landsat C2 L2 | USGS 开放产品 | 公开验证的派生像元表，不捆绑整景数据 |
@@ -29,6 +30,7 @@
 - [实验室雪谱与 SSA](https://doi.org/10.5281/zenodo.3580078)
 - [野外雪与裸地光谱](https://doi.org/10.5281/zenodo.3580825)
 - [可见雪覆盖验证掩膜](https://doi.org/10.5281/zenodo.4031446)
+- [SNICAR-ADv3 配套库与研究教育用途说明](https://gmd.copernicus.org/articles/14/7673/2021/)
 - [ECOSTRESS 谱库说明与署名要求](https://speclib.jpl.nasa.gov/)
 
-核对日期：2026-10-24。外部数据保留原许可，仓库的 MIT 代码许可不覆盖这些数据。
+核对日期：2026-10-25。外部数据保留原许可，仓库的 MIT 代码许可不覆盖这些数据。

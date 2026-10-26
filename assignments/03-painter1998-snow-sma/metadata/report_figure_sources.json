@@ -5,7 +5,9 @@
       "topic": "雪谱、粒径与反照率",
       "notebook": "notebooks/01_snow_optics.ipynb",
       "inputs": [
-        "data/demo/forward_models.mat"
+        "data/demo/forward_models.mat",
+        "data/demo/scattering_inputs.npz",
+        "data/demo/scattering_inputs.source.json"
       ]
     },
     {
@@ -28,12 +30,14 @@
       ]
     },
     {
-      "topic": "MODIS产品一致性",
+      "topic": "同单位筛选账本与产品一致性",
       "notebook": "notebooks/03_aviris_modis.ipynb",
       "inputs": [
         "data/demo/modis_1km_units.csv",
         "data/demo/product_consistency.csv"
-      ]
+      ],
+      "figure": 13,
+      "script": "scripts/report_validation_figure.py"
     },
     {
       "topic": "外部覆盖与尺度统计",
@@ -44,5 +48,8 @@
       ]
     }
   ],
-  "note": "报告保留已归档的历史库谱实验图。此索引列出本教学仓库可直接重绘的对应主题；每个文件的哈希与来源见data/demo/manifest.json。"
+  "note": "报告保留已归档的历史库谱实验图。此索引列出本教学仓库可直接重绘的对应主题；每个文件的哈希与来源见data/demo/manifest.json。",
+  "report_sha256": "929519e06a5aa8b25f2fc772be363dae2479f1e8121b22d1081e459c19810095",
+  "report_pages": 33,
+  "numbered_figures": 15
 }

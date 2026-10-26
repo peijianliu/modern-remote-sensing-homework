@@ -13,6 +13,16 @@ def mgs_operator(matrix: np.ndarray) -> np.ndarray:
 
     matrix 的维度为波段数 × 非阴影端元数。拟合采用无约束系数，
     零反射率阴影的比例由 1 − 非阴影系数之和得到。
+
+    Args:
+        matrix: 无量纲反射率矩阵 A，形状 (bands, components)，要求满列秩。
+
+    Returns:
+        形状 (components, bands) 的算子 L。单个列向量解为 f=L@y；
+        像元按行存放的批量观测 Y 用 Y@L.T 求解。
+
+    Raises:
+        ValueError: 维度、有限值或列秩不满足求解要求。
     """
     a = np.asarray(matrix, dtype=np.float64)
     if a.ndim != 2 or not np.isfinite(a).all():
@@ -25,6 +35,7 @@ def mgs_operator(matrix: np.ndarray) -> np.ndarray:
     scale = np.linalg.norm(a, axis=0).max()
     for j in range(k):
         v = a[:, j].copy()
+        # 第一遍移除已有方向；第二遍清除浮点舍入留下的投影，降低近共线误差。
         for _ in range(2):
             for i in range(j):
                 correction = q[:, i] @ v
@@ -43,6 +54,16 @@ def fcls_batch(y: np.ndarray, matrix: np.ndarray) -> np.ndarray:
     最小化 ||y − Af||²，约束为 f >= 0、sum(f) <= 1；剩余比例为零反射率
     阴影。逐一比较可行单纯形各个面上的解，包括阴影比例为零的边界。
     最多支持 6 个非阴影端元。
+
+    Args:
+        y: 形状 (pixels, bands) 的无量纲反射率，单谱也可传一维。
+        matrix: 形状 (bands, components) 的非阴影端元矩阵。
+
+    Returns:
+        形状 (pixels, components) 的原始比例，阴影补量由 1-sum(f) 给出。
+
+    Raises:
+        ValueError: 非阴影端元数超过 6 或输入无法求解。
     """
     y = np.atleast_2d(np.asarray(y, dtype=float))
     a = np.asarray(matrix, dtype=float)
@@ -138,6 +159,14 @@ def select_snow(
     qa 按位组合：1 输入含非有限值；2 无满列秩模型；4 归一化分母未超过
     阈值；8 归一化雪比例低于阈值；16 半径位于候选范围边界；32 条件数
     超过 condition_warning；64 原始端元系数或阴影比例超出 [0, 1]。
+
+    Returns:
+        UnmixResult：比例轴为 (pixels, components)，第一列为雪；
+        modeled/residual 为 (pixels, bands)，其余诊断为 (pixels,)。
+        normalized 用于无遮蔽表面的相对覆盖；原始 fractions 用于重建。
+
+    Raises:
+        ValueError: 波段维度不同或 solver 不为 original / fcls。
     """
     y = np.atleast_2d(np.asarray(y, dtype=np.float64))
     snow = np.atleast_2d(np.asarray(snow_spectra, dtype=np.float64))
@@ -157,6 +186,7 @@ def select_snow(
     best_index = np.full(len(data), -1, dtype=int)
     best_condition = np.full(len(data), np.nan)
     for index, s in enumerate(snow):
+        # 每次只放入一个候选雪谱，避免同一模型内多条相近雪谱共线。
         a = np.column_stack((s, background))
         try:
             operator = mgs_operator(a)
@@ -186,6 +216,7 @@ def select_snow(
     rms = np.sqrt(np.mean(residual * residual, axis=1))
     shade = 1 - fractions.sum(axis=1)
     denominator = 1 - shade
+    # 原始解先重建再归一化；对小分母屏蔽，避免将阴影噪声放大为覆盖比例。
     normalized = np.full_like(fractions, np.nan)
     normalize = successful & (denominator > minimum_denominator)
     normalized[normalize] = fractions[normalize] / denominator[normalize, None]

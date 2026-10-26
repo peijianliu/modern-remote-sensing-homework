@@ -17,3 +17,7 @@
 private_sources/
 verification/
 tools/
+
+# Generated site and interactive outputs
+/docs/
+/build/

@@ -1,5 +1,16 @@
-# Preserve checksummed data and source bytes on every platform.
-* -text
-assignments/03-painter1998-snow-sma/vendor/** -whitespace
-assignments/03-painter1998-snow-sma/data/** -whitespace
-docs/**/assets/** -whitespace
+# Normalize maintained source; preserve external and checksummed payloads.
+* text=auto eol=lf
+*.py text eol=lf
+*.ipynb text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.toml text eol=lf
+*.m text eol=lf
+assignments/03-painter1998-snow-sma/data/** -text -whitespace
+assignments/03-painter1998-snow-sma/vendor/** -text -whitespace
+site/**/assets/** -text -whitespace
+*.pdf -text
+*.npz -text
+*.mat -text
+*.gz -text
+assignments/03-painter1998-snow-sma/reports/figures/** -text -whitespace
