@@ -1,0 +1,7 @@
+stage,minimum_coverage,n,flag12_positive,flag15_positive
+aviris_area,0.8,114,0,21
+common_area,0.8,17,0,0
+aviris_area,0.9,107,0,20
+common_area,0.9,17,0,0
+aviris_area,0.95,100,0,20
+common_area,0.95,17,0,0

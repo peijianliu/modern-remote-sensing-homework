@@ -32,15 +32,17 @@ SITE_SOURCE = REPOSITORY / "site"
 CASE_URL = Path("assignments/03-painter1998")
 NOTEBOOK_NAMES = ("01_snow_optics", "02_fig3_sma", "03_aviris_modis")
 MATHJAX_VERSION = "3.2.2"
+MATHJAX_SOURCE = SITE_SOURCE / CASE_URL / "assets/mathjax/SOURCE.json"
+MATHJAX_CACHE = REPOSITORY / "build/assets/mathjax"
 
 
 def prepare_mathjax(asset_directory: Path) -> None:
-    """从官方 npm registry 获取固定版本，校验 SHA-512 后仅提取完整 SVG 组件。"""
+    """按版本化来源锁下载组件，校验固定 SHA-512/SHA-256 后写入忽略目录。"""
     asset_directory.mkdir(parents=True, exist_ok=True)
-    registry = f"https://registry.npmjs.org/mathjax/{MATHJAX_VERSION}"
-    with urlopen(registry, timeout=60) as response:
-        metadata = json.load(response)
-    url = metadata["dist"]["tarball"]
+    metadata = json.loads(MATHJAX_SOURCE.read_text(encoding="utf-8"))
+    if metadata["version"] != MATHJAX_VERSION:
+        raise ValueError("MathJax version differs from the fixed source lock")
+    url = metadata["url"]
     if urlparse(url).hostname != "registry.npmjs.org":
         raise ValueError("Unexpected MathJax package host")
     with urlopen(url, timeout=120) as response:
@@ -48,9 +50,10 @@ def prepare_mathjax(asset_directory: Path) -> None:
     if len(payload) > 40_000_000:
         raise ValueError("MathJax package exceeds the expected size")
     checksum = "sha512-" + base64.b64encode(hashlib.sha512(payload).digest()).decode("ascii")
-    if checksum != metadata["dist"]["integrity"]:
+    if checksum != metadata["npm_integrity"]:
         raise ValueError("MathJax package integrity mismatch")
     # tex-svg-full 包含 TeX 扩展与 SVG 字形；本案例不需要额外网络组件。
+    prepared = {}
     with tarfile.open(fileobj=BytesIO(payload), mode="r:gz") as archive:
         for member_name, output_name in (
             ("package/es5/tex-svg-full.js", "tex-svg-full.js"),
@@ -59,20 +62,14 @@ def prepare_mathjax(asset_directory: Path) -> None:
             member = archive.extractfile(member_name)
             if member is None:
                 raise ValueError(f"Missing upstream package file: {member_name}")
-            (asset_directory / output_name).write_bytes(member.read())
-    source = {
-        "package": "mathjax",
-        "version": MATHJAX_VERSION,
-        "url": url,
-        "npm_integrity": checksum,
-        "license": "Apache-2.0",
-        "files": {
-            name: hashlib.sha256((asset_directory / name).read_bytes()).hexdigest()
-            for name in ("tex-svg-full.js", "LICENSE")
-        },
-    }
+            content = member.read()
+            if hashlib.sha256(content).hexdigest() != metadata["files"][output_name]:
+                raise ValueError(f"MathJax extracted checksum mismatch: {output_name}")
+            prepared[output_name] = content
+    for name, content in prepared.items():
+        (asset_directory / name).write_bytes(content)
     (asset_directory / "SOURCE.json").write_text(
-        json.dumps(source, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+        json.dumps(metadata, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
 
 
@@ -205,15 +202,20 @@ def build(output: Path, timeout: int = 300) -> dict:
         actual = {p.relative_to(output).as_posix() for p in output.rglob("*") if p.is_file()}
         if actual - known:
             raise ValueError("Output contains files outside the previous site manifest; preserved")
-    assets = SITE_SOURCE / CASE_URL / "assets/mathjax"
+    assets = MATHJAX_CACHE
     if not all((assets / name).is_file() for name in ("tex-svg-full.js", "LICENSE", "SOURCE.json")):
-        raise FileNotFoundError("Missing versioned MathJax assets; use a complete checkout")
-    metadata = json.loads((assets / "SOURCE.json").read_text(encoding="utf-8"))
+        raise FileNotFoundError(
+            "Missing cached MathJax assets; run build_notebooks.py --prepare-assets once"
+        )
+    metadata = json.loads(MATHJAX_SOURCE.read_text(encoding="utf-8"))
+    if json.loads((assets / "SOURCE.json").read_text(encoding="utf-8")) != metadata:
+        raise ValueError("Cached MathJax source lock differs from the repository")
     for name, expected in metadata["files"].items():
         if hashlib.sha256((assets / name).read_bytes()).hexdigest() != expected:
             raise ValueError(f"MathJax asset checksum mismatch: {name}")
     shutil.copytree(SITE_SOURCE, output, dirs_exist_ok=True)
     case_output = output / CASE_URL
+    shutil.copytree(assets, case_output / "assets/mathjax", dirs_exist_ok=True)
     # 报告的唯一源在作业目录，站点只保留本次构建的副本。
     shutil.copy2(CASE / "reports/painter1998-integrated-report.pdf", case_output / "report.pdf")
     build_directory = CASE / "build/notebooks"
@@ -289,7 +291,7 @@ def main() -> None:
     if args.timeout <= 0:
         parser.error("--timeout must be positive")
     if args.prepare_assets:
-        prepare_mathjax(SITE_SOURCE / CASE_URL / "assets/mathjax")
+        prepare_mathjax(MATHJAX_CACHE)
     elif args.prepare_workspace:
         print("Interactive notebooks: build/workspace (existing files preserved)")
         prepare_workspace()

@@ -1,9 +1,13 @@
-function verify_forward(output_path, prepared_workspace)
+function verify_forward(output_path, prepared_workspace, reference_path)
 % 以 4 半径 x 2 角度 x 2 冰选项校核显式输入，输出 16 条数值记录。
 % prepared_workspace 应包含官方光学库和 prepare_optics.py 生成的工作副本。
 assert(~isfile(output_path), 'Output exists; select a new verification file');
 case_root = fileparts(fileparts(mfilename('fullpath')));
-baseline = load(fullfile(case_root, 'data/demo/forward_models.mat'));
+if nargin < 3
+    reference_path = fullfile(prepared_workspace, 'data/cache/forward_models.mat');
+end
+assert(isfile(reference_path), 'Generate or register the optional complete MATLAB reference first');
+baseline = load(reference_path);
 config = jsondecode(fileread(fullfile(case_root, 'configs/baseline.json')));
 args = pure_snow_inputs(config);
 fields = fieldnames(args);

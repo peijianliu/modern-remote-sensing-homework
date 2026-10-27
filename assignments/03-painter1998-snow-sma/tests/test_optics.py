@@ -4,7 +4,12 @@ import numpy as np
 import pytest
 
 from snowmix.optics import ww80_semi_infinite
-from snowmix.teaching import load_forward, load_optical_inputs, recompute_ww80
+from snowmix.teaching import (
+    load_forward,
+    load_forward_reference,
+    load_optical_inputs,
+    recompute_ww80,
+)
 
 
 def test_absorbing_conservative_and_isotropic_limits():
@@ -54,7 +59,29 @@ def test_full_grid_and_solar_weighted_precision_with_uint8_angles():
     precise = recompute_ww80(optics, forward["angles_deg"].astype(np.float64))
     np.testing.assert_array_equal(result, precise)
     assert result.shape == (148, 480, 3, 2) and result.size == 426240
-    assert np.max(np.abs(result - forward["ww_albedo"])) < 1e-6
+    reference = load_forward_reference()
+    indices = [
+        int(np.flatnonzero(forward["radii_um"] == radius)[0]) for radius in reference["radii_um"]
+    ]
+    assert result[indices].size == 11520
+    assert np.max(np.abs(result[indices] - reference["ww_albedo"])) < 1e-6
     flux = forward["solar_flux"].T[None, :, :, None]
     broadband = np.sum(result * flux, axis=1) / np.sum(flux, axis=1)
-    np.testing.assert_allclose(broadband, forward["broadband_ww"], atol=1e-6, rtol=0)
+    np.testing.assert_allclose(broadband, reference["broadband_ww"], atol=1e-6, rtol=0)
+
+
+def test_main_forward_does_not_read_calculated_reference(monkeypatch):
+    from snowmix import teaching
+
+    original = teaching.np.load
+    paths = []
+
+    def traced(path, **kwargs):
+        paths.append(path.name)
+        return original(path, **kwargs)
+
+    monkeypatch.setattr(teaching.np, "load", traced)
+    output = teaching.load_forward()
+    assert output["ww_albedo"].shape == (148, 480, 3, 2)
+    assert paths == ["scattering_inputs.npz", "solar_illumination.npz"]
+    assert "snicar_albedo" not in output

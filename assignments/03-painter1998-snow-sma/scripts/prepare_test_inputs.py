@@ -8,7 +8,6 @@ import shutil
 def prepare() -> None:
     root = Path(__file__).resolve().parents[1]
     pairs = {
-        "forward_models.mat": "data/cache/forward_models.mat",
         "quartz_hs32.5854.asc": "data/raw/spectra/quartz_hs32.5854.asc",
         "aviris_metadata.json": "data/cache/aviris_metadata.json",
     }

@@ -11,6 +11,78 @@ import numpy as np
 from .linear import select_snow
 
 
+def paired_block_means(
+    values: np.ndarray,
+    row_col: np.ndarray,
+    block_size_pixels: int = 50,
+    repeats: int = 1000,
+    seed: int = 1998,
+) -> dict:
+    """对相同空间区块内的多列指标配对重采样，计算像元加权均值区间。
+
+    Args:
+        values: 有限值矩阵，形状 (pixels, metrics)；各列必须使用相同像元。
+        row_col: 对应的零起算 ROI 行列号，形状 (pixels, 2)，不得重复。
+        block_size_pixels: 正方形区块边长；30 m 网格的 50 像元对应 1.5 km。
+        repeats: bootstrap 次数，至少 2 次。
+        seed: 固定随机种子。区块从 ROI 左上角行列号 (0, 0) 划分。
+
+    Returns:
+        mean、interval_95、bootstrap_means，以及样本数和区块数。
+        每次对所有指标抽取相同区块；差值须先逐次相减再求分位。
+        重采样后以区块像元数加权，避免边缘小区块获得过大权重。
+
+    Raises:
+        ValueError: 输入未对齐、含无效值或重复位置，参数无效，或不足 5 个区块。
+    """
+    data = np.asarray(values, dtype=np.float64)
+    positions = np.asarray(row_col, dtype=np.float64)
+    if (
+        data.ndim != 2
+        or not data.shape[0]
+        or not data.shape[1]
+        or not np.isfinite(data).all()
+        or positions.shape != (len(data), 2)
+        or not np.isfinite(positions).all()
+        or np.any(positions < 0)
+        or np.any(positions != np.floor(positions))
+        or len(np.unique(positions, axis=0)) != len(data)
+    ):
+        raise ValueError("Use aligned finite metrics and unique nonnegative row/column positions")
+    if (
+        isinstance(block_size_pixels, bool)
+        or not isinstance(block_size_pixels, (int, np.integer))
+        or block_size_pixels <= 0
+        or isinstance(repeats, bool)
+        or not isinstance(repeats, (int, np.integer))
+        or repeats < 2
+    ):
+        raise ValueError("Block size must be a positive integer and repeats must be at least 2")
+    blocks, inverse = np.unique(
+        positions.astype(np.int64) // block_size_pixels, axis=0, return_inverse=True
+    )
+    if len(blocks) < 5:
+        raise ValueError("At least 5 spatial blocks are required for interval estimation")
+    count = np.bincount(inverse)
+    totals = np.column_stack(
+        [np.bincount(inverse, weights=data[:, column]) for column in range(data.shape[1])]
+    )
+    rng = np.random.default_rng(seed)
+    draws = rng.integers(0, len(blocks), size=(repeats, len(blocks)))
+    # 不展开全部像元：区块计数与各列和是均值所需的充分统计量。
+    means = totals[draws].sum(axis=1) / count[draws].sum(axis=1, keepdims=True)
+    return {
+        "n": len(data),
+        "spatial_blocks": len(blocks),
+        "block_size_pixels": int(block_size_pixels),
+        "repeats": int(repeats),
+        "seed": int(seed),
+        "mean": data.mean(axis=0),
+        "interval_95": np.quantile(means, [0.025, 0.975], axis=0),
+        "bootstrap_means": means,
+    }
+
+
 def absorption_area(
     wavelength_um: np.ndarray, spectra: np.ndarray, lower_um: float = 0.95, upper_um: float = 1.09
 ) -> np.ndarray:

@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "painter1998-snow-sma"
-version = "2.0.0"
+version = "2.1.0"
 description = "Executable teaching case for snow grain size and spectral mixture analysis"
 readme = "README.md"
 requires-python = ">=3.11,<3.12"
