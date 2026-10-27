@@ -1,0 +1,24 @@
+{
+  "n": 60949,
+  "spatial_blocks": 30,
+  "block_size_pixels": 50,
+  "repeats": 1000,
+  "seed": 1998,
+  "comparison": "1000 um minus 50 um",
+  "paired_delta": {
+    "normalized_snow": {
+      "mean": -0.10200600880534569,
+      "interval_95": [
+        -0.13164491043645235,
+        -0.07664386843616063
+      ]
+    },
+    "rms": {
+      "mean": -0.01103561684341581,
+      "interval_95": [
+        -0.01213458561045468,
+        -0.00995030451443712
+      ]
+    }
+  }
+}

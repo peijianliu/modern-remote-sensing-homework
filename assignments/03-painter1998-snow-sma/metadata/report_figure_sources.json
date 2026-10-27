@@ -5,18 +5,19 @@
       "topic": "雪谱、粒径与反照率",
       "notebook": "notebooks/01_snow_optics.ipynb",
       "inputs": [
-        "data/demo/forward_models.mat",
         "data/demo/scattering_inputs.npz",
-        "data/demo/scattering_inputs.source.json"
+        "data/demo/scattering_inputs.source.json",
+        "data/demo/solar_illumination.npz"
       ]
     },
     {
       "topic": "Fig. 3、覆盖误差与残差",
       "notebook": "notebooks/02_fig3_sma.ipynb",
       "inputs": [
-        "data/demo/forward_models.mat",
         "data/demo/quartz_hs32.5854.asc",
-        "data/demo/aviris_metadata.json"
+        "data/demo/aviris_metadata.json",
+        "data/demo/scattering_inputs.npz",
+        "data/demo/solar_illumination.npz"
       ]
     },
     {
@@ -49,7 +50,7 @@
     }
   ],
   "note": "报告保留已归档的历史库谱实验图。此索引列出本教学仓库可直接重绘的对应主题；每个文件的哈希与来源见data/demo/manifest.json。",
-  "report_sha256": "929519e06a5aa8b25f2fc772be363dae2479f1e8121b22d1081e459c19810095",
-  "report_pages": 33,
+  "report_sha256": "1e194ae219199296aafd06dd6c6948423fdb143f9ba527eb728b0ca18dbfbf59",
+  "report_pages": 34,
   "numbered_figures": 15
 }

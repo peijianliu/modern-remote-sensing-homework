@@ -22,6 +22,10 @@ def test_near_collinear_fcls_exact_observation():
 
 
 @pytest.mark.full_data
+@pytest.mark.skipif(
+    not (ROOT / "data/cache/forward_models.mat").is_file(),
+    reason="Optional full MATLAB reference is not part of teaching inputs",
+)
 def test_requested_radius_grid_and_ice_option_are_used():
     c = json.loads((ROOT / "configs/baseline.json").read_text(encoding="utf-8"))
     c["synthetic"].update(radius_min_um=200, radius_max_um=300, radius_step_um=50)

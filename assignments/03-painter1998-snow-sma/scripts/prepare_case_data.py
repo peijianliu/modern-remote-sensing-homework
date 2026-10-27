@@ -188,6 +188,9 @@ def prepare(source_root: Path, output: Path, verification: Path | None = None) -
         np.nan_to_num(np.stack([band(v) for v in (0.65, 0.55, 0.47)], axis=-1)) / 0.65, 0, 1
     )
     rgb[~valid] = 0.9
+    # 分母从原始系数直接求和，保存 float64。
+    denominator = np.full((len(scan["radii_um"]), *shape), np.nan, dtype=np.float64)
+    denominator.reshape(len(scan["radii_um"]), -1)[:, flat] = 1 - scan["shade"]
     np.savez_compressed(
         output / "aviris_case.npz",
         wavelength_um=w[bands],
@@ -211,6 +214,7 @@ def prepare(source_root: Path, output: Path, verification: Path | None = None) -
         fixed_snow_fraction=np.stack([full(item[:, 0]) for item in scan["normalized"]]),
         fixed_raw_snow=np.stack([full(item[:, 0]) for item in scan["fractions"]]),
         fixed_rms=np.stack([full(item) for item in scan["rms"]]),
+        fixed_denominator=denominator,
         physical_snow_fraction=full(physical["normalized"][:, 0]),
         physical_radius_um=full(physical["radius_um"]),
         physical_rms=full(physical["rms"]),
@@ -473,7 +477,6 @@ def prepare_modis_units(
 def finish_inputs(source_root: Path, output: Path) -> None:
     """复制公开计算缓存、USGS 石英谱和已归档的派生统计。"""
     copies = {
-        "data/cache/forward_models.mat": "forward_models.mat",
         "data/raw/spectra/quartz_hs32.5854.asc": "quartz_hs32.5854.asc",
         "data/cache/aviris_metadata.json": "aviris_metadata.json",
     }
@@ -502,6 +505,18 @@ def finish_inputs(source_root: Path, output: Path) -> None:
             )
         else:
             shutil.copy2(source_root / source, output / destination)
+    # 教学入口使用现算 WW80，完整 MATLAB MAT 仅属于可选的完整研究流程。
+    template = Path(__file__).resolve().parents[1] / "data/demo"
+    for name in (
+        "scattering_inputs.npz",
+        "scattering_inputs.source.json",
+        "solar_illumination.npz",
+        "forward_reference.npz",
+        "forward_reference.source.json",
+        "sample_support.csv",
+        "lab_conditions.csv",
+    ):
+        shutil.copy2(template / name, output / name)
 
 
 def finish_manifest(source_root: Path, output: Path, config: dict) -> None:
@@ -547,6 +562,10 @@ def finish_manifest(source_root: Path, output: Path, config: dict) -> None:
             "note": "Historical derived outputs; not combined with the new AVIRIS image-background experiments. Original JHU spectra are not distributed.",
         },
     ]
+    template = Path(__file__).resolve().parents[1] / "data/demo/manifest.json"
+    for source in json.loads(template.read_text(encoding="utf-8"))["sources"]:
+        if source["id"] in {"snicar_optical_inputs", "lab_snow_conditions"}:
+            sources.append(source)
     files = []
     for path in sorted(output.iterdir()):
         if not path.is_file() or path.name == "manifest.json":
@@ -589,12 +608,17 @@ def finish_manifest(source_root: Path, output: Path, config: dict) -> None:
                 source_path=source.as_posix(),
                 source_sha256=digest(source_root / source),
             )
-        elif path.name in {"forward_models.mat", "quartz_hs32.5854.asc", "aviris_metadata.json"}:
+        elif path.name in {"quartz_hs32.5854.asc", "aviris_metadata.json"}:
             record["source_id"] = {
-                "forward_models.mat": "snow_model",
                 "quartz_hs32.5854.asc": "usgs_quartz",
                 "aviris_metadata.json": "aviris",
             }[path.name]
+        elif path.name.startswith(("scattering_inputs",)):
+            record["source_id"] = "snicar_optical_inputs"
+        elif path.name.startswith(("forward_reference", "solar_illumination")):
+            record["source_id"] = "snow_model"
+        elif path.name == "lab_conditions.csv":
+            record["source_id"] = "lab_snow_conditions"
         files.append(record)
     dump(
         output / "manifest.json",
@@ -671,6 +695,13 @@ def finalize_case_statistics(output: Path) -> None:
         },
     )
     dump(output / "case_summary.json", summary)
+    from snowmix import teaching
+
+    diagnostic, bootstrap = teaching.fixed_radius_statistics(arrays)
+    diagnostic.to_csv(output / "fixed_radius_uncertainty.csv", index=False)
+    dump(output / "fixed_radius_bootstrap.json", bootstrap)
+    units = pd.read_csv(output / "modis_1km_units.csv")
+    teaching.coverage_sensitivity(units).to_csv(output / "coverage_sensitivity.csv", index=False)
 
 
 if __name__ == "__main__":

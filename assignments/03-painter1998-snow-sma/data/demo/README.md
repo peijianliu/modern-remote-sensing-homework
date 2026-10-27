@@ -4,7 +4,8 @@
 
 ## 正演与光谱
 
-- `forward_models.mat`：`matlab/run_forward.m` 计算的 SNICAR 与 WW80 缓存。半径为 30–1500 μm、步长 10 μm，波长为 0.205–4.995 μm、步长 0.01 μm；太阳天顶角为 0°、60°、22°；两种冰光学选项为 Warren 1984 和 Warren–Brandt 2008。WW80 在默认 Notebook 中由散射参数完整重算，SNICAR-AD 保留参考缓存；完整 adding-doubling 重算使用 MATLAB。
+- `solar_illumination.npz`：SNICAR中纬度冬季直接入射太阳谱，形状为 `(3 angles, 480 wavelengths)`，从完整模型输入通量无损提取。与散射参数共同构成默认WW80正演输入，反照率现算。
+- `forward_reference.npz`：四个代表半径（50、200、500、1000 μm）的独立MATLAB WW80/SNICAR-AD光谱，形状为 `(4,480,3,2)`，以及148个半径的加权参考值。仅用于校核cell。`forward_reference.source.json`说明来源、完整历史MAT哈希及子集处理。完整MAT已转为可选重建输入，不随仓库分发。
 - `scattering_inputs.npz`：从官方 202105 库提取的 `(148 radius, 480 wavelength, 2 ice_options)` 散射属性，`ss_alb` float64、`asm_prm` float32，无量纲；波长 m→μm。`scattering_inputs.source.json` 保留作者、版本、官方来源、每个 NetCDF 哈希与修改说明。用于 NumPy WW80 重算，不表示重新计算了 Mie 属性。
 - `quartz_hs32.5854.asc`：公开 USGS Quartz HS32 光谱。文件头注明波长与反射率单位，读取后转换为 μm 和无量纲反射率。
 - `aviris_metadata.json`：2013 年 AVIRIS 的波长中心、半高全宽、投影和原始头信息。涉及原始影像的相对路径供完整流程使用。
@@ -23,6 +24,7 @@
 | `rgb`、`valid_mask` | 统一 `/0.65` 拉伸的 RGB 图和有效像元掩膜 |
 | `fixed_radii_um` | 50、100、200、500、1000 μm |
 | `fixed_raw_snow`、`fixed_snow_fraction` | 五种固定半径的原始雪系数、阴影归一化雪比例 |
+| `fixed_denominator` | 五模型的 `1−shade`，从原始非阴影系数求和直接计算，float64 |
 | `fixed_rms` | 五种固定半径的光谱 RMS，反射率单位 |
 | `physical_snow_fraction`、`physical_radius_um`、`physical_rms` | 物理雪库 MGS 最小 RMS 结果 |
 | `image_snow_fraction`、`image_rms` | 五种候选影像雪谱 MGS 最小 RMS 结果 |
@@ -51,3 +53,15 @@ WorldView 表的 `reference_fsca` 为参考雪覆盖比例，`stratum` 划分无
 两份样本表采用 `gzip.compress(..., compresslevel=6, mtime=0)` 无损压缩，全部 12,000 行、44 列分别保留。共 7,344,001 B 压缩为 1,881,183 B；压缩文件与解压原文 SHA-256 同时保存在 manifest 中。`pandas.read_csv` 自动识别 gzip，读取接口拒绝同一场景 CSV/GZ 并存，避免重复计数。原始计算的 `code_sha256` 保留生成时来源，第二版仅新增输入提取与无损打包记录。
 
 同一唯一 1 km 集合的筛选账本为 420 候选→420 有效状态→100 AVIRIS 有效面积≥95%→17 共同有效面积≥95%。bit 12 阳性为 32→32→0→0，bit 15 为 119→119→20→0。17 个阴性单元仍保留；85 个历史 500 m 配对独立统计，不接入该漏斗。
+
+## 固定粒径的归一化诊断与空间不确定度
+
+`fixed_radius_uncertainty.csv` 每行一个半径，`common_n=60949`。`denominator_mean/p05/p50`均在五模型共同域计算；`denominator_pass_fraction_common`在该域均为1，`denominator_pass_fraction_input`以全部62908个输入为分母。分母从重新求解的原始系数直接求和，不以`raw_snow/normalized_snow`反推。无约束负值保留，`negative_snow_fraction`给出其比例。
+
+`normalized_snow_ci_low/high`与`rms_ci_low/high`为像元加权均值的95%区间，单位分别为比例与反射率。`fixed_radius_bootstrap.json`记录ROI左上角为原点、50×50像元（1.5 km）、30个有效区块、1000次、seed=1998及1000−50 μm的配对差值。各模型每次抽同一组区块，边缘块按像元数加权，区间描述固定场景与端元下的空间抽样。
+
+`coverage_sensitivity.csv`每档面积阈值保留AVIRIS支持、共同支持两行，比较0.80、0.90、0.95；完整候选键来自`modis_1km_units.csv`，不与历史85个500 m配对混合。
+
+`sample_support.csv`集中列出各分支的30 m像元口径与父集合。63213、62908、60949、62861、62870分别来自历史ROI、新影像背景输入、五固定半径共同域、三方法共同域、历史仅光谱退化共同域；末三项有各自掩膜，不构成连续筛选链。
+
+`lab_conditions.csv`列出Hannula与Heinilä（Zenodo 3580078，CC BY 4.0）的10个实验室雪况及日期、干雪标记与条件级SSA代理，已从原始实验表选列。覆盖指标使用6个干雪条件，半径使用其中4个有SSA的条件；条件标识便于追溯，不能把重复光谱计为独立雪况。

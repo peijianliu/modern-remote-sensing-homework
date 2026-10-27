@@ -48,6 +48,16 @@
       "version": "202105",
       "modifications": "Selected radii and two ice options; ss_alb float64, asm_prm float32; no Mie recomputation",
       "access": "public accompanying research and education input library; external attribution retained"
+    },
+    {
+      "id": "lab_snow_conditions",
+      "url": "https://doi.org/10.5281/zenodo.3580078",
+      "creators": [
+        "Hanna-Reetta Hannula",
+        "Kati Heinilä"
+      ],
+      "license": "CC BY 4.0",
+      "modifications": "Condition identifiers, acquisition date and SSA subset from the archived laboratory experiment table; no new measurements"
     }
   ],
   "experiment": {
@@ -141,9 +151,10 @@
     },
     {
       "path": "aviris_case.npz",
-      "bytes": 5308550,
-      "sha256": "d4cb7a7704a4b8ff997dc4b95f2be69da283c5ae22cf83a67abc4a0b51689dce",
-      "source_id": "this_experiment"
+      "bytes": 7674292,
+      "sha256": "256e72b6e741d275621ed7729e7460196abc651141b9c37f88d262825cfc7d04",
+      "source_id": "this_experiment",
+      "modifications": "Added float64 non-shade denominator from the same five fixed-radius solves; original fields preserved"
     },
     {
       "path": "aviris_metadata.json",
@@ -158,16 +169,40 @@
       "source_id": "this_experiment"
     },
     {
+      "path": "coverage_sensitivity.csv",
+      "source_id": "this_experiment",
+      "bytes": 210,
+      "sha256": "a69d8a28a0fcefa12d1faa01e8efc58be94b65286e4b69cf33323271b892028c"
+    },
+    {
+      "path": "fixed_radius_bootstrap.json",
+      "source_id": "this_experiment",
+      "bytes": 494,
+      "sha256": "054c06412170a3b4a395ac6f8687199343ca0e54585b744ed948361b8e6ac00f"
+    },
+    {
       "path": "fixed_radius_summary.csv",
       "bytes": 1429,
       "sha256": "4c0e863d7c87cde742034ec3dc19ac10ef460af4ac1d9df5841a5fd5e27639a3",
       "source_id": "this_experiment"
     },
     {
-      "path": "forward_models.mat",
-      "bytes": 5926326,
-      "sha256": "9054918f3361788c9d53b29ab5e88773be6a93fa9b9c2e834325d263250ac017",
-      "source_id": "snow_model"
+      "path": "fixed_radius_uncertainty.csv",
+      "source_id": "this_experiment",
+      "bytes": 1549,
+      "sha256": "64ab06cac40b607a6515072860a3bb697a37a5d581fd5b9484835567342b16fb"
+    },
+    {
+      "path": "forward_reference.npz",
+      "source_id": "snow_model",
+      "bytes": 183015,
+      "sha256": "bac414f9f513ce68fa381c31a1b30e7a3a82da9036af9bc35ffabacf0874f799"
+    },
+    {
+      "path": "forward_reference.source.json",
+      "source_id": "snow_model",
+      "bytes": 1163,
+      "sha256": "8f8970793059c045dfeda97b80a09810ef149d04760333bccda538ca7c391e63"
     },
     {
       "path": "image_endmember_summary.csv",
@@ -180,6 +215,12 @@
       "bytes": 234,
       "sha256": "19e960f7c8e43c8caa7ac2ce35c421ca5fb65b41e196588c6d24705da503378c",
       "source_id": "this_experiment"
+    },
+    {
+      "path": "lab_conditions.csv",
+      "source_id": "lab_snow_conditions",
+      "bytes": 647,
+      "sha256": "124ec2232a3fa6e35b383331b54f477d4370ef642f9ba6cdc79d1af8c8c87b65"
     },
     {
       "path": "LC08_L2SP_043032_20170522_02_T1_sample_pixels.csv.gz",
@@ -223,8 +264,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 6089,
-      "sha256": "58749145ba0ccdec4804e374151c57894a858580b149956e5ca4b0286f583240",
+      "bytes": 8051,
+      "sha256": "d8d3137a4e4c8d48929b3276124f33cd4d4fce82230c330d23fac3260adde2d4",
       "source_id": "this_experiment"
     },
     {
@@ -242,18 +283,10 @@
       "source_sha256": "660de4071c9211690c22d75427aed74b0ef59190646aa7727eafa019608e16a3"
     },
     {
-      "path": "spatial_metadata.json",
-      "bytes": 3470,
-      "sha256": "1c78a2b2a6c6bba3e020d628527d42ab55d7a596639f954d38f7cc2dce7a8f04",
-      "source_id": "this_experiment"
-    },
-    {
-      "path": "stratified_metrics.csv",
-      "bytes": 9450,
-      "sha256": "5c008f20eef8dab32f3e34dacbaf80cb9fbc6b4e1c0894da57401f41b17b75f4",
-      "source_id": "legacy_worldview",
-      "source_path": "experiments/painter1998/2026-10-01/v2/13_worldview_validation_r004/tables/stratified_metrics.csv",
-      "source_sha256": "5c008f20eef8dab32f3e34dacbaf80cb9fbc6b4e1c0894da57401f41b17b75f4"
+      "path": "sample_support.csv",
+      "source_id": "this_experiment",
+      "bytes": 546,
+      "sha256": "f00ca5f0b7f70478e970030ac51cfd09d7babdd8d48d509ca75261497f45bbac"
     },
     {
       "path": "scattering_inputs.npz",
@@ -266,11 +299,51 @@
       "bytes": 44057,
       "sha256": "1dbd08a5c7bb5566371f921cf60b322fbe0544a487806623dcbde475f2effae5",
       "source_id": "snicar_optical_inputs"
+    },
+    {
+      "path": "solar_illumination.npz",
+      "source_id": "snow_model",
+      "bytes": 12205,
+      "sha256": "417922dafa1ad3d1147634f667723ed81b82b2774cf410ef50e83bbb31bc048d"
+    },
+    {
+      "path": "spatial_metadata.json",
+      "bytes": 3470,
+      "sha256": "1c78a2b2a6c6bba3e020d628527d42ab55d7a596639f954d38f7cc2dce7a8f04",
+      "source_id": "this_experiment"
+    },
+    {
+      "path": "stratified_metrics.csv",
+      "bytes": 9450,
+      "sha256": "5c008f20eef8dab32f3e34dacbaf80cb9fbc6b4e1c0894da57401f41b17b75f4",
+      "source_id": "legacy_worldview",
+      "source_path": "experiments/painter1998/2026-10-01/v2/13_worldview_validation_r004/tables/stratified_metrics.csv",
+      "source_sha256": "5c008f20eef8dab32f3e34dacbaf80cb9fbc6b4e1c0894da57401f41b17b75f4"
     }
   ],
   "packaging_version": "2.0.0",
   "packaging_changes": [
     "lossless deterministic gzip of complete sample tables",
     "extracted official scattering inputs for Python WW80 recomputation"
-  ]
+  ],
+  "supplementary_experiment": {
+    "date": "2026-10-26",
+    "bootstrap": {
+      "block_size_pixels": 50,
+      "pixel_size_m": 30,
+      "repeats": 1000,
+      "seed": 1998,
+      "paired": true
+    },
+    "area_thresholds": [
+      0.8,
+      0.9,
+      0.95
+    ],
+    "code": {
+      "snowmix/case_analysis.py": "eafe1da9b0f7dc59835317bc1b5d731f5a9d00935a4dcbfadde031c7f78bcdab",
+      "snowmix/teaching.py": "67156a59883b681a9168d0dc45393b167730bae60b8be7261fffd14dfbffdb3d",
+      "scripts/prepare_case_data.py": "ee11b8387cc49a8047b7f29d54d48e4e6da6ec4659bf917645904d2311ae1f28"
+    }
+  }
 }

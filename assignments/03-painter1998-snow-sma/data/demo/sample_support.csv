@@ -1,0 +1,6 @@
+branch,parent,unit,n,condition
+historical_roi,ROI,30 m,63213,光谱有限且非全零；历史库谱基准
+image_background_input,historical_roi,30 m,62908,增加原生有效覆盖率≥95%；影像背景实验输入
+fixed_five_common,image_background_input,30 m,60949,五个固定半径的归一化分母均>0.05
+three_methods_common,image_background_input,30 m,62861,物理MGS、影像雪谱MGS、物理FCLS均可归一化
+spectral_degradation_common,historical_roi,30 m,62870,历史同字典的AVIRIS与仅光谱退化结果共同有效

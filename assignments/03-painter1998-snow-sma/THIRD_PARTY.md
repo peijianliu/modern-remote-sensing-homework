@@ -8,7 +8,7 @@
 | 三组 Zenodo 验证资料 | 3580078、3580825、4031446 | CC BY 4.0；元信息保留 DOI 和来源 |
 | USGS/NASA/JPL 数据 | 来源表具体样本及产品 | 按相应产品说明引用原数据和传感器机构 |
 | nbconvert / Jupyter HTML 模板 | 7.16.6 | BSD-3-Clause；仓库 `site/assets/nbconvert/LICENSE（仓库根）` |
-| MathJax SVG 公式渲染 | 3.2.2 | Apache-2.0；HTML 旁 `assets/mathjax/LICENSE` 和 `SOURCE.json` |
+| MathJax SVG 公式渲染 | 3.2.2 | Apache-2.0；仓库保留来源锁与许可，组件经固定校验和下载到忽略缓存；HTML旁保留完整资产及许可 |
 
 SNICAR 版权：Copyright (c) 2020 Mark Flanner and SNICAR contributors。
 SPIRES 版权：Copyright (c) 2023 Jeff Dozier。

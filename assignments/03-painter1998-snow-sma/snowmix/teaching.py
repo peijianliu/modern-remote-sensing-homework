@@ -18,10 +18,9 @@ from matplotlib.lines import Line2D
 from matplotlib.patches import Patch
 import numpy as np
 import pandas as pd
-from scipy.io import loadmat
 from threadpoolctl import threadpool_limits
 
-from .case_analysis import binary_agreement, fixed_radius_scan
+from .case_analysis import binary_agreement, fixed_radius_scan, paired_block_means
 from .linear import select_snow
 from .optics import ww80_semi_infinite
 from .spectra import gaussian_band_matrix, read_usgs_ascii
@@ -80,18 +79,48 @@ def label(chinese: str, english: str) -> str:
 
 
 def load_forward(root: Path | None = None) -> dict:
-    """读取冻结正演并检查半径、波长、角度与光谱数组维度。"""
-    data = loadmat(demo_directory(root) / "forward_models.mat")
-    for key in ("radii_um", "wavelength_um", "angles_deg", "ice_options"):
-        data[key] = data[key].ravel()
-    expected = tuple(
-        len(data[key]) for key in ("radii_um", "wavelength_um", "angles_deg", "ice_options")
-    )
-    for key in ("snicar_albedo", "ww_albedo"):
+    """从散射参数现算 WW80 全网格及加权反照率；不读取 MATLAB 参考产物。
+
+    返回 ww_albedo 的轴为 (148 radii, 480 wavelengths, 3 angles, 2 ice options)。
+    solar_flux 为 SNICAR 中纬冬季直接入射太阳谱的独立输入，轴为 (angle, wavelength)。
+    """
+    optics = load_optical_inputs(root)
+    with np.load(demo_directory(root) / "solar_illumination.npz", allow_pickle=False) as archive:
+        angles = archive["angles_deg"].astype(np.float64)
+        wavelength = archive["wavelength_um"]
+        flux = archive["solar_flux"].astype(np.float64)
+    if (
+        flux.shape != (len(angles), len(wavelength))
+        or not np.isfinite(flux).all()
+        or np.any(flux < 0)
+        or np.any(flux.sum(axis=1) <= 0)
+        or not np.allclose(wavelength, optics["wavelength_um"], atol=1e-12, rtol=0)
+    ):
+        raise ValueError("Invalid solar illumination grid or flux")
+    albedo = recompute_ww80(optics, angles)
+    weights = flux.T[None, :, :, None]
+    return {
+        "radii_um": optics["radii_um"],
+        "wavelength_um": wavelength,
+        "ice_options": optics["ice_options"],
+        "angles_deg": angles,
+        "solar_flux": flux,
+        "ww_albedo": albedo,
+        "broadband_ww": np.sum(albedo * weights, axis=1) / np.sum(weights, axis=1),
+    }
+
+
+def load_forward_reference(root: Path | None = None) -> dict:
+    """读取小型独立 MATLAB 参考：四种半径的光谱及完整半径网格的加权值。
+
+    仅供校核 cell 使用，不能作为 load_forward 或合成混合谱的输入。
+    """
+    with np.load(demo_directory(root) / "forward_reference.npz", allow_pickle=False) as archive:
+        data = {key: archive[key] for key in archive.files}
+    expected = (4, 480, 3, 2)
+    for key in ("ww_albedo", "snicar_albedo"):
         if data[key].shape != expected or not np.isfinite(data[key]).all():
-            raise ValueError(f"Invalid forward array: {key}")
-    if not np.array_equal(data["radii_um"], np.arange(30, 1501, 10)):
-        raise ValueError("The teaching cache requires the complete 30-1500 um radius grid")
+            raise ValueError(f"Invalid independent reference: {key}")
     return data
 
 
@@ -133,7 +162,6 @@ def optics_table(forward: dict) -> pd.DataFrame:
                         "radius_um": radius,
                         "solar_zenith_deg": angle,
                         "ice_option": int(ice),
-                        "snicar_albedo": forward["broadband_snicar"][ri, ai, oi],
                         "ww80_albedo": forward["broadband_ww"][ri, ai, oi],
                     }
                 )
@@ -149,7 +177,7 @@ def plot_optical_spectra(forward: dict) -> Figure:
             ri = int(np.flatnonzero(forward["radii_um"] == radius)[0])
             ax.plot(
                 forward["wavelength_um"],
-                forward["snicar_albedo"][ri, :, ai, 0],
+                forward["ww_albedo"][ri, :, ai, 0],
                 color=color,
                 label=f"{radius} μm",
                 lw=1.8,
@@ -177,17 +205,15 @@ def plot_broadband_albedo(forward: dict) -> Figure:
         for oi, description in enumerate(("Warren 1984", "Warren–Brandt 2008")):
             axes[0].plot(
                 forward["radii_um"],
-                forward["broadband_snicar"][:, ai, oi],
+                forward["broadband_ww"][:, ai, oi],
                 color=color,
                 ls="-" if oi == 0 else "--",
                 label=f"{angle}° · {description}",
             )
-        difference = (
-            forward["broadband_ww"][:, ai, 0] - forward["broadband_snicar"][:, ai, 0]
-        ) * 100
+        difference = (forward["broadband_ww"][:, ai, 1] - forward["broadband_ww"][:, ai, 0]) * 100
         axes[1].plot(forward["radii_um"], difference, color=color, label=f"{angle}°")
     axes[0].set_ylabel(label("太阳谱加权反照率", "Solar-weighted albedo"))
-    axes[1].set_ylabel(label("WW80 − SNICAR / 反射率百分点", "WW80 − SNICAR / reflectance pp"))
+    axes[1].set_ylabel(label("WB08 − W84 / 反照率百分点", "WB08 − W84 / albedo pp"))
     axes[1].axhline(0, color=".4", ls=":", lw=0.8)
     for ax in axes:
         ax.set_xlabel(label("雪粒半径 / μm", "Snow radius / μm"))
@@ -328,6 +354,67 @@ def scan_representatives(case: dict) -> dict:
             case["radii_um"],
             case["backgrounds"],
         )
+
+
+def fixed_radius_statistics(case: dict, repeats: int = 1000, seed: int = 1998) -> tuple:
+    """在五模型共同域上统计分母与均值，并以相同区块配对比较 1000−50 μm。
+
+    输入为 load_aviris_case 的空间数组；比例无量纲、RMS 为反射率单位。
+    固定 30 m 网格，以 ROI 左上角为原点划分 50×50 像元（1.5 km）区块。
+    返回逐半径 DataFrame 和配对差值字典。区间只描述本场景、端元和掩膜。
+    """
+    common = case["common_normalization_mask"]
+    if common.dtype != np.bool_ or not common.any():
+        raise ValueError("A nonempty boolean common normalization mask is required")
+    raw = case["fixed_raw_snow"][:, common].astype(np.float64)
+    snow = case["fixed_snow_fraction"][:, common].astype(np.float64)
+    rms = case["fixed_rms"][:, common].astype(np.float64)
+    denominator = case["fixed_denominator"][:, common]
+    if not np.isfinite(denominator).all() or np.any(denominator <= 0.05):
+        raise ValueError("Common-domain denominators must all exceed 0.05")
+    np.testing.assert_allclose(raw / denominator, snow, rtol=2e-6, atol=2e-6)
+    # 列顺序为五个雪比例，随后五个 RMS；相同 draws 保留方法间配对关系。
+    result = paired_block_means(
+        np.column_stack((snow.T, rms.T)), np.argwhere(common), repeats=repeats, seed=seed
+    )
+    rows = []
+    for i, radius in enumerate(case["fixed_radii_um"]):
+        rows.append(
+            {
+                "radius_um": float(radius),
+                "common_n": int(common.sum()),
+                "raw_snow_mean": float(raw[i].mean()),
+                "normalized_snow_mean": float(snow[i].mean()),
+                "normalized_snow_ci_low": result["interval_95"][0, i],
+                "normalized_snow_ci_high": result["interval_95"][1, i],
+                "rms_mean": float(rms[i].mean()),
+                "rms_ci_low": result["interval_95"][0, i + len(snow)],
+                "rms_ci_high": result["interval_95"][1, i + len(snow)],
+                "denominator_mean": float(denominator[i].mean()),
+                "denominator_p05": float(np.quantile(denominator[i], 0.05)),
+                "denominator_p50": float(np.median(denominator[i])),
+                "denominator_pass_fraction_common": float(np.mean(denominator[i] > 0.05)),
+                "denominator_pass_fraction_input": float(
+                    np.mean(case["fixed_denominator"][i][case["valid_mask"]] > 0.05)
+                ),
+                "negative_snow_fraction": float(np.mean(snow[i] < 0)),
+            }
+        )
+    radii = np.asarray(case["fixed_radii_um"])
+    first, last = (int(np.flatnonzero(radii == radius)[0]) for radius in (50, 1000))
+    delta = {}
+    for name, offset in (("normalized_snow", 0), ("rms", len(snow))):
+        samples = (
+            result["bootstrap_means"][:, last + offset]
+            - result["bootstrap_means"][:, first + offset]
+        )
+        delta[name] = {
+            "mean": float(result["mean"][last + offset] - result["mean"][first + offset]),
+            "interval_95": np.quantile(samples, [0.025, 0.975]).tolist(),
+        }
+    return pd.DataFrame(rows), {
+        key: result[key] for key in ("n", "spatial_blocks", "block_size_pixels", "repeats", "seed")
+    } | {"comparison": "1000 um minus 50 um", "paired_delta": delta}
 
 
 def representative_table(scan: dict) -> pd.DataFrame:
@@ -481,6 +568,23 @@ def validation_ledger(table: pd.DataFrame, minimum_coverage: float = 0.95) -> pd
             }
         )
     return pd.DataFrame(rows)
+
+
+def coverage_sensitivity(table: pd.DataFrame, thresholds: tuple = (0.8, 0.9, 0.95)) -> pd.DataFrame:
+    """保持同一唯一 1 km 候选集合，比较有效面积阈值的样本与阳性保留情况。
+
+    返回每阈值两行（aviris_area / common_area）；候选与状态有效数量由
+    validation_ledger 单独展示。面积阈值和判定有雪的雪比例阈值含义不同。
+    """
+    if not thresholds or len(set(thresholds)) != len(thresholds):
+        raise ValueError("Coverage thresholds must be nonempty and unique")
+    return pd.concat(
+        [
+            validation_ledger(table, threshold).query("stage in ['aviris_area', 'common_area']")
+            for threshold in thresholds
+        ],
+        ignore_index=True,
+    )
 
 
 def plot_validation_design(ledger: pd.DataFrame) -> Figure:

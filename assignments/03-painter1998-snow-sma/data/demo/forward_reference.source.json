@@ -1,0 +1,22 @@
+{
+  "reference_source_sha256": "9054918f3361788c9d53b29ab5e88773be6a93fa9b9c2e834325d263250ac017",
+  "generator": "matlab/run_forward.m, frozen SNICAR-ADv3 and SPIRES twostream",
+  "optical_properties_version": "202105",
+  "authors": "SNICAR contributors; Wiscombe and Warren; SPIRES contributors",
+  "solar_illumination": "SNICAR direct-beam mid-latitude winter flux, three solar angles; extracted without numerical changes",
+  "reference_modifications": "Four representative radii retained for spectral comparison; all broadband reference values retained; complete MATLAB output excluded from default inputs",
+  "reference_spectral_shape": [
+    4,
+    480,
+    3,
+    2
+  ],
+  "historical_full_ww80_values": 426240,
+  "historical_full_grid_max_abs_difference": 5.162949145987028e-08,
+  "files": {
+    "forward_reference.npz": "bac414f9f513ce68fa381c31a1b30e7a3a82da9036af9bc35ffabacf0874f799",
+    "solar_illumination.npz": "417922dafa1ad3d1147634f667723ed81b82b2774cf410ef50e83bbb31bc048d"
+  },
+  "upstream_url": "https://github.com/mflanner/SNICARv3",
+  "modifications": "Subset of calculated model outputs, not new Mie calculations"
+}
