@@ -24,10 +24,9 @@ from threadpoolctl import threadpool_limits
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from snowmix.case_analysis import (
-    absorption_area,
     binary_agreement,
     fixed_radius_scan,
-    select_quantile_indices,
+    select_scene_endmembers,
 )
 from snowmix.spectra import gaussian_band_matrix
 
@@ -91,23 +90,9 @@ def prepare(source_root: Path, output: Path, verification: Path | None = None) -
     def band(target):
         return cube[..., int(np.argmin(abs(w - target)))]
 
-    green, nir, red, swir = band(0.55), band(0.86), band(0.65), band(1.64)
-    ndsi = (green - swir) / (green + swir + 1e-10)
-    ndvi = (nir - red) / (nir + red + 1e-10)
-    veg = np.flatnonzero(valid & (ndvi > 0.5) & (ndsi < 0))
-    bare = np.flatnonzero(valid & (abs(ndvi) < 0.1) & (ndsi < 0))
-    if not len(veg) or len(bare) < 2:
-        raise ValueError("Prespecified background selection has insufficient candidates")
-    # 选样只使用预定指数与亮度，不依赖新增模型的拟合效果。
-    vi = int(veg[np.lexsort((veg, -ndvi.ravel()[veg]))[0]])
-    targets = np.quantile(green.ravel()[bare], [0.9, 0.1])
-    selected_background = [vi]
-    for target in targets:
-        order = np.lexsort((bare, abs(green.ravel()[bare] - target)))
-        selected_background.append(
-            next(int(bare[i]) for i in order if int(bare[i]) not in selected_background)
-        )
-    background = cube[..., bands].reshape(-1, int(bands.sum()))[selected_background].T.astype(float)
+    scene = select_scene_endmembers(cube, valid, w, bands)
+    selected_background = scene["background_indices"].tolist()
+    background = scene["backgrounds"]
     background_names = ["vegetation_example", "bright_bare_example", "dark_bare_example"]
     print(
         f"CASE input: valid={len(flat)}, bands={bands.sum()}, background pixels={selected_background}",
@@ -121,15 +106,12 @@ def prepare(source_root: Path, output: Path, verification: Path | None = None) -
         constrained = image.unmix_pixels(
             observation, snow, radii, background, config, solver="fcls", progress="physical FCLS"
         )
-    candidate = (
-        valid & (ndsi > 0.7) & (abs(ndvi) < 0.15) & (green >= 0.65) & (green <= 1.1) & (nir > 0.11)
-    )
+    candidate = scene["candidate"]
     candidates = np.flatnonzero(candidate)
     full_observation = cube[..., bands].reshape(-1, int(bands.sum()))
-    areas = absorption_area(w[bands], full_observation[candidates])
-    selected = select_quantile_indices(areas, candidates)
-    image_snow = full_observation[selected].astype(float)
-    selected_area = absorption_area(w[bands], image_snow)
+    selected = scene["snow_indices"]
+    image_snow = scene["snow_spectra"]
+    selected_area = scene["absorption_area_um"]
     with threadpool_limits(limits=1):
         empirical = image.unmix_pixels(
             observation,

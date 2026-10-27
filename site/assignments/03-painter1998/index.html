@@ -1,27 +1,34 @@
 <!doctype html>
 <html lang="zh-CN">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Painter 1998 雪粒径与光谱混合分析案例</title>
-<style>body{max-width:900px;margin:0 auto;padding:36px 22px 65px;font:17px/1.8 system-ui,"Microsoft YaHei",sans-serif;color:#26343d}h1{font-size:1.95rem;line-height:1.4}h2{font-size:1.35rem;margin-top:2em}a{color:#155b78;text-underline-offset:3px}table{width:100%;border-collapse:collapse}th,td{text-align:left;vertical-align:top;padding:12px 8px;border-bottom:1px solid #dce3e8}th{border-top:1px solid #8a9aa6}code{font-family:Consolas,monospace;font-size:.9em}pre{padding:14px 18px;background:#f2f5f7;overflow-x:auto}.meta{color:#596c78;font-size:.9em}</style></head>
+<title>Painter 1998 案例目录与运行说明</title>
+<link rel="icon" href="../../assets/favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="../../assets/case.css"></head>
 <body>
-<nav><a href="../../index.html">课程案例首页</a> · <a href="https://github.com/peijianliu/modern-remote-sensing-homework/tree/main/assignments/03-painter1998-snow-sma">代码与数据</a></nav>
-<p class="meta">作业 03 · Painter 1998 流程复现与补充对照</p>
-<h1>雪粒径与光谱混合分析</h1>
-<p>先观察雪谱的变化，再通过已知比例的混合谱检查算法，最后把同样的方法用于真实影像。每本 Notebook 包含问题、输入、计算、断言和结果解释。</p>
-<table><thead><tr><th>内容</th><th>HTML</th><th>Notebook</th></tr></thead><tbody>
-<tr><td>手算、可重算正演与雪光学</td><td><a href="01_snow_optics.html">阅读全文</a></td><td><a href="notebooks/01_snow_optics.ipynb" download>下载 ipynb</a></td></tr>
-<tr><td>Fig. 3 与光谱混合解混</td><td><a href="02_fig3_sma.html">阅读全文</a></td><td><a href="notebooks/02_fig3_sma.ipynb" download>下载 ipynb</a></td></tr>
-<tr><td>AVIRIS / MODIS 与外部验证</td><td><a href="03_aviris_modis.html">阅读全文</a></td><td><a href="notebooks/03_aviris_modis.ipynb" download>下载 ipynb</a></td></tr>
-</tbody></table>
-<h2>综合报告</h2><p><a href="report.pdf">下载综合实验报告 PDF</a>。报告讨论完整实验与五人方法整合；Notebook 展示可逐步重算的教学部分。</p>
+<nav class="page-nav"><a href="../../index.html">课程案例首页</a><a href="report.pdf">综合报告 PDF</a><a href="https://github.com/peijianliu/modern-remote-sensing-homework/tree/main/assignments/03-painter1998-snow-sma">本案例源码</a></nav>
+<header><p class="meta">课程作业 03</p><h1>Painter 1998 方法复现与现代遥感数据扩展</h1>
+<p>先手算一个波长，再生成已知比例混合光谱，最后用真实影像和独立参照检查结果。面向已有 Python、线性代数基础的同学。</p></header>
+<h2>从哪里开始</h2>
+<p>本仓库目前收录作业 03；下面的 01、02、03 是三个 Notebook。每页说明为什么做这一步、输入输出、数值检查以及如何读图。首次实践可按顺序执行。</p>
+<div class="table-scroll" role="region" tabindex="0" aria-label="Notebook目录，可横向滚动"><table><thead><tr><th>阅读入口</th><th>数据与目标</th><th>执行版下载</th></tr></thead><tbody>
+<tr><td><a href="01_snow_optics.html">01 雪光学</a></td><td>散射输入、WW80手算、完整网格和参考校核</td><td><a href="notebooks/01_snow_optics.ipynb" download>下载 .ipynb（含运行输出）</a></td></tr>
+<tr><td><a href="02_fig3_sma.html">02 Fig. 3 与解混</a></td><td>14,746条混合光谱、MGS/FCLS、残差和失配</td><td><a href="notebooks/02_fig3_sma.ipynb" download>下载 .ipynb（含运行输出）</a></td></tr>
+<tr><td><a href="03_aviris_modis.html">03 实景与尺度</a></td><td>系数可行性、QA、覆盖参考和尺度处理</td><td><a href="notebooks/03_aviris_modis.ipynb" download>下载 .ipynb（含运行输出）</a></td></tr>
+</tbody></table></div>
+<p>当前 Windows / Python 3.11 实测，单本计算约 3–14 秒，包含内核启动；自己的实际耗时见构建清单。新增原始影像处理另行计时。完整图表和分层结果见 <a href="report.pdf">综合报告</a>。</p>
 <h2>本地运行</h2>
-<p>在 Python 3.11 环境克隆仓库，进入本次作业目录。以下命令使用 PowerShell：</p>
-<pre><code>python -m venv .venv
+<p>PowerShell 命令如下。Python 版本为 3.11；默认教学使用仓库内的公开样本，不需要 Earthdata 登录。</p>
+<pre><code>git clone https://github.com/peijianliu/modern-remote-sensing-homework.git
+cd modern-remote-sensing-homework/assignments/03-painter1998-snow-sma
+python -m venv .venv
 &amp; .\.venv\Scripts\python.exe -m pip install -c requirements-lock.txt -e ".[notebook,dev]"
 &amp; .\.venv\Scripts\python.exe scripts/build_notebooks.py --prepare-assets
-&amp; .\.venv\Scripts\python.exe scripts/build_notebooks.py</code></pre>
-<p>macOS / Linux 使用 <code>.venv/bin/python</code>。构建结果在仓库根 build/site/。首次准备公式组件需要联网，此后可离线构建。先运行 build_notebooks.py --prepare-workspace 创建不覆盖的练习副本，再用 JupyterLab 打开 build/workspace，按 01、02、03 阅读和执行。</p>
-<h2>如何理解结果</h2>
-<ul><li>01 从官方散射参数逐项手算并重算完整 WW80 网格；SNICAR-AD 缓存单独参考。</li><li>02 从现算WW80雪谱合成并解混，真值来自明确的混合比例。</li><li>03 先明确比较单位，重算 420→100→17 筛选账本，再解读真实结果与独立覆盖分层。</li><li>MODIS 雪标志用于产品一致性，WorldView 公开派生覆盖参考用于独立覆盖对照。</li></ul>
-<p class="meta">离线阅读时请保留本目录的 HTML、assets、notebooks 与 report.pdf，使用 index.html 打开。</p>
+&amp; .\.venv\Scripts\python.exe scripts/build_notebooks.py
+&amp; .\.venv\Scripts\python.exe scripts/build_notebooks.py --prepare-workspace
+&amp; .\.venv\Scripts\python.exe -m jupyterlab build/workspace</code></pre>
+<p>Linux / macOS 将解释器换为 <code>.venv/bin/python</code>。首次准备 MathJax 需要联网并核对固定哈希，此后构建离线使用缓存；HTML 离线包已包含资源。站点输出到仓库根 <code>build/site/</code>，练习副本在作业目录 <code>build/workspace/</code>，已有练习不覆盖。单本 .ipynb 需要完整仓库中的共享模块和数据。</p>
+<h2>数据 方法与复现级别</h2>
+<p>正演输出称反照率，影像观测称反射率。原始系数用于重建，去阴影雪比例用于相对覆盖；MGS诊断保留越界值，FCLS施加物理范围约束。报告中的历史库谱结果与本轮公开库谱重算分别标注。</p>
+<p>L1：三份 Notebook 与教学数据重算。L2：完整公开 AVIRIS 输入到当前模型的重建，以及两景 MODIS 与公开参考的重新聚合和评价。L3：全部历史输入、实验条件和报告复原。<a href="https://github.com/peijianliu/modern-remote-sensing-homework/blob/main/assignments/03-painter1998-snow-sma/README.md">阅读各级运行说明</a> · <a href="https://github.com/peijianliu/modern-remote-sensing-homework/blob/main/assignments/03-painter1998-snow-sma/DATA_SOURCES.md">数据来源</a> · <a href="https://github.com/peijianliu/modern-remote-sensing-homework/blob/main/CONTRIBUTORS.md">贡献说明</a>。</p>
+<footer>离线阅读请保留整个站点目录，从根 index.html 打开。原创代码 MIT，文档 CC BY 4.0；外部数据按各自许可署名。绘图缺少中文字体时回退英文，并在页首提示。</footer>
 </body></html>

@@ -1,0 +1,5 @@
+scene,tier,reference_supported_n,qa_supported_n,qa_reference_positive_ge_0p1,normalization_rejected_no_snow_n,normalization_rejected_snow_n,common_n,reference_positive_ge_0p1,no_snow_n,mixed_n,full_snow_n
+20160213,strict7,7016,1471,463,55,0,1416,463,953,453,10
+20160213,selected5,7016,1550,474,56,0,1494,474,1020,464,10
+20170521,strict7,3051,1825,22,8,0,1817,22,1795,22,0
+20170521,selected5,3051,1914,22,8,0,1906,22,1884,22,0

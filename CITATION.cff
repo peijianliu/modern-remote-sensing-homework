@@ -5,8 +5,8 @@ type: software
 authors:
   - family-names: Liu
     given-names: Peijian
-version: 2.1.0
-date-released: 2026-10-26
+version: 2.2.0
+date-released: 2026-10-27
 url: "https://github.com/peijianliu/modern-remote-sensing-homework"
 license:
   - MIT

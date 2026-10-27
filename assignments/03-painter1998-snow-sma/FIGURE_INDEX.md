@@ -1,25 +1,29 @@
 # 综合报告图表与代码索引
 
-对应综合报告的15幅编号图。Notebook 直接使用随仓库提供的教学数据；历史完整流程的绘图脚本需先按数据说明准备输入及归档结果。
+对应 2026-10-27 教学验证修订版的 19 幅编号图。默认 Notebook 从教学输入重算；注明“历史”的图沿用该分支保存的结果，完整入口需要另外准备原始输入和归档结果。
 
-| 图号 | 内容 | 重绘或计算入口 | 输入范围 |
+| 图号 | 内容与分支 | 重绘或计算入口 | 输入与评价对象 |
 |---|---|---|---|
-| 1 | 航带和研究区位置 | `scripts/course_report_assets.py` | 完整 AVIRIS 元信息与研究区配置 |
-| 2 | 0°/60°纯雪光谱 | Notebook 01 | 散射参数与太阳谱输入，NumPy WW80现算 |
-| 3 | 半径—反照率 | Notebook 01 | 散射参数与太阳谱输入，NumPy WW80现算 |
-| 4 | Fig. 3 误差面与纯雪覆盖 | Notebook 02 | 现算WW80、石英谱及波段信息，重新解混 |
-| 5 | 历史库谱 FCLS 系数 | `scripts/course_report_assets.py` | 历史 AVIRIS 解混图层 |
-| 6 | 粒径与质量标记 | `scripts/publication_figures.py` | 历史图层；Notebook 03 提供新增分支图层 |
-| 7 | 观测、重建与残差 | `scripts/publication_figures.py` | 历史代表像元；Notebook 03 重算新增代表像元 |
-| 8 | 五个固定半径扫描 | Notebook 03、`scripts/report_diagnostics.py` | 共同归一化集合60,949与配对区块区间，背景与波段保持一致 |
-| 9 | 五种影像雪谱 | Notebook 03、`snowmix/case_analysis.py` | 吸收面积分位选谱及共同观测集合 |
-| 10 | 留出波段检验 | `scripts/aviris_band_sensitivity.py` | 完整 AVIRIS 输入及预定样本 |
-| 11 | 固定字典尺度对照 | `scripts/resolution_control.py`；Notebook 03 重算表格 | 保存的修正面积支持统计 |
-| 12 | 严格 QA 双源散点 | `scripts/publication_figures.py`；Notebook 03 重算配对统计 | 两区 corrected_coverage 表 |
-| 13 | 面积支持与验证设计 | Notebook 03、`scripts/report_validation_figure.py` | 同一420个唯一1 km单元；筛选420→100→17与独立阳性计数 |
-| 14 | 实测雪谱与 SSA 代理 | `scripts/empirical_validation.py` | Zenodo 公开实测输入与特定角度缓存 |
-| 15 | WorldView 分层结果 | `scripts/worldview_validation.py`；Notebook 03 重算分层表 | 两场公开参考的派生样本表 |
+| 1 | 2013 航带及研究区 | `scripts/course_report_assets.py` | AVIRIS 元信息、两个 ROI；包络不代表全部有效覆盖 |
+| 2 | 0°/60°纯雪光谱 | Notebook 01；`scripts/report_diagnostics.py` | 官方散射属性，NumPy WW80；方向–半球反照率 |
+| 3 | 半径与加权反照率 | Notebook 01；`scripts/report_diagnostics.py` | 相同散射输入与太阳谱；W84/WB08 对照 |
+| 4 | Painter Fig. 3 误差面和纯雪覆盖 | Notebook 02；`scripts/publication_figures.py` | 146×101 条已知真值光谱；模型内恢复 |
+| 5 | 七种模型失配 | Notebook 02；`scripts/report_extended_figures.py` | 182 波段受控混合，三方法共享观测，20 次重复 |
+| 6 | 历史库谱 FCLS 原始系数 | `scripts/course_report_assets.py` | 历史 AVIRIS 图层，含零谱阴影，未去阴影归一化 |
+| 7 | 历史候选半径与 QA | `scripts/publication_figures.py` | 历史模型图层；按库边界、低雪、小分母分类 |
+| 8 | 历史观测、重建与 E_c | `scripts/publication_figures.py` | 原始系数重建，保留近吸收带残差 |
+| 9 | 当前系数符号与可行性 | Notebook 03；`scripts/report_extended_figures.py` | 同一 2013 影像背景、62,861 共同像元；MGS 与 FCLS |
+| 10 | 固定半径及空间块区间 | Notebook 03；`scripts/report_diagnostics.py` | 五模型共同域 60,949；分母和配对区间 |
+| 11 | 五种影像雪谱 | Notebook 03；`snowmix/case_analysis.py` | 预定吸收面积分位选样；吸收面积不转换半径 |
+| 12 | 历史公共留出波段 | `scripts/aviris_band_sensitivity.py` | 1,200 个预定随机像元；相同 30 个未拟合波段 |
+| 13 | 历史固定字典尺度对照 | `scripts/resolution_control.py`；Notebook 03 重算表格 | 修正面积支持；四种尺度/处理顺序对照 |
+| 14 | 历史严格 QA 双源散点 | `scripts/publication_figures.py`；Notebook 03 | 两 ROI 的 85 个 500 m 配对；模型一致性 |
+| 15 | 原生 1 km 筛选与阳性类别 | Notebook 03；`scripts/report_validation_figure.py` | 420 条 ROI 记录去重为 406 单元，406→100→17；阈值表另列 80/90/95% |
+| 16 | 2013 支持范围与 QA 空间图 | Notebook 03；`scripts/report_extended_figures.py` | 原生正弦网格，候选、面积、标志及首个排除条件 |
+| 17 | 实测雪谱与 SSA 代理 | `scripts/empirical_validation.py` | Zenodo 公开测量；按雪况计数，条件标识见表注 |
+| 18 | 历史 WorldView 分层散点 | `scripts/worldview_validation.py`；Notebook 03 重算指标 | 历史 FCLS 库谱，2016 公开派生覆盖；图为各方法域，表为共同域 |
+| 19 | 新增同日 MODIS 独立覆盖误差 | Notebook 03；`scripts/report_extended_figures.py` | 2016/2017，WW80 与公开 USGS 背景；四方法共同域，总体/混合雪分开 |
 
-新版报告的表4区分全网格平均偏差与两个纯雪端点偏差；固定半径表图统一使用共同归一化域。有效面积阈值表比较80%、90%、95%的唯一1 km单元保留情况；MODIS雪标志交叉表采用唯一1 km单元，完整数据见 `data/demo/product_consistency.csv`。历史库谱与新增影像背景结果按分支分别解释。
+报告表 5 区分全合成网格 bias 与纯雪端点 bias；表 7 集中说明各实景分支的计数；表 8 报告共同域物理可行性；表 9 给固定半径分母与区块区间；表 14 给面积门槛敏感性；表 19–22 对应新增公开端元 Landsat 与 MODIS 的独立覆盖和雪标志检验。独立参考来源和修改说明见 `DATA_SOURCES.md`。
 
-Notebook 与脚本的完整对应见 `CODE_MAP.md`；字段、单位、CRS和数据来源见 `data/demo/README.md` 与 `manifest.json`。
+教学补图 `reports/figures/public_transfer_validation.*` 对应 Notebook 03 和首页的公开端元 Landsat 混合雪比较，不另占报告图号。完整字段与单位见 `data/demo/README.md`，模块与命令见 `CODE_MAP.md`。

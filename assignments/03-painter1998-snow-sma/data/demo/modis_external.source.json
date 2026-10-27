@@ -1,0 +1,119 @@
+{
+  "sources": [
+    {
+      "scene": "20160213",
+      "reference": {
+        "name": "16FEB13190431_landsat_30m_fsca.tif",
+        "sha256": "878ce7855433d5aa5486e914f42fdc92fae9c4270e0b395fdecdcdbd3df15c81",
+        "source": "https://doi.org/10.5281/zenodo.4031446",
+        "creators": [
+          "Timbo Stillinger",
+          "Ned Bair"
+        ],
+        "license": "CC BY 4.0",
+        "modifications": "Explicit fill mask; exact footprint-area aggregation from public 30 m derived reference"
+      },
+      "modis": {
+        "product": "MOD09GA.A2016044.h08v05.061.2021344014328.hdf",
+        "input_sha256": "0f1f67400ccaee725da22110a5d2ac28a9667a172a447c769d03406674e9610b",
+        "field_order": "YDim, XDim, band",
+        "native_id_verified": true,
+        "source": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/MOD09GA.061/MOD09GA.A2016044.h08v05.061.2021344014328/MOD09GA.A2016044.h08v05.061.2021344014328.hdf"
+      },
+      "scale": 0.0001,
+      "solar_zenith_median_deg": 53.230000000000004,
+      "solar_zenith_range_deg": [
+        52.61,
+        60.54
+      ],
+      "reference_grid": {
+        "transform": [
+          463.31271652777775,
+          0.0,
+          -10390714.293568471,
+          0.0,
+          -463.31271652777775,
+          4408883.810478333
+        ],
+        "shape": [
+          188,
+          298
+        ],
+        "crs": "BOUNDCRS[SOURCECRS[PROJCRS[\"unknown\",BASEGEOGCRS[\"unknown\",DATUM[\"unknown using nadgrids=@null\",ELLIPSOID[\"unknown\",6371007.181,0,LENGTHUNIT[\"metre\",1,ID[\"EPSG\",9001]]]],PRIMEM[\"Greenwich\",0,ANGLEUNIT[\"degree\",0.0174532925199433],ID[\"EPSG\",8901]]],CONVERSION[\"unknown\",METHOD[\"Sinusoidal\"],PARAMETER[\"Longitude of natural origin\",0,ANGLEUNIT[\"degree\",0.0174532925199433],ID[\"EPSG\",8802]],PARAMETER[\"False easting\",0,LENGTHUNIT[\"metre\",1],ID[\"EPSG\",8806]],PARAMETER[\"False northing\",0,LENGTHUNIT[\"metre\",1],ID[\"EPSG\",8807]]],CS[Cartesian,2],AXIS[\"(E)\",east,ORDER[1],LENGTHUNIT[\"metre\",1,ID[\"EPSG\",9001]]],AXIS[\"(N)\",north,ORDER[2],LENGTHUNIT[\"metre\",1,ID[\"EPSG\",9001]]]]],TARGETCRS[GEOGCRS[\"WGS 84\",DATUM[\"World Geodetic System 1984\",ELLIPSOID[\"WGS 84\",6378137,298.257223563,LENGTHUNIT[\"metre\",1]]],PRIMEM[\"Greenwich\",0,ANGLEUNIT[\"degree\",0.0174532925199433]],CS[ellipsoidal,2],AXIS[\"latitude\",north,ORDER[1],ANGLEUNIT[\"degree\",0.0174532925199433]],AXIS[\"longitude\",east,ORDER[2],ANGLEUNIT[\"degree\",0.0174532925199433]],ID[\"EPSG\",4326]]],ABRIDGEDTRANSFORMATION[\"unknown to WGS84\",METHOD[\"NTv2\",ID[\"EPSG\",9615]],PARAMETERFILE[\"Latitude and longitude difference file\",\"@null\",ID[\"EPSG\",8656]]]]"
+      },
+      "supported_500m_n": 7016,
+      "strict7_n": 1471,
+      "selected5_n": 1550
+    },
+    {
+      "scene": "20170521",
+      "reference": {
+        "name": "17MAY21191849_landsat_30m_fsca.tif",
+        "sha256": "129159133684d19684351a2adbcaa8693eb90f3c0dacb2dd3e8f7fe7ecd87486",
+        "source": "https://doi.org/10.5281/zenodo.4031446",
+        "creators": [
+          "Timbo Stillinger",
+          "Ned Bair"
+        ],
+        "license": "CC BY 4.0",
+        "modifications": "Explicit fill mask; exact footprint-area aggregation from public 30 m derived reference"
+      },
+      "modis": {
+        "product": "MOD09GA.A2017141.h08v05.061.2021272194242.hdf",
+        "input_sha256": "46edcd59d0115fc3f1418511ec8498dccd978bfd072d0a8f9e400de5c22034bc",
+        "field_order": "YDim, XDim, band",
+        "native_id_verified": true,
+        "source": "https://data.lpdaac.earthdatacloud.nasa.gov/lp-prod-protected/MOD09GA.061/MOD09GA.A2017141.h08v05.061.2021272194242/MOD09GA.A2017141.h08v05.061.2021272194242.hdf"
+      },
+      "scale": 0.0001,
+      "solar_zenith_median_deg": 23.01,
+      "solar_zenith_range_deg": [
+        22.8,
+        23.21
+      ],
+      "reference_grid": {
+        "transform": [
+          463.31271652777775,
+          0.0,
+          -10371255.159474304,
+          0.0,
+          -463.31271652777775,
+          4445485.515084027
+        ],
+        "shape": [
+          95,
+          162
+        ],
+        "crs": "BOUNDCRS[SOURCECRS[PROJCRS[\"unknown\",BASEGEOGCRS[\"unknown\",DATUM[\"unknown using nadgrids=@null\",ELLIPSOID[\"unknown\",6371007.181,0,LENGTHUNIT[\"metre\",1,ID[\"EPSG\",9001]]]],PRIMEM[\"Greenwich\",0,ANGLEUNIT[\"degree\",0.0174532925199433],ID[\"EPSG\",8901]]],CONVERSION[\"unknown\",METHOD[\"Sinusoidal\"],PARAMETER[\"Longitude of natural origin\",0,ANGLEUNIT[\"degree\",0.0174532925199433],ID[\"EPSG\",8802]],PARAMETER[\"False easting\",0,LENGTHUNIT[\"metre\",1],ID[\"EPSG\",8806]],PARAMETER[\"False northing\",0,LENGTHUNIT[\"metre\",1],ID[\"EPSG\",8807]]],CS[Cartesian,2],AXIS[\"(E)\",east,ORDER[1],LENGTHUNIT[\"metre\",1,ID[\"EPSG\",9001]]],AXIS[\"(N)\",north,ORDER[2],LENGTHUNIT[\"metre\",1,ID[\"EPSG\",9001]]]]],TARGETCRS[GEOGCRS[\"WGS 84\",DATUM[\"World Geodetic System 1984\",ELLIPSOID[\"WGS 84\",6378137,298.257223563,LENGTHUNIT[\"metre\",1]]],PRIMEM[\"Greenwich\",0,ANGLEUNIT[\"degree\",0.0174532925199433]],CS[ellipsoidal,2],AXIS[\"latitude\",north,ORDER[1],ANGLEUNIT[\"degree\",0.0174532925199433]],AXIS[\"longitude\",east,ORDER[2],ANGLEUNIT[\"degree\",0.0174532925199433]],ID[\"EPSG\",4326]]],ABRIDGEDTRANSFORMATION[\"unknown to WGS84\",METHOD[\"NTv2\",ID[\"EPSG\",9615]],PARAMETERFILE[\"Latitude and longitude difference file\",\"@null\",ID[\"EPSG\",8656]]]]"
+      },
+      "supported_500m_n": 3051,
+      "strict7_n": 1825,
+      "selected5_n": 1914
+    }
+  ],
+  "snow_model": "NumPy WW80, pure spherical semi-infinite snow; Warren 1984",
+  "snow_inputs": "Official SNICAR 202105 scattering properties; not new Mie calculations",
+  "backgrounds": [
+    "USGS lodgepole pine",
+    "USGS Quartz HS32"
+  ],
+  "snow_radii_um": [
+    30,
+    1100,
+    10
+  ],
+  "solar_angle_policy": "Median native MOD09GA solar zenith over reference-supported cells, without snow-label selection",
+  "quality_tiers": {
+    "strict7": "All seven bands highest quality; MODLAND ideal; clear and not adjacent to cloud",
+    "selected5": "Bands 1/2/4/6/7 highest quality; MODLAND 0 or 1; same clear/no-adjacent state"
+  },
+  "comparison": "2016-02-13 and 2017-05-21 same-day independent visible snow-cover reference",
+  "area_threshold": 0.95,
+  "fraction_thresholds": [
+    0.1,
+    0.5,
+    0.9
+  ],
+  "units": "Reflectance and fractions dimensionless; error tables in pp",
+  "seconds": 56.497526999999536
+}

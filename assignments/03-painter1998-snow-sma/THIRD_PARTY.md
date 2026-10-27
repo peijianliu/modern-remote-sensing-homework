@@ -19,6 +19,12 @@ SPIRES 版权：Copyright (c) 2023 Jeff Dozier。
 
 实验室谱资料由 Hannula, Henna-Reetta 和 Heinilä, Kirsikka 发布；野外谱资料由 Heinilä, Kirsikka、Böttcher, Kristin 和 Mattila, Olli-Pekka 发布；WorldView 验证集由 Stillinger, Timbo 和 Bair, Ned 发布。论文及数据集的完整引用以课程报告参考文献为准，下载资料时沿用各记录的引用信息。
 
+新增松针使用 Clark, R. N., Swayze, G. A., Wise, R. K., et al. (2003), *USGS Digital Spectral Library splib05a*, USGS Open-File Report 2003-395，[DOI: 10.3133/ofr03395](https://doi.org/10.3133/ofr03395)。`lodgepole_pine.asc` 保留公开原文；随后仅在有效波长支持内进行传感器响应卷积。石英同属该公开库。原始文件与派生数组分别记录哈希。
+
+2016-02-13、2017-05-21 的 MOD09GA.061 为 NASA Terra 地表反射率公开产品。HDF 身份与元数据分别见 [2016 场景](https://cmr.earthdata.nasa.gov/search/concepts/G2263526666-LPCLOUD.html)、[2017 场景](https://cmr.earthdata.nasa.gov/search/concepts/G2262531885-LPCLOUD.html)。教学表已应用比例因子、筛选空间范围、提取质量位并聚合公开覆盖参考；不再分发整景 HDF。
+
+Stillinger, T. 与 Bair, N. 的[雪覆盖验证派生资料](https://doi.org/10.5281/zenodo.4031446)采用 CC BY 4.0。新增 MODIS 分支使用该资料的公开雪覆盖产品，实施相交面积加权和阈值分层；原始商业 WorldView 不在案例内。这里的修改与派生结果由本项目负责，不表示原数据作者认可本项目结论。
+
 HTML 的模板样式来自 [nbconvert](https://github.com/jupyter/nbconvert/tree/7.16.6)，本地公式组件来自 [MathJax](https://www.npmjs.com/package/mathjax/v/3.2.2)。字体使用本机已安装字体，不分发微软字体。公开数据及排除项另见 `PUBLIC_DATA_POLICY.md`。
 
 原创代码的 MIT 适用范围在 README 中说明；报告和原创教学文字单独采用 CC BY 4.0。外部模型输入和数据不会因收入本仓库而改变许可。

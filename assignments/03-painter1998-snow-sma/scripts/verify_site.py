@@ -11,6 +11,7 @@ import re
 from urllib.parse import unquote, urlparse
 
 import nbformat
+from bs4 import BeautifulSoup
 
 CASE = Path(__file__).resolve().parents[1]
 REPOSITORY = CASE.parents[1]
@@ -100,6 +101,25 @@ def verify(output: Path) -> dict:
             raise ValueError(f"Nonsequential execution counts in {source.name}")
         page = output / (name + ".html")
         body = page.read_text(encoding="utf-8")
+        document = BeautifulSoup(body, "html.parser")
+        if (
+            document.html.get("lang") != "zh-CN"
+            or document.title is None
+            or document.title.text == "Notebook"
+        ):
+            raise ValueError(f"Incorrect page title or language: {page.name}")
+        if not document.select_one("nav.case-navigation a[download]") or not document.select_one(
+            ".case-toc"
+        ):
+            raise ValueError(f"Missing download behavior or table of contents: {page.name}")
+        for picture in document.find_all("img"):
+            if not picture.get("alt") or "No description" in picture["alt"]:
+                raise ValueError(f"Figure alternative text missing: {page.name}")
+        if len(document.find_all("table")) != len(document.select(".table-scroll table")):
+            raise ValueError(f"Table lacks an accessible scrolling container: {page.name}")
+        for anchor in document.select('.case-toc a[href^="#"]'):
+            if document.find(id=anchor["href"][1:]) is None:
+                raise ValueError(f"Broken table-of-contents target: {page.name}")
         parser = PageLinks()
         parser.feed(body)
         if any(

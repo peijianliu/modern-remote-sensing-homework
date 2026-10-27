@@ -10,6 +10,17 @@ from pathlib import Path
 from .artifacts import ROOT
 
 
+def verification_arguments(config: dict) -> list[str]:
+    """用当前配置定位待验证批次，避免报告入口漏传必需的实验目录。"""
+    batch = ROOT / "experiments" / config["project"] / config["run_date"] / config["version"]
+    return [
+        sys.executable,
+        str(ROOT / "scripts/verify_artifacts.py"),
+        "--experiments-dir",
+        str(batch),
+    ]
+
+
 def execute():
     """读取配置并分发实验阶段。"""
     parser = argparse.ArgumentParser(description="Painter 1998 / course snow-mixture experiments")
@@ -49,9 +60,7 @@ def execute():
             import subprocess
             import sys
 
-            subprocess.run(
-                [sys.executable, str(ROOT / "scripts/verify_artifacts.py")], cwd=ROOT, check=True
-            )
+            subprocess.run(verification_arguments(config), cwd=ROOT, check=True)
             build_report(config)
     else:
         for function in functions.values():
@@ -78,9 +87,7 @@ def execute():
         import subprocess
         import sys
 
-        subprocess.run(
-            [sys.executable, str(ROOT / "scripts/verify_artifacts.py")], cwd=ROOT, check=True
-        )
+        subprocess.run(verification_arguments(config), cwd=ROOT, check=True)
         build_report(config)
 
 

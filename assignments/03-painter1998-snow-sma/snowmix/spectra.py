@@ -8,6 +8,10 @@ from scipy.special import ndtr
 
 def read_ecostress(path: Path) -> tuple[np.ndarray, np.ndarray, dict]:
     """读取 ECOSTRESS 文本光谱，将百分数反射率转换为无量纲数值。"""
+    if path.name.lower() in {"granite_h2.txt", "cryumbrept_87p3855.txt"}:
+        raise PermissionError(
+            "This historical raw spectrum is excluded by PUBLIC_DATA_POLICY.md; current computations use public USGS or AVIRIS spectra"
+        )
     metadata, rows = {}, []
     for line in path.read_text(encoding="utf-8", errors="replace").splitlines():
         if ":" in line:

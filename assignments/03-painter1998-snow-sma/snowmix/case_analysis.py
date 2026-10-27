@@ -240,3 +240,62 @@ def binary_agreement(
         "specificity": tn / (tn + fp) if tn + fp else None,
         "accuracy": (tp + tn) / n if n else None,
     }
+
+
+def select_scene_endmembers(
+    cube: np.ndarray, valid: np.ndarray, wavelength_um: np.ndarray, bands: np.ndarray
+) -> dict:
+    """按固定指数和亮度规则选择三条背景及五条雪谱，不使用拟合或参考标签。
+
+    Args:
+        cube: (rows, columns, native_bands) 的无量纲反射率。
+        valid: 同一网格的布尔输入掩膜。
+        wavelength_um: 每个原始波段的中心波长，μm。
+        bands: 用于解混的有效波段布尔掩膜。
+
+    Returns:
+        扁平行优先背景/雪谱索引、雪候选掩膜、背景矩阵(bands,3)、
+        雪谱(5,bands)、吸收面积，以及NDSI/NDVI网格。
+
+    Raises:
+        ValueError: 维度或预设选样条件不足。
+    """
+    cube, valid = np.asarray(cube), np.asarray(valid)
+    wave, bands = np.asarray(wavelength_um), np.asarray(bands)
+    if cube.ndim != 3 or valid.shape != cube.shape[:2] or valid.dtype != np.bool_:
+        raise ValueError("A reflectance cube and aligned boolean mask are required")
+    if wave.shape != (cube.shape[2],) or bands.shape != wave.shape or bands.dtype != np.bool_:
+        raise ValueError("Wavelength and band coordinates do not match the cube")
+
+    def band(target: float) -> np.ndarray:
+        return cube[..., np.argmin(abs(wave - target))]
+
+    green, nir, red, swir = (band(v) for v in (0.55, 0.86, 0.65, 1.64))
+    ndsi = (green - swir) / (green + swir + 1e-10)
+    ndvi = (nir - red) / (nir + red + 1e-10)
+    vegetation = np.flatnonzero(valid & (ndvi > 0.5) & (ndsi < 0))
+    bare = np.flatnonzero(valid & (abs(ndvi) < 0.1) & (ndsi < 0))
+    if not len(vegetation) or len(bare) < 2:
+        raise ValueError("Prespecified background selection has insufficient candidates")
+    selected = [int(vegetation[np.lexsort((vegetation, -ndvi.ravel()[vegetation]))[0]])]
+    for target in np.quantile(green.ravel()[bare], [0.9, 0.1]):
+        order = np.lexsort((bare, abs(green.ravel()[bare] - target)))
+        selected.append(next(int(bare[i]) for i in order if int(bare[i]) not in selected))
+    candidate = (
+        valid & (ndsi > 0.7) & (abs(ndvi) < 0.15) & (green >= 0.65) & (green <= 1.1) & (nir > 0.11)
+    )
+    possible = np.flatnonzero(candidate)
+    observed = cube[..., bands].reshape(-1, int(bands.sum()))
+    areas = absorption_area(wave[bands], observed[possible])
+    snow_indices = select_quantile_indices(areas, possible)
+    image_snow = observed[snow_indices].astype(float)
+    return {
+        "background_indices": np.array(selected),
+        "backgrounds": observed[selected].T.astype(float),
+        "snow_indices": snow_indices,
+        "snow_spectra": image_snow,
+        "candidate": candidate,
+        "absorption_area_um": absorption_area(wave[bands], image_snow),
+        "ndsi": ndsi,
+        "ndvi": ndvi,
+    }

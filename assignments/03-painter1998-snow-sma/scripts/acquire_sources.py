@@ -83,6 +83,7 @@ SOURCES = {
         None,
     ),
 }
+EXCLUDED_SOURCES = {"granite", "soil"}
 
 
 def sha256(path: Path) -> str:
@@ -91,6 +92,10 @@ def sha256(path: Path) -> str:
 
 
 def download(name: str) -> dict:
+    if name in EXCLUDED_SOURCES:
+        raise PermissionError(
+            "Historical raw spectrum excluded by PUBLIC_DATA_POLICY.md; use the public USGS or image-derived inputs"
+        )
     url, relative, expected = SOURCES[name]
     path = ROOT / relative
     path.parent.mkdir(parents=True, exist_ok=True)
@@ -157,7 +162,8 @@ def download(name: str) -> dict:
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("names", nargs="*", choices=list(SOURCES), default=list(SOURCES))
+    approved = [name for name in SOURCES if name not in EXCLUDED_SOURCES]
+    parser.add_argument("names", nargs="*", choices=approved, default=approved)
     parser.add_argument("--workers", type=int, default=3)
     args = parser.parse_args()
     with ThreadPoolExecutor(max_workers=args.workers) as pool:

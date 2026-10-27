@@ -1,0 +1,17 @@
+{
+  "snow_cache_sha256": "6d5b8fe6bbf8ed0f7da3755685577c6769a9a84d0d30838e6c1deb8c46ab12ef",
+  "snow_model": "SNICAR-AD pure spherical optically thick snow; scene solar angles",
+  "snow_optics": "SNICAR 202105; Warren 1984",
+  "inputs_used_for_endmember_selection": "USGS pine and quartz; no WorldView labels",
+  "upstream_sources": [
+    "https://github.com/mflanner/SNICARv3",
+    "https://pubs.usgs.gov/of/2003/ofr-03-395/",
+    "https://doi.org/10.5281/zenodo.4031446"
+  ],
+  "branch": "new public-library transfer experiment; separate from 2013 image-background model and historical granite branch",
+  "files": {
+    "lodgepole_pine.asc": "7bd56cf2ffee8f66cc046fa298a9a521c6a244390e8307a2c4abee73afe43c87",
+    "transfer_library.npz": "e1431b89f0a3d8e1dc1db81fafa9edbf9930803a46f01fa586c86959c11edfa6"
+  },
+  "modifications": "Snow model outputs convolved with official USGS OLI B2-B7 response; input spectra retained in their original units; true-grain half-step examples use linear spectral interpolation"
+}

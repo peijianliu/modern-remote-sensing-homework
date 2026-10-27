@@ -1,42 +1,73 @@
 # 数据来源与读取约定
 
-| 输入 | 场景、样本或版本 | 获取及用途 |
+[数据许可](PUBLIC_DATA_POLICY.md) · [教学字段](data/demo/README.md) · [实验分支](EXPERIMENTS.md)
+
+| 输入 | 产品、样本或版本 | 用途 |
 |---|---|---|
-| AVIRIS-Classic L2 | `f130503t01p00r14_sc01`，2013-05-03 | JPL 反射率包，14.3 m 原生网格，面积聚合至 30 m |
-| MOD09GA C6.1 | `MOD09GA.A2013123.h08v05.061.2021229143331` | 同日 Terra h08v05；Earthdata 下载，HDF-EOS 导出 |
-| SNICAR 光学属性 | 202105，无藻类包 | 官方 480 波段属性，球形雪与两种冰折射率选项 |
-| USGS 库谱 | Quartz HS32、lodgepole pine | 石英用于合成实验；松针用于历史库谱基准 |
-| ECOSTRESS 历史库谱 | Granite H2、Cryumbrept 87P3855 | 历史基准来源；新增计算采用影像背景，原谱不随仓库分发 |
-| Terra RSR | MCST `Terra_RSR_in-band.xlsx` | 7 波段归一化 channel 响应平均 |
-| 实验室雪谱/SSA | Zenodo 3580078 | 10 雪况、158 重复、7 组 SSA |
-| 野外目标谱 | Zenodo 3580825 | 87 个目标，按 ID 匹配谱及样本信息 |
-| WorldView 雪覆盖参考 | Zenodo 4031446 | 可见雪 fSCA；选择 2016、2017 两场 |
-| Landsat C2 L2 | `LC08_L2SP_043033_20160213_02_T1`、`LC08_L2SP_043032_20170522_02_T1` | 按 WorldView 范围取得原生窗口 |
-| Landsat OLI RSR | USGS Spectral Characteristics Viewer | 6/4 波段迁移检验 |
+| AVIRIS-Classic L2 | 2013-05-03，`f130503t01p00r14_sc01` | 原生14.3 m，面积聚合至30 m |
+| MOD09GA C6.1 | 2013-05-03，Terra h08v05 | 原实验同日双源和状态对照 |
+| MOD09GA C6.1扩展 | 2016-02-13、2017-05-21，h08v05 | 与同日公开覆盖参考独立对照 |
+| SNICAR光学属性 | 202105，480波段，球形雪与两套冰选项 | 提取散射输入，NumPy WW80重算 |
+| USGS splib05a | Quartz HS32，Lodgepole Pine LP-Needles-1 | 合成、公开字典与未入库背景对照 |
+| Terra RSR | MCST `Terra_RSR_in-band.xlsx` | 七波段响应积分 |
+| 实验室雪谱/SSA | Zenodo 3580078，CC BY 4.0 | 条件级光谱与SSA对照 |
+| 野外目标谱 | Zenodo 3580825，CC BY 4.0 | 87目标，按ID匹配 |
+| WorldView派生参考 | Zenodo 4031446，CC BY 4.0 | 可见雪覆盖；30 m派生产品再聚合 |
+| Landsat C2 L2 | 043033/20160213、043032/20170522 | 两景原生B2–B7窗口及保留样本 |
+| OLI RSR | USGS Spectral Characteristics Viewer | 六/四波段转移实验 |
 
-主数据源清单位于 `data/sources/*.json`；公开验证的元信息汇总位于 `metadata/public_validation_sources.json`。清单保留公开链接、文件字节数和 SHA-256；许可及引用见公开记录和 `THIRD_PARTY.md`。随仓库提供的 `data/demo/aviris_metadata.json` 包含波段及投影元信息；`prepare_test_inputs.py` 可将它复制到历史测试所用的 `data/cache/` 路径。
+ECOSTRESS Granite H2、Cryumbrept 87P3855仅列作历史库谱统计的来源。其原谱不进入新实验，下载与读取入口已排除这两条记录。商业原始WorldView不获取、不分发；采用的是作者明确授权的派生雪覆盖产品。
 
-公开入口：
+## 官方入口与版本
 
-- AVIRIS：[JPL 门户](https://aviris.jpl.nasa.gov/dataportal/)，[本场 L2 包](https://popo.jpl.nasa.gov/avcl/y13_data/f130503t01p00r14_refl.tar.gz)。
-- MOD09GA：[同日场景](https://cmr.earthdata.nasa.gov/search/concepts/G2261932874-LPCLOUD.html)。
-- SNICAR：[官方代码](https://github.com/mflanner/SNICARv3)，[202105 光学属性](http://snow.engin.umich.edu/opticalprops/snicar_v3_optics_202105/snicar_v3_optics.tar.gz)。
-- 谱库：[USGS](https://www.usgs.gov/data/usgs-spectral-library-version-7-data)；[ECOSTRESS](https://speclib.jpl.nasa.gov/library) 仅列为历史实验来源。新增影像背景的选取规则与位置见 `data/demo/README.md`。
-- 验证资料：[实验室](https://zenodo.org/records/3580078)，[野外](https://zenodo.org/records/3580825)，[WorldView](https://zenodo.org/records/4031446)。
-- Landsat：[Microsoft Planetary Computer 公开目录](https://planetarycomputer.microsoft.com/dataset/landsat-c2-l2)，[USGS 光谱响应](https://www.usgs.gov/landsat-missions/spectral-characteristics-viewer)。
+- AVIRIS：[JPL门户](https://aviris.jpl.nasa.gov/dataportal/)、[本场L2包](https://popo.jpl.nasa.gov/avcl/y13_data/f130503t01p00r14_refl.tar.gz)。
+- MOD09GA：[2013场景](https://cmr.earthdata.nasa.gov/search/concepts/G2261932874-LPCLOUD.html)、[2016场景](https://cmr.earthdata.nasa.gov/search/concepts/G2263526666-LPCLOUD.html)、[2017场景](https://cmr.earthdata.nasa.gov/search/concepts/G2262531885-LPCLOUD.html)。
+- SNICAR：[官方代码](https://github.com/mflanner/SNICARv3)、[光学库入口说明](https://github.com/mflanner/SNICARv3/blob/master/Links%20to%20optics%20libraries.md)。采用202105归档，按`data/sources/optics.json`核对完整归档SHA-256。
+- 光谱：[USGS splib05a及正式引用](https://doi.org/10.3133/ofr03395)；原始石英与松针文件保留头信息。
+- 验证资料：[实验室](https://zenodo.org/records/3580078)、[野外](https://zenodo.org/records/3580825)、[可见雪覆盖](https://zenodo.org/records/4031446)。
+- Landsat：[公开目录](https://planetarycomputer.microsoft.com/dataset/landsat-c2-l2)、[USGS响应](https://www.usgs.gov/landsat-missions/spectral-characteristics-viewer)。
 
-## 输入与生成路径
+原有来源清单在`data/sources/`和`metadata/public_validation_sources.json`。新MODIS的完整产品ID、原始HDF哈希、派生参考哈希、实际格网及角度范围在`data/demo/modis_external.source.json`。NASA数据服务可能要求Earthdata登录；账户和临时链接不进入仓库。
 
-`data/sources/*.json` 和 `metadata/public_validation_sources.json` 中的文件路径均相对于本作业目录。默认 Notebook 读取仓库内 `data/demo/`。完整处理另使用 `data/raw/` 原始资料和 `data/cache/` 解压影像、传感器窗口及正演缓存。
+## 完整公开输入目录
 
-`prepare_case_data.py --source-root` 面向已完成基础处理的实验工作区，除原始影像、MODIS 导出和模型缓存外，还读取已归档的 v2 尺度及 WorldView 统计目录。相关历史 CSV 已冻结在 `data/demo/`，默认教学计算直接重用这些文件；完整数据包的重建需要同时保留这些归档统计，不能只准备一场原始影像。
+L2的`--source-root`指向已准备的公开输入目录，文件路径相对于该根目录：
 
-MOD09GA 需通过 Earthdata 登录下载，将完整 HDF 文件保存为 `data/raw/MOD09GA.A2013123.h08v05.061.2021229143331.hdf`。来源清单的 SHA-256 对应所用原始文件，便于核对下载版本。
+```text
+data/cache/aviris_metadata.json
+data/cache/aviris/f130503t01p00r14_refl/..._refl_img_corr
+data/cache/aviris/f130503t01p00r14_refl/..._refl_img_corr.hdr
+data/raw/Terra_RSR_in-band.xlsx
+data/raw/public_validation/zenodo_4031446/
+    16FEB13190431_landsat_30m_fsca.tif
+    17MAY21191849_landsat_30m_fsca.tif
+```
 
-## 单位与质量筛选
+AVIRIS元数据中的`binary_path`定位完整ENVI；`prepare_aviris.py`可从原始归档生成这些文件。现行重建入口使用仓库内已公开的雪谱作为端元输入，从完整影像重新选取背景和五条影像雪谱，冻结的预测结果只用于事后校核。
 
-波长、FWHM 和光学等效半径为 μm；反射率和比例为无量纲。历史 ECOSTRESS 数据按 percent 除以 100；AVIRIS 存储值除以 10000，MOD09GA 反射率乘 0.0001。MOD09GA reflectance fill 为 −28672、QC fill 为 787410671；云、阴影、卷云、邻云和坏波段按位筛选，雪 QA 位保留。
+独立MODIS还需两份原始HDF，经`prepare_modis_hdf.py`在新的`<field-root>/modis_2016/`、`modis_2017/`中导出`modis_fields.mat`、`modis_attributes.mat`和原生产品核对记录。再运行`prepare_modis_validation.py`。命令见README。
 
-SSA 为 m²/kg，以冰密度 917 kg/m³ 换算 `r=3e6/(917×SSA)`；最高高度样本作为条件级近表层参照。Landsat SR 按 `DN×0.0000275−0.2` 只缩放一次；QA 无缩放。WorldView fSCA 按 Int16/1000 读取，−32768 为空值。2016 配对为同日，2017 相隔 1 d，统计按场景分别计算。
+`prepare_case_data.py`、`python -m snowmix`及其他历史脚本保留原归档的处理路线；它们还依赖历史模型缓存和统计，不能代替现行L2入口。历史原谱排除规则同样适用，不静默更换原字典后沿用旧精度数字。
 
-阴影归一化系数保存为 `normalized`，原始系数为 `fractions`；`E_c` 和 RMS 使用原始系数。QA 位：1 输入无效、2 无满秩模型、4 分母不足、8 低雪、16 库边界、32 条件数偏高、64 系数越界。真值、合成比例和另一传感器模型参照按实验定义分别记录。
+## 光学参数与参考重建
+
+从官方202105归档解压后，可重建小型散射参数包：
+
+```powershell
+& .\.venv\Scripts\python.exe scripts/prepare_teaching_optics.py --prepare-optics --optics-root <optics-root>/snicar_480band --output build/scattering_inputs.npz
+& .\.venv\Scripts\python.exe scripts/prepare_forward_reference.py --prepare-reference --workspace <prepared-workspace> --matlab <matlab-executable>
+```
+
+`ss_alb`以float64、`asm_prm`以float32保存，计算提升至float64。MATLAB使用显式34字段输入，完整MAT只作可选校核及历史输入；默认Notebook不依赖它。小型SNICAR光谱库是已标来源的模型端元输入，与可直接重算的WW80路径分别说明。
+
+## 单位 质量与统计对象
+
+波长、FWHM与半径用μm，反射率、反照率、原始系数和去阴影比例均无量纲。AVIRIS uint16除10000；MOD09GA int16乘0.0001，填充值−28672，QC填充值787410671。太阳角原始值乘0.01转换为度。比例因子从实际HDF属性核对。
+
+Landsat为`DN×0.0000275−0.2`，只缩放一次；QA无缩放。公开WorldView派生覆盖按Int16/1000，显式屏蔽−32768。30 m参考按真实相交面积聚合，部分覆盖的有效面积不补零为无雪。1 km参考在再次聚合时按500 m有效支持面积加权。
+
+原始`fractions`重建反射率，`E_c=observed-modeled`。去阴影比例`normalized`只在分母>0.05时输出。QA位为1输入无效、2无满秩模型、4分母不足、8低雪、16库边界、32条件数、64系数越界。
+
+2013两个ROI有420条记录、406个原生1 km单元，重叠处按有效支持择取。独立反射率误差按500 m单元，状态标志按唯一1 km单元统计；不同日期与不同字典分别报告。
+
+SSA单位m²/kg，按`r=3e6/(917×SSA)`转为μm，最高高度记录作为条件级近表层代理。2016 Landsat与参考同日，2017相隔1 d；新增MOD09GA两场与参考均同日。评价对象和局限见综合报告及EXPERIMENTS。
