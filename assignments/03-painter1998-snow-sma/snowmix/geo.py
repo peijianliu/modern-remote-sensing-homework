@@ -43,14 +43,27 @@ def area_weights(
     destination_transform: Affine,
     destination_shape: tuple,
     destination_crs: CRS,
+    *,
+    source_valid: np.ndarray | None = None,
 ) -> csr_matrix:
     """以相交面积 / 目标像元面积构建目标像元数 × 源像元数的稀疏矩阵。
 
     源像元的投影边界由四角连成的多边形近似，目标网格为北向上的矩形像元。
     权重适用于非整数分辨率比，行权重之和保留源数据实际覆盖的面积比例。
+    source_valid 可在构造前排除无效源像元以节约内存；列索引仍对应完整源网格，
+    从而可直接与原始扁平数组相乘，未覆盖面积继续保留为缺失支持。
     """
     rows, columns = np.indices(source_shape)
     rows, columns = rows.ravel(), columns.ravel()
+    active = np.arange(len(rows))
+    if source_valid is not None:
+        mask = np.asarray(source_valid)
+        if mask.shape != source_shape or mask.dtype != np.bool_:
+            raise ValueError("source_valid must be a boolean mask on the source grid")
+        active = np.flatnonzero(mask)
+        rows, columns = rows[active], columns[active]
+        if not len(active):
+            return csr_matrix((np.prod(destination_shape), np.prod(source_shape)), dtype=float)
     vertices = []
     transformer = Transformer.from_crs(source_crs, destination_crs, always_xy=True)
     for dc, dr in ((0, 0), (1, 0), (1, 1), (0, 1)):
@@ -86,7 +99,10 @@ def area_weights(
     denominator = shapely.area(destination_polygons)[destination_indices]
     keep = areas > denominator * 1e-12
     weights = csr_matrix(
-        (areas[keep] / denominator[keep], (destination_indices[keep], source_indices[keep])),
+        (
+            areas[keep] / denominator[keep],
+            (destination_indices[keep], active[source_indices[keep]]),
+        ),
         shape=(np.prod(destination_shape), np.prod(source_shape)),
     )
     if np.max(np.asarray(weights.sum(axis=1))) > 1 + 1e-7:

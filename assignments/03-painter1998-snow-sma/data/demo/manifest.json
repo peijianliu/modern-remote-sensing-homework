@@ -53,11 +53,29 @@
       "id": "lab_snow_conditions",
       "url": "https://doi.org/10.5281/zenodo.3580078",
       "creators": [
-        "Hanna-Reetta Hannula",
-        "Kati Heinilä"
+        "Henna-Reetta Hannula",
+        "Kirsikka Heinilä"
       ],
       "license": "CC BY 4.0",
       "modifications": "Condition identifiers, acquisition date and SSA subset from the archived laboratory experiment table; no new measurements"
+    },
+    {
+      "id": "usgs_pine",
+      "url": "https://pubs.usgs.gov/of/2003/ofr-03-395/ASCII/V/lodgepole-pine_lp-needles-1.11574.asc",
+      "citation": "Clark, Swayze, Wise et al. (2003), USGS splib05a, DOI 10.3133/ofr03395",
+      "access": "public USGS spectral library",
+      "modifications": "Original text retained; sensor-band convolution only on supported wavelengths"
+    },
+    {
+      "id": "independent_modis",
+      "products": [
+        "MOD09GA.A2016044.h08v05.061.2021344014328",
+        "MOD09GA.A2017141.h08v05.061.2021272194242"
+      ],
+      "access": "public NASA MOD09GA.061 and CC BY 4.0 WorldView-derived reference",
+      "reference_doi": "10.5281/zenodo.4031446",
+      "provenance": "modis_external.source.json",
+      "modifications": "Scaled reflectance, explicit fill/QA masks, exact footprint intersection and reference-supported spatial subset"
     }
   ],
   "experiment": {
@@ -169,10 +187,34 @@
       "source_id": "this_experiment"
     },
     {
+      "path": "coefficient_diagnostics.npz",
+      "source_id": "this_experiment",
+      "bytes": 4289725,
+      "sha256": "62b602fd55f4debd8208d6cd406dd0d2bf35307fc229b346bb7fd39ed2e9514a"
+    },
+    {
+      "path": "coefficient_feasibility.csv",
+      "source_id": "this_experiment",
+      "bytes": 908,
+      "sha256": "4f80dd7090c7e71382c04a8ffc75ae5f957ae4817080f37dc0f890a82db51ffa"
+    },
+    {
+      "path": "coefficient_spectral_groups.csv",
+      "source_id": "this_experiment",
+      "bytes": 988,
+      "sha256": "0bb1445c26a761ea01a969ec169ec19fa389ef3d2b8b222db29c7e7777385231"
+    },
+    {
       "path": "coverage_sensitivity.csv",
       "source_id": "this_experiment",
       "bytes": 210,
       "sha256": "a69d8a28a0fcefa12d1faa01e8efc58be94b65286e4b69cf33323271b892028c"
+    },
+    {
+      "path": "experiment_scope.csv",
+      "source_id": "this_experiment",
+      "bytes": 1046,
+      "sha256": "f63f68af411da777deca3323acfef66e9381941f15892872e7b2cca2c29b82c5"
     },
     {
       "path": "fixed_radius_bootstrap.json",
@@ -203,6 +245,24 @@
       "source_id": "snow_model",
       "bytes": 1163,
       "sha256": "8f8970793059c045dfeda97b80a09810ef149d04760333bccda538ca7c391e63"
+    },
+    {
+      "path": "heldout_spectra.npz",
+      "source_id": "this_experiment",
+      "bytes": 61894,
+      "sha256": "a2d44e8f8a990b1e6f51e445cdfa1d5a1a1ee986d359f4aa313dac2c6c45f8ea"
+    },
+    {
+      "path": "historical_paired_deltas.csv",
+      "source_id": "this_experiment",
+      "bytes": 2907,
+      "sha256": "77bbade70569467659dbfb931f618e9d4f5cdff9287f8efa6f40c74aa82efcc1"
+    },
+    {
+      "path": "historical_spectral_control.npz",
+      "source_id": "this_experiment",
+      "bytes": 393397,
+      "sha256": "3782388471d61c0847c5df9b78118f98b555c64c78402de3052bea29af3c2bbe"
     },
     {
       "path": "image_endmember_summary.csv",
@@ -245,10 +305,78 @@
       "gzip_mtime": 0
     },
     {
+      "path": "lodgepole_pine.asc",
+      "source_id": "usgs_pine",
+      "bytes": 99518,
+      "sha256": "7bd56cf2ffee8f66cc046fa298a9a521c6a244390e8307a2c4abee73afe43c87"
+    },
+    {
+      "path": "mismatch_repeats.csv",
+      "source_id": "this_experiment",
+      "bytes": 48835,
+      "sha256": "7d227163fe50ada8a46c99f548f638cf47f053a588b2af4fca69e5c36ad679cb"
+    },
+    {
+      "path": "mismatch_summary.csv",
+      "source_id": "this_experiment",
+      "bytes": 3383,
+      "sha256": "431c0b639dde766b671932b90fd99c203a5231038415c171634ec098f6be722a"
+    },
+    {
       "path": "modis_1km_units.csv",
       "bytes": 27965,
       "sha256": "31e9be5158d065d623337051e39cbd03c0a7c9fc4a9677f5f7cf2ab1fc5a9742",
       "source_id": "this_experiment"
+    },
+    {
+      "path": "modis_external.source.json",
+      "source_id": "independent_modis",
+      "bytes": 6554,
+      "sha256": "531add828c2b4f2eda7c1f89c51901786cd7157b749af6574373686c855efccc"
+    },
+    {
+      "path": "modis_external_flags.csv",
+      "source_id": "independent_modis",
+      "bytes": 1057,
+      "sha256": "9f6c5d30697f23ad05a2de63c693c4726a42350d7e6929aac29e277e48185a90"
+    },
+    {
+      "path": "modis_external_library.npz",
+      "source_id": "independent_modis",
+      "bytes": 12759,
+      "sha256": "ce2e63dbd0b1662d6c74c909e24e0a40bd62e6cc786dea5e93be4e04c3445778"
+    },
+    {
+      "path": "modis_external_metrics.csv",
+      "source_id": "independent_modis",
+      "bytes": 11140,
+      "sha256": "8b981fc5ab790c5a731060a138b844f5d3ee7454b534aa3a4a9220528835ee43"
+    },
+    {
+      "path": "modis_external_paired_deltas.csv",
+      "source_id": "independent_modis",
+      "bytes": 11520,
+      "sha256": "77b0e8cf972eb28c37ac14cb177c842c41c17ab3cd0299c0d3c8664119e368de"
+    },
+    {
+      "path": "modis_external_support.csv",
+      "source_id": "independent_modis",
+      "bytes": 431,
+      "sha256": "a3b4faea06ae012f01216bdd5a3abb701f57e59d10f3dcc4148f36428a72fd0e"
+    },
+    {
+      "path": "modis_reference_1km.csv",
+      "source_id": "independent_modis",
+      "bytes": 178509,
+      "sha256": "61e53b550ca8245b6365fc5d262b6daaabd2de53e8cbb7bfbde213c98ef6a9be"
+    },
+    {
+      "path": "modis_reference_pixels.csv.gz",
+      "source_id": "independent_modis",
+      "bytes": 322564,
+      "sha256": "307ed63176ee6533c90ce0e840f7ae60d4afb6ee3a16c75fd581de46784e1d8d",
+      "uncompressed_bytes": 1852360,
+      "uncompressed_sha256": "8662f04797eff09e84e46716168a4cf0b9cf490beb57a9c73fa4da553e970575"
     },
     {
       "path": "product_consistency.csv",
@@ -264,8 +392,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 8051,
-      "sha256": "d8d3137a4e4c8d48929b3276124f33cd4d4fce82230c330d23fac3260adde2d4",
+      "bytes": 13870,
+      "sha256": "217256f1607fd3899829ffc5c7019b496ae733c189a5ca5c6de123e5a0035ec9",
       "source_id": "this_experiment"
     },
     {
@@ -313,15 +441,45 @@
       "source_id": "this_experiment"
     },
     {
+      "path": "state_flag_qa_ledger.csv",
+      "source_id": "this_experiment",
+      "bytes": 113,
+      "sha256": "fadc329890922a44fcb1cc38da3577c4fac97cf179a40822300007613755cc2a"
+    },
+    {
       "path": "stratified_metrics.csv",
       "bytes": 9450,
       "sha256": "5c008f20eef8dab32f3e34dacbaf80cb9fbc6b4e1c0894da57401f41b17b75f4",
       "source_id": "legacy_worldview",
       "source_path": "experiments/painter1998/2026-10-01/v2/13_worldview_validation_r004/tables/stratified_metrics.csv",
       "source_sha256": "5c008f20eef8dab32f3e34dacbaf80cb9fbc6b4e1c0894da57401f41b17b75f4"
+    },
+    {
+      "path": "transfer_library.npz",
+      "source_id": "usgs_pine",
+      "bytes": 13575,
+      "sha256": "e1431b89f0a3d8e1dc1db81fafa9edbf9930803a46f01fa586c86959c11edfa6"
+    },
+    {
+      "path": "transfer_library.source.json",
+      "source_id": "usgs_pine",
+      "bytes": 1032,
+      "sha256": "681be17589ce187930801969c19732a01d44bb324cd5ec539a00cac0730cf9f6"
+    },
+    {
+      "path": "transfer_metrics.csv",
+      "source_id": "this_experiment",
+      "bytes": 8381,
+      "sha256": "6335a99ffd99f22de743d8ea65ba8aac896b18d34bc808ee54db1a613628e791"
+    },
+    {
+      "path": "transfer_paired_deltas.csv",
+      "source_id": "this_experiment",
+      "bytes": 9407,
+      "sha256": "db23547e31c335968ce91a1cd404b81f66e504b4a39eb52579e70bb4e3af6827"
     }
   ],
-  "packaging_version": "2.0.0",
+  "packaging_version": "2.2.0",
   "packaging_changes": [
     "lossless deterministic gzip of complete sample tables",
     "extracted official scattering inputs for Python WW80 recomputation"
@@ -344,6 +502,41 @@
       "snowmix/case_analysis.py": "eafe1da9b0f7dc59835317bc1b5d731f5a9d00935a4dcbfadde031c7f78bcdab",
       "snowmix/teaching.py": "67156a59883b681a9168d0dc45393b167730bae60b8be7261fffd14dfbffdb3d",
       "scripts/prepare_case_data.py": "ee11b8387cc49a8047b7f29d54d48e4e6da6ec4659bf917645904d2311ae1f28"
+    }
+  },
+  "validation_revision": {
+    "date": "2026-10-27",
+    "seed": 1998,
+    "mismatch": {
+      "conditions": 7,
+      "repeats": 20,
+      "clean_spectra_per_condition": 48,
+      "bands": 182
+    },
+    "modis_units": {
+      "roi_records": 420,
+      "unique_native_1km": 406,
+      "strict_common_2013": 17
+    },
+    "independent_modis_500m": {
+      "20160213": {
+        "strict7_common": 1416,
+        "reference_positive": 463
+      },
+      "20170521": {
+        "strict7_common": 1817,
+        "reference_positive": 22
+      }
+    },
+    "code_sha256": {
+      "snowmix/diagnostics.py": "0978b8be6c77e5bc2516ef5962e68b3c7ee1c1bf88ddec63f7a72afc099c673b",
+      "snowmix/validation_study.py": "21195ad151a7416b95b91b8f4374c49b295eb1cedcbafe30a3c3ebc63ce8047a",
+      "snowmix/modis_validation.py": "efba97c98970d5b43a8cc44a70fd4ff1d5d18618809c43e7edc5d6a5c846859d",
+      "snowmix/case_analysis.py": "ca593db8a9f7fd7457b3115c1675145c8c94337f656f4f748ece4d5819a08b2e",
+      "snowmix/geo.py": "1a01e2e97540815ba72b02447d122913d06fa43b32874f592c9fad727431be96",
+      "scripts/rebuild_public_case.py": "24fffcf45c23870ae733b891d26a6bd18770a11d4509b110b28c65160b92a44d",
+      "scripts/prepare_modis_validation.py": "8cfdced7f20e7938a71ec251522c16bc29297df65c5c9eeb5b550e71b3a4a386",
+      "scripts/prepare_modis_hdf.py": "4394f115660b37a9117014e6798ecab8bd34bc6823e0a92c41f925139bc55067"
     }
   }
 }

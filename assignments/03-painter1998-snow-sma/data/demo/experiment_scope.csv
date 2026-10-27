@@ -1,0 +1,6 @@
+experiment,data,method,reference,metrics,computation,interpretation
+fig3_control,WW80与已知混合谱,MGS/FCLS；固定/多粒径,已知比例真值,覆盖误差、粒径误差、光谱RMS,从散射输入和混合谱重新计算,数值恢复与受控失配
+aviris_2013,2013 AVIRIS与MOD09GA,SNICAR与影像背景,同场景模型及产品,系数可行性、残差、尺度差异,完整AVIRIS重新选谱解混,场景内方法影响
+historical_landsat,2016/2017 Landsat历史库谱,FCLS；原松针/花岗岩,WorldView公开派生覆盖,共同域分层覆盖误差,由已归档预测重算统计,历史模型的转移性能
+public_landsat,2016/2017 Landsat观测,公开松针/石英；SNICAR雪库,同一WorldView公开参考,MGS/FCLS与粒径选择的覆盖误差,从保留观测重新解混,该公开库谱模型的独立误差
+independent_modis,2016/2017同日MOD09GA,WW80；公开松针/石英,同日WorldView公开派生覆盖,覆盖误差与原生状态雪标志,从原始HDF和参考足迹重建,该公开端元分支的独立性能

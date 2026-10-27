@@ -6,6 +6,12 @@ end
 if nargin < 2, output_file = 'data/cache/modis_fields.mat'; end
 assert(~isfile(output_file), 'Existing output preserved: use a new version');
 information = hdfinfo(input_file, 'eos');
+% 保留原生产品元数据，供Python核对日期、产品标识和空间瓦片。
+metadata_id = hdf('SD','start',input_file,'read');
+[core_metadata, metadata_status] = hdf('SD','readattr',metadata_id, ...
+    hdf('SD','findattr',metadata_id,'CoreMetadata.0'));
+hdf('SD','end',metadata_id);
+assert(metadata_status == 0, 'Missing native CoreMetadata.0');
 grid500 = information.Grid(strcmp({information.Grid.Name}, 'MODIS_Grid_500m_2D'));
 grid1000 = information.Grid(strcmp({information.Grid.Name}, 'MODIS_Grid_1km_2D'));
 band_raw = zeros(2400, 2400, 7, 'int16');
@@ -29,7 +35,7 @@ dimension_order = {grid500.DataFields(2).Dims.Name};
 assert(strcmp(dimension_order{1}, 'YDim') && strcmp(dimension_order{2}, 'XDim'));
 save(output_file, 'band_raw', 'qc', 'state', 'solar_zenith_raw', ...
      'sensor_zenith_raw', 'orbit_pointer', 'granule_pointer', 'dimension_order', ...
-     'field_names', 'qc_name', '-v7');
+     'field_names', 'qc_name', 'core_metadata', '-v7');
 % Confirm attributes from the actual SDS rather than relying only on the guide.
 sid = hdf('SD','start',input_file,'read');
 did = hdf('SD','select',sid,hdf('SD','nametoindex',sid,qc_name));

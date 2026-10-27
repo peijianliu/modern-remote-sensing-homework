@@ -37,12 +37,25 @@ jobs:
           cache-dependency-path: assignments/03-painter1998-snow-sma/pyproject.toml
       - name: Install teaching environment
         run: python -m pip install -c requirements-lock.txt -e ".[notebook,dev]"
+      - name: Install Chinese plotting fonts
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-cjk
       - name: Core and teaching tests
         run: python -m pytest -q -m "not requires_gis and not full_data"
       - name: Prepare pinned offline formula component
         run: python scripts/build_notebooks.py --prepare-assets
       - name: Build twice, verify offline resources and source purity
         run: python scripts/check_reproducibility.py
+      - name: Install real-browser checks
+        if: runner.os == 'Linux'
+        run: |
+          python -m pip install -c requirements-lock.txt -e ".[browser]"
+          python -m playwright install --with-deps --no-shell chromium
+      - name: Check desktop, tablet and mobile reading
+        if: runner.os == 'Linux'
+        run: python scripts/browser_smoke.py --site ../../build/site --report ../../build/browser/check.json
       - name: Require clean tracked sources
         run: git diff --exit-code
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

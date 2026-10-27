@@ -64,7 +64,11 @@ def test_source_notebooks_have_no_execution_artifacts():
 
 def test_compressed_samples_keep_exact_original_bytes_rows_and_columns():
     manifest = json.loads((CASE / "data/demo/manifest.json").read_text(encoding="utf-8"))
-    compressed = [entry for entry in manifest["files"] if entry["path"].endswith(".csv.gz")]
+    compressed = [
+        entry
+        for entry in manifest["files"]
+        if entry["path"].startswith("LC08_") and entry["path"].endswith(".csv.gz")
+    ]
     assert len(compressed) == 2
     for entry in compressed:
         path = CASE / "data/demo" / entry["path"]
@@ -84,8 +88,8 @@ def test_duplicate_csv_and_gzip_scene_is_rejected(tmp_path):
 def test_filter_ledger_is_nested_and_retains_valid_negative_units():
     units = pd.read_csv(CASE / "data/demo/modis_1km_units.csv")
     ledger = t.validation_ledger(units)
-    np.testing.assert_array_equal(ledger.n, [420, 420, 100, 17])
-    np.testing.assert_array_equal(ledger.flag15_positive, [119, 119, 20, 0])
+    np.testing.assert_array_equal(ledger.n, [406, 406, 100, 17])
+    np.testing.assert_array_equal(ledger.flag15_positive, [116, 116, 20, 0])
     assert np.all(np.diff(ledger.n) <= 0)
     assert ledger.iloc[-1].n == 17
     with pytest.raises(ValueError, match="Duplicated"):

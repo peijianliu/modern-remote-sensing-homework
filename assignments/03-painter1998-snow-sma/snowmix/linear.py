@@ -12,7 +12,8 @@ def mgs_operator(matrix: np.ndarray) -> np.ndarray:
     """用两遍正交化的修正 Gram–Schmidt（MGS）计算最小二乘线性算子。
 
     matrix 的维度为波段数 × 非阴影端元数。拟合采用无约束系数，
-    零反射率阴影的比例由 1 − 非阴影系数之和得到。
+    零反射率阴影的比例由 1 − 非阴影系数之和得到。MGS 只最小化光谱残差，
+    不施加面积约束；有符号系数保留供诊断，需物理范围的对照使用 FCLS。
 
     Args:
         matrix: 无量纲反射率矩阵 A，形状 (bands, components)，要求满列秩。
@@ -163,7 +164,8 @@ def select_snow(
     Returns:
         UnmixResult：比例轴为 (pixels, components)，第一列为雪；
         modeled/residual 为 (pixels, bands)，其余诊断为 (pixels,)。
-        normalized 用于无遮蔽表面的相对覆盖；原始 fractions 用于重建。
+    normalized 为去阴影的相对比例；原始 fractions 用于重建。MGS 输出须结合
+        qa 的越界位阅读，不能因 RMS 较低就认作更准确的面积覆盖。
 
     Raises:
         ValueError: 波段维度不同或 solver 不为 original / fcls。

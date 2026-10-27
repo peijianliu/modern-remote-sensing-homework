@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "painter1998-snow-sma"
-version = "2.1.0"
+version = "2.2.0"
 description = "Executable teaching case for snow grain size and spectral mixture analysis"
 readme = "README.md"
 requires-python = ">=3.11,<3.12"
@@ -25,6 +25,7 @@ full = [
   "netCDF4==1.7.4", "spectral==0.25", "requests==2.32.5", "openpyxl==3.1.5",
 ]
 dev = ["pytest==8.3.5", "ruff==0.11.13"]
+browser = ["playwright==1.64.1"]
 
 [tool.setuptools.packages.find]
 include = ["snowmix*", "scripts*"]

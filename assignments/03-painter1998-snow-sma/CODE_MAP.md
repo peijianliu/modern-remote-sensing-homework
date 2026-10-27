@@ -1,15 +1,22 @@
 # 代码与图表索引
 
-| 方法或结果 | 实现 | Notebook |
+| 内容 | 实现 | 教学入口 |
 |---|---|---|
-| MGS、FCLS、逐候选最小 RMS、质量标记 | `snowmix/linear.py` | 02、03 |
-| 库谱读取、单位转换、高斯响应卷积 | `snowmix/spectra.py` | 01、02 |
-| 散射输入、WW80现算、参考校核、教学统计与绘图 | `snowmix/optics.py`、`teaching.py` | 01、02、03 |
-| 吸收面积、分位选谱、固定半径扫描、配对区块统计、交叉表 | `snowmix/case_analysis.py` | 03 |
-| 教学数据及新实验准备 | `scripts/prepare_case_data.py` | 完整输入准备后运行 |
-| 真实像元面积聚合与 MODIS QA | `snowmix/geo.py`、`modis.py`、`image.py` | 03 使用其冻结派生输入 |
-| 执行与离线 HTML 导出 | `scripts/build_notebooks.py` | 三份 Notebook |
-| MATLAB 正演参考 | `matlab/run_forward.m`、`scripts/prepare_forward_reference.py`、`vendor/` | 01 独立校核cell；完整MAT可选 |
-| 报告物理图与固定粒径区间图 | `scripts/report_diagnostics.py` | 与01、03共用输入 |
+| MGS、FCLS、候选雪谱与残差/QA | `snowmix/linear.py` | 02、03 |
+| WW80闭式解、波段响应与单位 | `optics.py`、`spectra.py` | 01、02 |
+| 吸收面积、固定半径与空间块统计 | `case_analysis.py` | 02、03 |
+| 系数可行性、配对RMSE差 | `diagnostics.py` | 03 |
+| 七种失配、公开Landsat重新解混 | `validation_study.py` | 02、03 |
+| 同日MODIS与原生雪标志评价 | `modis_validation.py` | 03 |
+| 教学读取、中文表格、图例与制图 | `teaching.py` | 三份Notebook |
+| 真实足迹相交、部分覆盖与MODIS QA | `geo.py`、`modis.py` | 完整输入准备 |
+| 完整AVIRIS重提端元与三模型 | `scripts/rebuild_public_case.py` | L2 |
+| HDF原生标识与字段提取 | `scripts/prepare_modis_hdf.py`、`matlab/export_modis.m` | L2 |
+| 同日参考面积聚合与完整验证 | `scripts/prepare_modis_validation.py` | L2 |
+| 小输入独立实验统一运行 | `scripts/run_validation_study.py` | 控制与Landsat |
+| 暂存构建、HTML与练习副本 | `scripts/build_notebooks.py` | L1 |
+| 数值产物、链接及真实浏览器 | `verify_artifacts.py`、`verify_site.py`、`browser_smoke.py` | 测试 |
+| 报告图件 | `scripts/report_diagnostics.py`、`report_validation_figure.py`、`report_extended_figures.py` | 与Notebook共用输入 |
+| MATLAB光学参考 | `matlab/`、`prepare_forward_reference.py`、`vendor/` | 01独立校核 |
 
-报告中的历史物理图、Fig. 3、噪声/端元遗漏和外部验证来自已归档实验；本版新图来自教学数据中的统一 2013 AVIRIS 背景实验。图表号以综合报告 PDF 为准，数据字段与来源可由 `data/demo/README.md` 和 `manifest.json` 核对。
+未注明目录的算法模块位于`snowmix/`；验证脚本位于`scripts/`。历史物理、库谱和尺度记录与新增模型分开标注，来源与字段见`data/demo/README.md`。报告图号以PDF为准，输入和代码对应关系见`FIGURE_INDEX.md`。
