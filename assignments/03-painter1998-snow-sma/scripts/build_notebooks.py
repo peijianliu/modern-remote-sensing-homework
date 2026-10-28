@@ -34,6 +34,7 @@ SITE_SOURCE = REPOSITORY / "site"
 CASE_URL = Path("assignments/03-painter1998")
 NOTEBOOK_NAMES = ("01_snow_optics", "02_fig3_sma", "03_aviris_modis")
 NOTEBOOK_TITLES = ("01 雪光学", "02 Fig. 3 与解混", "03 实景与尺度")
+REPORT_BASENAME = "Painter1998五人综合实验报告20261027"
 MATHJAX_VERSION = "3.2.2"
 MATHJAX_SOURCE = SITE_SOURCE / CASE_URL / "assets/mathjax/SOURCE.json"
 MATHJAX_CACHE = REPOSITORY / "build/assets/mathjax"
@@ -126,7 +127,8 @@ table {border-collapse: collapse;} th,td {padding: .4em .65em;}
         navigation += (
             f'<a href="notebooks/{notebook_name}.ipynb" download>下载 .ipynb（含运行输出）</a>'
         )
-    navigation += '<a href="report.pdf">综合报告 PDF</a>'
+    navigation += f'<a href="{REPORT_BASENAME}.pdf">综合报告 PDF</a>'
+    navigation += f'<a href="{REPORT_BASENAME}.docx" download>下载 Word</a>'
     if notebook_name in NOTEBOOK_NAMES:
         index = NOTEBOOK_NAMES.index(notebook_name)
         if index > 0:
@@ -336,8 +338,10 @@ def render_site(output: Path, timeout: int) -> dict:
     shutil.copytree(SITE_SOURCE, output)
     case_output = output / CASE_URL
     shutil.copytree(assets, case_output / "assets/mathjax", dirs_exist_ok=True)
-    # 报告的唯一源在作业目录，站点只保留本次构建的副本。
-    shutil.copy2(CASE / "reports/painter1998-integrated-report.pdf", case_output / "report.pdf")
+    # 按修订稿原文件名发布，站点副本与仓库中的 Word/PDF 逐字节一致。
+    for extension in ("pdf", "docx"):
+        filename = f"{REPORT_BASENAME}.{extension}"
+        shutil.copy2(CASE / "reports" / filename, case_output / filename)
     build_directory = CASE / "build/notebooks"
     build_directory.mkdir(parents=True, exist_ok=True)
     exporter = HTMLExporter(template_name="lab", embed_images=True)

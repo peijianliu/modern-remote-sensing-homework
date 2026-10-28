@@ -2,7 +2,7 @@
 
 雪面积相同，粒径和背景不同，观测光谱也会不同。本案例从一个波长的手算开始，逐步解释光谱正演、线性解混、物理约束及独立覆盖验证，面向已有 Python、线性代数基础的同学。
 
-- **30 分钟阅读**：[01 雪光学](https://peijianliu.github.io/modern-remote-sensing-homework/assignments/03-painter1998/01_snow_optics.html)的手算与雪谱，再看[综合报告](reports/painter1998-integrated-report.pdf)的 Fig. 3。
+- **30 分钟阅读**：[01 雪光学](https://peijianliu.github.io/modern-remote-sensing-homework/assignments/03-painter1998/01_snow_optics.html)的手算与雪谱，再看[综合报告](reports/Painter1998五人综合实验报告20261027.pdf)的 Fig. 3。
 - **3 小时实践**：建立 Python 3.11 环境，运行三份 Notebook，在工作副本中改半径、角度和覆盖门槛，记录预测、输入输出与结果解释。
 
 [在线目录](https://peijianliu.github.io/modern-remote-sensing-homework/assignments/03-painter1998/) · [实验分支与主要结果](EXPERIMENTS.md) · [数据字段](data/demo/README.md) · [代码索引](CODE_MAP.md) · [数据使用条件](PUBLIC_DATA_POLICY.md)
