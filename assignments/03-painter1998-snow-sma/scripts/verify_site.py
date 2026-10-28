@@ -63,10 +63,10 @@ def verify(output: Path) -> dict:
         ):
             raise ValueError(f"Site artifact checksum mismatch: {relative}")
     output = site_root / "assignments/03-painter1998"
-    if (output / "report.pdf").read_bytes() != (
-        CASE / "reports/painter1998-integrated-report.pdf"
-    ).read_bytes():
-        raise ValueError("Generated report differs from its canonical source")
+    for extension in ("pdf", "docx"):
+        filename = f"Painter1998五人综合实验报告20261027.{extension}"
+        if (output / filename).read_bytes() != (CASE / "reports" / filename).read_bytes():
+            raise ValueError(f"Generated report differs from its canonical source: {filename}")
     privacy = re.compile(r"(?<![A-Za-z])[A-Za-z]:[\\/]|/Users/|/home/|2026E\d{8,}")
     records = []
     for name in NAMES:

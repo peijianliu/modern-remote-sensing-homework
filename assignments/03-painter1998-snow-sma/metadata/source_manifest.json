@@ -28,8 +28,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 10115,
-      "sha256": "49627c9de2b950c535bc6c80c268c278d04522cab0a767b2038f80037384c2dc"
+      "bytes": 10129,
+      "sha256": "5700ba203063b2be878dd1b939b1f6a78db435009391a9028e941cb49e668927"
     },
     {
       "path": "THIRD_PARTY.md",
@@ -443,8 +443,8 @@
     },
     {
       "path": "metadata/report_figure_sources.json",
-      "bytes": 1850,
-      "sha256": "73960cad6e2e6ffaeb769fe1be5e634cc758a47956dffe57d674b329c3da2fe6"
+      "bytes": 1945,
+      "sha256": "db16ab80dbd2e458d2cb45055caab25fa214ad9c6a9a8ab08d6c198053e29593"
     },
     {
       "path": "notebooks/01_snow_optics.ipynb",
@@ -467,9 +467,19 @@
       "sha256": "88155c9809c8fb1e6564634085096d2f9c17b71366966ba3d13a171475f0ffad"
     },
     {
+      "path": "reports/Painter1998五人综合实验报告20261027.docx",
+      "bytes": 9374053,
+      "sha256": "143e6bec68d0d5b33836a9bc912fd7bb1630c029f627efb3757dda44505acefc"
+    },
+    {
+      "path": "reports/Painter1998五人综合实验报告20261027.pdf",
+      "bytes": 8664829,
+      "sha256": "6f5689049a1bdae07a96d9a7722171e8bf290223ffc3b22238e0f508ee96c7f6"
+    },
+    {
       "path": "reports/README.md",
-      "bytes": 1494,
-      "sha256": "994839da7f4e2da96050fde0dfb8809b2031a0d3b33b1a850e1cdadb12e33080"
+      "bytes": 1549,
+      "sha256": "b24ef68418e9f83a9635148ef83139c28400b9dfac5dd0501a46734ba9002d28"
     },
     {
       "path": "reports/figures/coefficient_status.png",
@@ -562,11 +572,6 @@
       "sha256": "9e4d068bbb121941f691760ae156ae0328e84c9dcce5ba1c47f9852ccd9b43fe"
     },
     {
-      "path": "reports/painter1998-integrated-report.pdf",
-      "bytes": 4258752,
-      "sha256": "7d065f6850f755deadeb32f1f41a9248f8e0205fdaac36ca918e4b07e057da08"
-    },
-    {
       "path": "requirements-lock.txt",
       "bytes": 2378,
       "sha256": "d7ed27d107e6d4bf42077df7d08ed92f2433d9c047977cc3abf3cec04762049b"
@@ -593,13 +598,13 @@
     },
     {
       "path": "scripts/browser_smoke.py",
-      "bytes": 9808,
-      "sha256": "942dbea4e8cd61da0b93104b8997f30c9a051ff563d6d288751cae68ac30f3a8"
+      "bytes": 10678,
+      "sha256": "fd6bc0a99dd5deaad701f954c7e7f16dbc7981efa26566b309e0f0f36ef634f6"
     },
     {
       "path": "scripts/build_notebooks.py",
-      "bytes": 19730,
-      "sha256": "4bb7f8f0ae4688e31faae1f0af9d9592f170033cf2ffbd817477166306589452"
+      "bytes": 19965,
+      "sha256": "aec33f6028bb6365e9eed06791bbf0faa757234497af1e9f44ecaef850899b32"
     },
     {
       "path": "scripts/build_review_report.py",
@@ -728,8 +733,8 @@
     },
     {
       "path": "scripts/verify_site.py",
-      "bytes": 7602,
-      "sha256": "ce4913b27b2f80489c4e3053707573ebf5891e9f688cff0f36b600b08b392846"
+      "bytes": 7698,
+      "sha256": "19dd864b70b738fd652a2c07b00017c79323e44de4bca137045a731c0240f160"
     },
     {
       "path": "scripts/verify_supplement.py",

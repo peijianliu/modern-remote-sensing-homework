@@ -125,7 +125,9 @@ def check_site(site: Path, report: Path, channel: str = "chromium") -> dict:
                                 if "Notebook" == layout["title"]:
                                     issues.append("Generic page title")
                                 if width == 1440:
-                                    link = page.locator("nav.case-navigation a[download]")
+                                    link = page.locator(
+                                        'nav.case-navigation a[download][href$=".ipynb"]'
+                                    )
                                     with page.expect_download() as item:
                                         link.click()
                                     download = item.value
@@ -136,7 +138,7 @@ def check_site(site: Path, report: Path, channel: str = "chromium") -> dict:
                                     )
                                     if not any(c.get("outputs") for c in body["cells"]):
                                         issues.append("Notebook outputs absent")
-                            pdf = page.locator('a[href$="report.pdf"]').first
+                            pdf = page.locator('a[href$=".pdf"]').first
                             if pdf.count():
                                 href = pdf.get_attribute("href")
                                 from urllib.parse import urljoin
@@ -144,6 +146,18 @@ def check_site(site: Path, report: Path, channel: str = "chromium") -> dict:
                                 result = context.request.get(urljoin(base + path, href))
                                 if result.status != 200 or not result.body().startswith(b"%PDF-"):
                                     issues.append("Report link or PDF header")
+                            word = page.locator('a[download][href$=".docx"]').first
+                            if width == 1440 and word.count():
+                                with page.expect_download() as item:
+                                    word.click()
+                                document = item.value
+                                if (
+                                    document.suggested_filename
+                                    != "Painter1998五人综合实验报告20261027.docx"
+                                ):
+                                    issues.append("Word filename")
+                                if not Path(document.path()).read_bytes().startswith(b"PK"):
+                                    issues.append("Word document container")
                             page.screenshot(
                                 path=str(
                                     screenshots
